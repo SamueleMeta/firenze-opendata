@@ -1,0 +1,6 @@
+{"type":"FeatureCollection", "features": [
+{"type":"Feature","geometry":{"type":"Point","coordinates":[1683961.78503418,4846123.8760376]},"properties":{"DENOMINAZI":"IST.M.CRISTINA OGIER CASA MAS.","SETTORE":"Assistenza disabili fisici","TIPOLOGIA":"Residenza","GESTIONE":"Convenzionata","PIVA":6545645212,"INDIRIZZO":"VIA B. FORTINI, 90","CAP":50125,"PREF_TEL":555,"TELEF":2342490}},
+{"type":"Feature","geometry":{"type":"Point","coordinates":[1681980.60302734,4847481.49304199]},"properties":{"DENOMINAZI":"IST M.CRISTINA OGIER CASA FEMM","SETTORE":"Assistenza disabili fisici","TIPOLOGIA":"Residenza","GESTIONE":"Convenzionata","PIVA":4937000489,"INDIRIZZO":"V.LE GALILEO, 12","CAP":50125,"PREF_TEL":55,"TELEF":5000815}},
+{"type":"Feature","geometry":{"type":"Point","coordinates":[1682317.02099609,4851290.82098389]},"properties":{"DENOMINAZI":"OAMI CASA ELENA","SETTORE":"Assistenza disabili fisici","TIPOLOGIA":"Residenza","GESTIONE":"Convenzionata","PIVA":4267410480,"INDIRIZZO":"VIA A LEVI, 32","CAP":50133,"PREF_TEL":55,"TELEF":489222}},
+{"type":"Feature","geometry":{"type":"Point","coordinates":[1683053.60601807,4851920.97698975]},"properties":{"DENOMINAZI":"OAMI CASA VINCENZO","SETTORE":"Assistenza disabili fisici","TIPOLOGIA":"Residenza","GESTIONE":"Convenzionata","PIVA":4267410480,"INDIRIZZO":"VIA DI LAPO, 8","CAP":50133,"PREF_TEL":55,"TELEF":588682}}
+]}
