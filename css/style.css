@@ -1,0 +1,164 @@
+/*---------------- GLOBAL ----------------*/
+
+* {
+    margin: 0;
+    padding: 0;
+    outline: 0;
+    font-size: 100%;
+    vertical-align: baseline;
+    background: transparent;
+}
+
+html, body {
+    height: 100%;
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 300;
+}
+
+h1 {
+    font-family: 'cocogooseregular', sans-serif;
+    font-size: 38px;
+    text-transform: uppercase;
+    letter-spacing: 1.8px;
+}
+
+/*----------------- FONTS ----------------*/
+
+@font-face {
+    font-family: 'cocogooseregular';
+    src: url('../fonts/cocogoose_trial-webfont.woff2') format('woff2'),
+         url('../fonts/cocogoose_trial-webfont.woff') format('woff');
+    font-weight: 400;
+}
+
+/*---------------- SIDEMENU ---------------*/
+
+#sidemenu {
+    width: 20%;
+    min-width: 288px;
+    height: 100%;
+    background-color: #3c4c5b;
+    float: left;
+}
+
+#titleWrapper {
+    position: absolute;
+    top: 5%;
+    width: 20%;
+    min-width: 288px;
+}
+
+#title {
+    line-height: 44px;
+    color: rgba(101, 235, 155, .95);
+    text-align: center;
+    display: block;
+}
+
+#subtitle {
+    line-height: 46px;
+    color: hsla(0, 0%, 100%, .83);
+    text-align: center;
+    display: block;
+}
+
+#search {
+    margin-top: 7%;
+    background-color: #28303b;
+    padding: 8% 0;
+    min-width: 288px;
+}
+
+#searchWrapper {
+    width: 96%;
+    display: block;
+    margin: auto;
+    padding-left: 10%;
+}
+
+#searchIcon {
+    width: 16px;
+    height: 16px;
+    margin-right: 2%;
+}
+
+::placeholder {
+    color:rgba(255, 255, 255, 0.72);
+}
+
+:-ms-input-placeholder {
+    color: rgba(255, 255, 255, 0.72);
+}
+
+/*------------- MAP SEARCHBOX -------------*/
+
+#map {
+    height: 100%;
+    width: 80%;
+    float: right;
+  }
+
+#description {
+    font-family: Roboto;
+    font-size: 15px;
+    font-weight: 300;
+  }
+
+#infowindow-content .title {
+    font-weight: bold;
+  }
+
+#infowindow-content {
+    display: none;
+  }
+
+#map #infowindow-content {
+    display: inline;
+  }
+
+.pac-card {
+    margin: 10px 10px 0 0;
+    border-radius: 2px 0 0 2px;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    outline: none;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+    background-color: #fff;
+    font-family: Roboto;
+  }
+
+#pac-container {
+    padding-bottom: 12px;
+    margin-right: 12px;
+  }
+
+.pac-controls {
+    display: inline-block;
+    padding: 5px 11px;
+  }
+
+.pac-controls label {
+    font-family: Roboto;
+    font-size: 13px;
+    font-weight: 300;
+  }
+
+#pac-input {
+    background-color: #28303b;
+    font-family: 'Nunito Sans';
+    font-size: 16px;
+    font-weight: 400;
+    text-overflow: ellipsis;
+    color: rgba(255, 255, 255, 0.72);
+    width: 75%;
+    position: relative;
+    border-style: hidden hidden solid hidden;
+  }
+
+#target {
+    width: 345px;
+  }
+
+#pac-input:focus {
+    color: rgba(101, 235, 155, .95);
+}
