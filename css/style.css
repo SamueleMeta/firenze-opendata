@@ -95,6 +95,7 @@ h1 {
 #map {
     height: 100%;
     width: 80%;
+    max-width: calc(100% - 288px);
     float: right;
   }
 

@@ -125,7 +125,7 @@ function initAutocomplete() {
         })
     };
 
-    calcRoute(directionsService, directionsDisplay);
+    //calcRoute(directionsService, directionsDisplay);
 
     // Create the search box and link it to the UI element.
     var input = document.getElementById('pac-input');
@@ -147,7 +147,7 @@ function initAutocomplete() {
 
         // Clear out the old markers.
         markers.forEach(function (marker) {
-            marker.setMap(null);
+           marker.setMap(null);
         });
         markers = [];
 
@@ -183,4 +183,35 @@ function initAutocomplete() {
         });
         map.fitBounds(bounds);
     });
+   
+    for(var i = 0; i < document.getElementsByClassName('serviceElement').length; i++){
+        document.getElementsByClassName('serviceElement')[i]
+            .addEventListener('click', function () {
+                this.style.backgroundColor = "white";
+                addServiceMarkers(map); 
+            });
+    }
 }
+
+//NON FUNZIONA PERCHè LE COORDINATE DEL JSON VANNO CON
+function addServiceMarkers(map) { 
+    var xobj = new XMLHttpRequest();
+        xobj.overrideMimeType("application/json");
+    xobj.open('GET', 'geojson/presidi.json', true); // Replace 'my_data' with the path to your file
+    xobj.onreadystatechange = function () {
+          if (xobj.readyState == 4 && xobj.status == "200") {
+            // Required use of an anonymous callback as .open will NOT return a value but simply returns undefined in asynchronous mode
+            var callback = JSON.parse(xobj.responseText);
+            var services = [];
+            for(var place in callback.features){
+                var longitude= callback.features[place].geometry.coordinates[0];
+                var latitude= callback.features[place].geometry.coordinates[1]
+                services[place] = new google.maps.Marker({
+                    position: {lat:latitude, lng: longitude},
+                    map:map
+                });
+            }
+          }
+    };
+    xobj.send();  
+ }
