@@ -105,7 +105,7 @@ var mapOptions = {
         }
     ]
 }
-
+var markers = [];
 function initAutocomplete() {
     var directionsService = new google.maps.DirectionsService();
     var directionsDisplay = new google.maps.DirectionsRenderer();
@@ -131,11 +131,15 @@ function initAutocomplete() {
     var input = document.getElementById('pac-input');
     var searchBox = new google.maps.places.SearchBox(input);
 
+	setTimeout(function(){ 
+		$(".pac-container").prependTo("#searchResults");
+	}, 300); 
+
     // Bias the SearchBox results towards current map's viewport.
     map.addListener('bounds_changed', function () {
         searchBox.setBounds(map.getBounds());
     });
-    var markers = [];
+
     // Listen for the event fired when the user selects a prediction and retrieve
     // more details for that place.
     searchBox.addListener('places_changed', function () {
@@ -183,21 +187,36 @@ function initAutocomplete() {
         });
         map.fitBounds(bounds);
     });
-   
+
+   //TODO: Usare un flag migliore del colore del div
     for(var i = 0; i < document.getElementsByClassName('serviceElement').length; i++){
         document.getElementsByClassName('serviceElement')[i]
             .addEventListener('click', function () {
-                this.style.backgroundColor = "white";
-                addServiceMarkers(map); 
+                if(this.style.backgroundColor != "white"){
+                    this.style.backgroundColor = "white";
+                    addServiceMarkers(map, this.id); 
+                }
+                else{
+                    this.style.backgroundColor = "#3c4c5b"
+                    deleteServiceMarkers(this.id);
+                }
             });
     }
 }
 
-//NON FUNZIONA PERCHè LE COORDINATE DEL JSON VANNO CON
-function addServiceMarkers(map) { 
+function addServiceMarkers(map, id) { 
+    var path;
+
+    switch(id){
+        case 'presidi': path = 'geojson/presidi.json'; break;
+        case 'centriSaluteMentale': path = 'geojson/salute_mentale.json'; break;
+        case 'centriArt26': path = 'geojson/riabilitaz_exart26.json'; break;
+        case 'disabiliPsichici': path = 'geojson/assist_disabili_psichici.json'; break;
+    }
+    
     var xobj = new XMLHttpRequest();
         xobj.overrideMimeType("application/json");
-    xobj.open('GET', 'geojson/presidi.json', true); // Replace 'my_data' with the path to your file
+    xobj.open('GET', path, true);
     xobj.onreadystatechange = function () {
           if (xobj.readyState == 4 && xobj.status == "200") {
             // Required use of an anonymous callback as .open will NOT return a value but simply returns undefined in asynchronous mode
@@ -206,12 +225,20 @@ function addServiceMarkers(map) {
             for(var place in callback.features){
                 var longitude= callback.features[place].geometry.coordinates[0];
                 var latitude= callback.features[place].geometry.coordinates[1]
-                services[place] = new google.maps.Marker({
+                markers.push(new google.maps.Marker({
                     position: {lat:latitude, lng: longitude},
-                    map:map
-                });
+                    map: map,
+                    serviceID: id
+                }));
             }
           }
     };
     xobj.send();  
+ }
+
+ function deleteServiceMarkers(id){
+    for(var i = 0; i < markers.length; i++){
+        if(markers[i].serviceID == id)
+            markers[i].setMap(null);
+    }
  }
