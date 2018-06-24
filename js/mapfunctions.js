@@ -189,19 +189,18 @@ function initAutocomplete() {
     });
 
    //TODO: Usare un flag migliore del colore del div
-    for(var i = 0; i < document.getElementsByClassName('serviceElement').length; i++){
-        document.getElementsByClassName('serviceElement')[i]
-            .addEventListener('click', function () {
-                if(this.style.backgroundColor != "white"){
-                    this.style.backgroundColor = "white";
-                    addServiceMarkers(map, this.id); 
-                }
-                else{
-                    this.style.backgroundColor = "#3c4c5b"
-                    deleteServiceMarkers(this.id);
-                }
-            });
-    }
+   for(var i = 0; i < document.getElementsByClassName('serviceElement').length; i++){
+    document.getElementsByClassName('serviceElement')[i]
+        .addEventListener('click', function () {
+            if(this.style.backgroundColor != "white"){
+                addServiceMarkers(map, this.id); 
+            }
+            else{
+                this.style.backgroundColor = "#3c4c5b";
+                deleteServiceMarkers(this.id);
+            }
+        });
+}
 }
 
 function addServiceMarkers(map, id) { 
