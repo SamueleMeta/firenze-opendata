@@ -131,6 +131,10 @@ function initAutocomplete() {
     var input = document.getElementById('pac-input');
     var searchBox = new google.maps.places.SearchBox(input);
 
+	setTimeout(function(){ 
+		$(".pac-container").prependTo("#searchResults");
+	}, 300); 
+
     // Bias the SearchBox results towards current map's viewport.
     map.addListener('bounds_changed', function () {
         searchBox.setBounds(map.getBounds());
