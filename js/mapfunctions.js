@@ -105,6 +105,7 @@ var mapOptions = {
         }
     ]
 }
+var serviceMarkers = [];
 var markers = [];
 function initAutocomplete() {
     var directionsService = new google.maps.DirectionsService();
@@ -153,7 +154,6 @@ function initAutocomplete() {
         markers.forEach(function (marker) {
            marker.setMap(null);
         });
-        markers = [];
 
         // For each place, get the icon, name and location.
         var bounds = new google.maps.LatLngBounds();
@@ -221,11 +221,10 @@ function addServiceMarkers(map, id) {
           if (xobj.readyState == 4 && xobj.status == "200") {
             // Required use of an anonymous callback as .open will NOT return a value but simply returns undefined in asynchronous mode
             var callback = JSON.parse(xobj.responseText);
-            var services = [];
             for(var place in callback.features){
                 var longitude= callback.features[place].geometry.coordinates[0];
                 var latitude= callback.features[place].geometry.coordinates[1]
-                markers.push(new google.maps.Marker({
+                serviceMarkers.push(new google.maps.Marker({
                     position: {lat:latitude, lng: longitude},
                     map: map,
                     serviceID: id
@@ -237,8 +236,11 @@ function addServiceMarkers(map, id) {
  }
 
  function deleteServiceMarkers(id){
-    for(var i = 0; i < markers.length; i++){
-        if(markers[i].serviceID == id)
-            markers[i].setMap(null);
+     //Backward looping to avoid index skipping
+     var i = serviceMarkers.length;
+    while(i--){
+        if(serviceMarkers[i] != null && serviceMarkers[i].serviceID == id)
+            serviceMarkers[i].setMap(null);
+            serviceMarkers.splice(i,1);
     }
  }
