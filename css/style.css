@@ -36,15 +36,30 @@ h1 {
 #sidemenu {
     width: 20%;
     min-width: 288px;
-    height: 100%;
+    height: calc(100% - 50px);
     background-color: #3c4c5b;
     float: left;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    padding-top: 50px;
+}
+
+#sidemenu::-webkit-scrollbar-track {
+	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+	background-color: #3c4c5b;
+}
+
+#sidemenu::-webkit-scrollbar {
+	width: 6px;
+	background-color: #3c4c5b;
+}
+
+#sidemenu::-webkit-scrollbar-thumb {
+	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+	background-color: rgba(101, 235, 155, .95);
 }
 
 #contentWrapper {
-    position: absolute;
-    top: 5%;
-    width: 20%;
     min-width: 288px;
 }
 
