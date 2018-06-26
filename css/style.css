@@ -112,19 +112,19 @@ h1 {
     width: 80%;
     max-width: calc(100% - 288px);
     float: right;
-  }
+}
 
 #infowindow-content .title {
     font-weight: bold;
-  }
+}
 
 #infowindow-content {
     display: none;
-  }
+}
 
 #map #infowindow-content {
     display: inline;
-  }
+}
 
 .pac-card {
     margin: 10px 10px 0 0;
@@ -135,7 +135,7 @@ h1 {
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
     background-color: #fff;
     font-family: Roboto;
-  }
+}
 
 .pac-container.pac-logo {    
     width: 85% !important;
@@ -166,6 +166,10 @@ h1 {
     font-size: 16px;
 }
 
+.pac-item.pac-item-selected, .pac-item.pac-item-selected:hover {
+    background-color: transparent;
+}
+
 .pac-container.pac-logo.hdpi::after {
     display: none;
 }
@@ -188,7 +192,7 @@ h1 {
 
 #target {
     width: 345px;
-  }
+}
 
 #pac-input:focus {
     color: rgba(101, 235, 155, .95);
@@ -207,7 +211,7 @@ h1 {
     border-color: hsla(0, 0%, 100%, .43);
     margin-top: 5%;
     margin-left: 4%;
-    width: 60%;
+    width: 80%;
     padding: 4% 5% 4% 5%;
 }
 
