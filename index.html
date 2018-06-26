@@ -11,16 +11,138 @@
 </head>
 <body>
     <div id="sidemenu">
-        <div id="titleWrapper">
+        <div id="contentWrapper">
             <h1 id="title">Firenze</h1>
             <h1 id="subtitle">{OpenData}</h1>
             <div id="search">
                 <div id="searchWrapper">
                     <img id="searchIcon" src="img/searcher.png">
-                    <input id="pac-input" class="controls" type="text" spellcheck="false" onfocus="this.placeholder = ''" placeholder="Cerca sulla mappa...">
+                    <input id="pac-input" class="controls" type="text" datatype="google-autocomplete" spellcheck="false" onfocus="this.placeholder = ''" placeholder="Cerca sulla mappa...">
+                    <div id="searchResults"></div>
                 </div>
             </div>
-            <div id="presidi" class= "serviceElement"> Presidi</div>
+            <ul id="services">
+                <li class="service">
+                    <div class="serviceElement" id='presidi' data-selected = 'false'>
+                        <img src="img/pharmacy.png" class="service-icon" alt="Pharmacy Icon">
+                        <span class="service-name">Presidi ASL</span>
+                        <span class="service-number">8</span>
+                        <img src="img/info.png" class="service-info" alt="Open info menu for pharmacies">
+                    </div>
+                </li>
+                <li class="service">
+                    <div class="serviceElement" id='saluteMentale' data-selected = 'false'>
+                        <img src="img/pharmacy.png" class="service-icon" alt="Pharmacy Icon">
+                        <span class="service-name">Centri Salute Mentale</span>
+                        <span class="service-number">8</span>
+                        <img src="img/info.png" class="service-info" alt="Open info menu for pharmacies">
+                    </div>
+                </li>
+                <li class="service">
+                    <div class="serviceElement">
+                        <img src="img/pharmacy.png" class="service-icon" alt="Pharmacy Icon">
+                        <span class="service-name">Farmacie</span>
+                        <span class="service-number">8</span>
+                        <img src="img/info.png" class="service-info" alt="Open info menu for pharmacies">
+                    </div>
+                </li>
+                <li class="service">
+                    <div class="serviceElement">
+                        <img src="img/pharmacy.png" class="service-icon" alt="Pharmacy Icon">
+                        <span class="service-name">Farmacie</span>
+                        <span class="service-number">8</span>
+                        <img src="img/info.png" class="service-info" alt="Open info menu for pharmacies">
+                    </div>
+                </li>
+                <li class="service">
+                    <div class="serviceElement">
+                        <img src="img/pharmacy.png" class="service-icon" alt="Pharmacy Icon">
+                        <span class="service-name">Farmacie</span>
+                        <span class="service-number">8</span>
+                        <img src="img/info.png" class="service-info" alt="Open info menu for pharmacies">
+                    </div>
+                </li>
+                <li class="service">
+                    <div class="serviceElement">
+                        <img src="img/pharmacy.png" class="service-icon" alt="Pharmacy Icon">
+                        <span class="service-name">Farmacie</span>
+                        <span class="service-number">8</span>
+                        <img src="img/info.png" class="service-info" alt="Open info menu for pharmacies">
+                    </div>
+                </li>
+                <li class="service">
+                    <div class="serviceElement">
+                        <img src="img/pharmacy.png" class="service-icon" alt="Pharmacy Icon">
+                        <span class="service-name">Farmacie</span>
+                        <span class="service-number">8</span>
+                        <img src="img/info.png" class="service-info" alt="Open info menu for pharmacies">
+                    </div>
+                </li>
+                <li class="service">
+                    <div class="serviceElement">
+                        <img src="img/pharmacy.png" class="service-icon" alt="Pharmacy Icon">
+                        <span class="service-name">Farmacie</span>
+                        <span class="service-number">8</span>
+                        <img src="img/info.png" class="service-info" alt="Open info menu for pharmacies">
+                    </div>
+                </li>
+                <li class="service">
+                    <div class="serviceElement">
+                        <img src="img/pharmacy.png" class="service-icon" alt="Pharmacy Icon">
+                        <span class="service-name">Farmacie</span>
+                        <span class="service-number">8</span>
+                        <img src="img/info.png" class="service-info" alt="Open info menu for pharmacies">
+                    </div>
+                </li>
+                <li class="service">
+                    <div class="serviceElement">
+                        <img src="img/pharmacy.png" class="service-icon" alt="Pharmacy Icon">
+                        <span class="service-name">Farmacie</span>
+                        <span class="service-number">8</span>
+                        <img src="img/info.png" class="service-info" alt="Open info menu for pharmacies">
+                    </div>
+                </li>
+                <li class="service">
+                    <div class="serviceElement">
+                        <img src="img/pharmacy.png" class="service-icon" alt="Pharmacy Icon">
+                        <span class="service-name">Farmacie</span>
+                        <span class="service-number">8</span>
+                        <img src="img/info.png" class="service-info" alt="Open info menu for pharmacies">
+                    </div>
+                </li>
+                <li class="service">
+                    <div class="serviceElement">
+                        <img src="img/pharmacy.png" class="service-icon" alt="Pharmacy Icon">
+                        <span class="service-name">Farmacie</span>
+                        <span class="service-number">8</span>
+                        <img src="img/info.png" class="service-info" alt="Open info menu for pharmacies">
+                    </div>
+                </li>
+                <li class="service">
+                    <div class="serviceElement">
+                        <img src="img/pharmacy.png" class="service-icon" alt="Pharmacy Icon">
+                        <span class="service-name">Farmacie</span>
+                        <span class="service-number">8</span>
+                        <img src="img/info.png" class="service-info" alt="Open info menu for pharmacies">
+                    </div>
+                </li>
+                <li class="service">
+                    <div class="serviceElement">
+                        <img src="img/pharmacy.png" class="service-icon" alt="Pharmacy Icon">
+                        <span class="service-name">Farmacie</span>
+                        <span class="service-number">8</span>
+                        <img src="img/info.png" class="service-info" alt="Open info menu for pharmacies">
+                    </div>
+                </li>
+                <li class="service">
+                    <div class="serviceElement">
+                        <img src="img/pharmacy.png" class="service-icon" alt="Pharmacy Icon">
+                        <span class="service-name">Farmacie</span>
+                        <span class="service-number">8</span>
+                        <img src="img/info.png" class="service-info" alt="Open info menu for pharmacies">
+                    </div>
+                </li>
+            </ul>
         </div>
     </div>
     <div id="map"></div>

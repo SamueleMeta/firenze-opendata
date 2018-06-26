@@ -36,15 +36,30 @@ h1 {
 #sidemenu {
     width: 20%;
     min-width: 288px;
-    height: 100%;
+    height: calc(100% - 50px);
     background-color: #3c4c5b;
     float: left;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    padding-top: 50px;
 }
 
-#titleWrapper {
-    position: absolute;
-    top: 5%;
-    width: 20%;
+#sidemenu::-webkit-scrollbar-track {
+	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+	background-color: #3c4c5b;
+}
+
+#sidemenu::-webkit-scrollbar {
+	width: 6px;
+	background-color: #3c4c5b;
+}
+
+#sidemenu::-webkit-scrollbar-thumb {
+	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+	background-color: rgba(101, 235, 155, .95);
+}
+
+#contentWrapper {
     min-width: 288px;
 }
 
@@ -70,10 +85,10 @@ h1 {
 }
 
 #searchWrapper {
-    width: 96%;
+    width: 100%;
     display: block;
     margin: auto;
-    padding-left: 10%;
+    padding-left: 5%;
 }
 
 #searchIcon {
@@ -99,12 +114,6 @@ h1 {
     float: right;
   }
 
-#description {
-    font-family: Roboto;
-    font-size: 15px;
-    font-weight: 300;
-  }
-
 #infowindow-content .title {
     font-weight: bold;
   }
@@ -128,21 +137,42 @@ h1 {
     font-family: Roboto;
   }
 
-#pac-container {
-    padding-bottom: 12px;
-    margin-right: 12px;
-  }
+.pac-container.pac-logo {    
+    width: 85% !important;
+	position: unset !important;
+    top: 60px !important;
+    left: 0 !important;
+    background-color: #28303b;
+    border-top: none;
+    box-shadow: none;
+    border-radius: 0;
+    margin-top: 4%;
+}
 
-.pac-controls {
-    display: inline-block;
-    padding: 5px 11px;
-  }
+.pac-item {
+    border-top: none;
+    color: rgba(255, 255, 255, 0.72);
+    font-family: 'Open Sans', sans-serif;
+    font-size: 12px;
+}
 
-.pac-controls label {
-    font-family: Roboto;
-    font-size: 13px;
-    font-weight: 300;
-  }
+.pac-item:hover {
+    background-color: transparent;
+}
+
+.pac-item-query {
+    color: rgba(101, 235, 155, .95);
+    font-family: 'Nunito Sans', sans-serif;
+    font-size: 16px;
+}
+
+.pac-container.pac-logo.hdpi::after {
+    display: none;
+}
+
+.pac-container.pac-logo::after {
+    display: none;
+}
 
 #pac-input {
     background-color: #28303b;
@@ -162,4 +192,55 @@ h1 {
 
 #pac-input:focus {
     color: rgba(101, 235, 155, .95);
+}
+
+/*------------- MENU CONTENT -------------*/
+
+#services {
+    list-style-type: none;
+}
+
+.service {
+    border-style: solid;
+    border-width: 3px;
+    border-radius: 30px;
+    border-color: hsla(0, 0%, 100%, .43);
+    margin-top: 5%;
+    margin-left: 4%;
+    width: 60%;
+    padding: 4% 5% 4% 5%;
+}
+
+.serviceElement {
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    -ms-flex-align: center;
+    -webkit-align-items: center;
+    -webkit-box-align: center;
+    justify-content: space-around;
+}
+
+.service-icon {
+    width: 48px;
+    height: 48px;
+}
+
+.service-name {
+    font-size: 18px;
+    color: rgba(255, 255, 255, 0.72);
+    font-family: 'Nunito Sans', sans-serif;
+    margin-left: 3%;
+}
+
+.service-number {
+    font-size: 18px;
+    font-weight: bold;
+    color: rgba(255, 255, 255, 0.72);
+    margin: 0 4%;
+}
+
+.service-info {
+    width: 16px;
+    height: 16px;
 }
