@@ -235,6 +235,8 @@ h1 {
     color: rgba(255, 255, 255, 0.72);
     font-family: 'Nunito Sans', sans-serif;
     margin-left: 3%;
+    width: 90%;
+    text-align: center;
 }
 
 .service-number {
