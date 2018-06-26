@@ -106,6 +106,7 @@ var mapOptions = {
     ]
 }
 var serviceMarkers = [];
+var infoWindows = [];
 var markers = [];
 function initAutocomplete() {
     //Set Center on user's position
@@ -137,10 +138,6 @@ function initAutocomplete() {
             }
         })
     };
-
-    if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(showPosition);
-    }
 
     //calcRoute(directionsService, directionsDisplay);
 
@@ -204,15 +201,15 @@ function initAutocomplete() {
         map.fitBounds(bounds);
     });
 
-   //TODO: Usare un flag migliore del colore del div
    for(var i = 0; i < document.getElementsByClassName('serviceElement').length; i++){
     document.getElementsByClassName('serviceElement')[i]
         .addEventListener('click', function () {
-            if(this.style.backgroundColor != "white"){
+            if(this.getAttribute('data-selected') == 'false'){
+                this.setAttribute('data-selected', 'true');
                 addServiceMarkers(map, this.id); 
             }
             else{
-                this.style.backgroundColor = "#3c4c5b";
+                this.setAttribute('data-selected', 'false');
                 deleteServiceMarkers(this.id);
             }
         });
@@ -224,7 +221,7 @@ function addServiceMarkers(map, id) {
 
     switch(id){
         case 'presidi': path = 'geojson/presidi.json'; break;
-        case 'centriSaluteMentale': path = 'geojson/salute_mentale.json'; break;
+        case 'saluteMentale': path = 'geojson/salute_mentale.json'; break;
         case 'centriArt26': path = 'geojson/riabilitaz_exart26.json'; break;
         case 'disabiliPsichici': path = 'geojson/assist_disabili_psichici.json'; break;
     }
@@ -244,6 +241,25 @@ function addServiceMarkers(map, id) {
                     map: map,
                     serviceID: id
                 }));
+
+                infoWindows.push(new google.maps.InfoWindow({
+                    content: callback.features[place].properties.description,
+                    serviceID: id
+                }));
+            
+                serviceMarkers[serviceMarkers.length - 1].addListener("click", function(){
+                    var infowindow = infoWindows[serviceMarkers.indexOf(this)];
+
+                    if(infowindow.map == null){
+                       infoWindows.forEach(function(info){
+                           info.setMap(null);
+                       });
+                        infowindow.open(map, this);
+                    }
+                    else{
+                        infowindow.setMap(null);
+                    }
+                });
             }
           }
     };
@@ -254,8 +270,13 @@ function addServiceMarkers(map, id) {
      //Backward looping to avoid index skipping
      var i = serviceMarkers.length;
     while(i--){
-        if(serviceMarkers[i] != null && serviceMarkers[i].serviceID == id)
+        if(serviceMarkers[i] != null && serviceMarkers[i].serviceID == id){
             serviceMarkers[i].setMap(null);
             serviceMarkers.splice(i,1);
+        }
+        if(infoWindows[i] != null && infoWindows[i].serviceID == id){
+            infoWindows[i].setMap(null);
+            infoWindows.splice(i,1);
+        }
     }
  }
