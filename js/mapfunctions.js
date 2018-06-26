@@ -108,6 +108,18 @@ var mapOptions = {
 var serviceMarkers = [];
 var markers = [];
 function initAutocomplete() {
+    //Set Center on user's position
+    function showPosition(position) { 
+        map.setCenter(new google.maps.LatLng(position.coords.latitude, position.coords.longitude));
+        var marker = (new google.maps.Marker({
+            position: {lat:position.coords.latitude, lng: position.coords.longitude},
+            map: map,
+        }));
+    }
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(showPosition);
+    }
+
     var directionsService = new google.maps.DirectionsService();
     var directionsDisplay = new google.maps.DirectionsRenderer();
     var map = new google.maps.Map(document.getElementById('map'), mapOptions);
@@ -125,6 +137,10 @@ function initAutocomplete() {
             }
         })
     };
+
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(showPosition);
+    }
 
     //calcRoute(directionsService, directionsDisplay);
 
