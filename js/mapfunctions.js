@@ -7,6 +7,16 @@ $('#pac-input').on("blur", function () {
     $('#searchIcon').attr("src", "img/searcher.png");
 });
 
+$('.service-info').on("click", function () {
+    $('#pac-input').hide();
+    document.getElementById("sideOptions").classList.toggle('active');
+});
+
+$('#backIcon').on("click", function () {
+    document.getElementById("sideOptions").classList.toggle('active');
+    $('#pac-input').delay(290).show(0);
+});
+
 // MAP FUNCTIONS
 var mapOptions = {
     center: { lat: 43.772330244, lng: 11.242165698 },
