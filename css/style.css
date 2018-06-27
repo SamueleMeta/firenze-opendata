@@ -82,6 +82,7 @@ h1 {
     background-color: #28303b;
     padding: 8% 0;
     min-width: 288px;
+    margin-bottom: 5%;
 }
 
 #searchWrapper {
@@ -103,6 +104,23 @@ h1 {
 
 :-ms-input-placeholder {
     color: rgba(255, 255, 255, 0.72);
+}
+
+/*--------------- OPTION MENU --------------*/
+
+#sideOptions {
+    height: 100%;
+    width: calc(20% + 6px);
+    min-width: 288px;
+    background-color: #28303b;
+    position: absolute;
+    left: -22%;
+    transition-delay: 0ms;
+    transition: all 300ms linear;
+}
+
+#sideOptions.active {
+    left: 0px;
 }
 
 /*------------- MAP SEARCHBOX -------------*/
@@ -209,7 +227,7 @@ h1 {
     border-width: 3px;
     border-radius: 30px;
     border-color: hsla(0, 0%, 100%, .43);
-    margin-top: 5%;
+    margin-bottom: 5%;
     margin-left: 4%;
     width: 80%;
     padding: 4% 5% 4% 5%;
