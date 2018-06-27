@@ -230,10 +230,22 @@ function addServiceMarkers(map, id) {
     var path;
 
     switch(id){
+        case 'farmacie': path = 'geojson/farmaciePoint.json'; break;
+        case 'centriAnziani': path = 'geojson/centri_anzianiPoint.json'; break;
+        case 'ospedali': path = 'geojson/ospedaliMPoint.json'; break;
         case 'presidi': path = 'geojson/presidi.json'; break;
-        case 'saluteMentale': path = 'geojson/salute_mentale.json'; break;
-        case 'centriArt26': path = 'geojson/riabilitaz_exart26.json'; break;
+        case 'disabiliSociali': path = 'geojson/assist_disabili_socializzPoint.json'; break;
+        case 'marginalita': path = 'geojson/marginalitaPoint.json'; break;
+        case 'cimiteri': path = 'geojson/cimiteriPoint.json'; break;
+        case 'riabilitazione': path = 'geojson/riabilitaz_exart26.json'; break;
+        case 'anzianiNONauto': path = 'geojson/assist_anziani_non_autoPoint.json'; break;
+        case 'anzianiAuto': path = 'geojson/assist_anziani_autoPoint.json';break;
+        case 'disabiliFisici': path = 'geojson/assist_disabili_fisiciPoint.json'; break;
+        case 'dipendenze': path = 'geojson/dipendenzePoint.json'; break;
         case 'disabiliPsichici': path = 'geojson/assist_disabili_psichici.json'; break;
+        case 'siast': path = undefined; break;
+        case 'saluteMentale': path = 'geojson/salute_mentale.json'; break;
+        case 'assistMinori': path = 'geojson/minoriPoint.json'; break;
     }
     
     var xobj = new XMLHttpRequest();
@@ -253,14 +265,14 @@ function addServiceMarkers(map, id) {
                 }));
 
                 infoWindows.push(new google.maps.InfoWindow({
-                    content: callback.features[place].properties.description,
+                    content: "PROVA INFOWINDOW",
                     serviceID: id
                 }));
-            
+                 //TBD: FIX INFOWINDOWS
                 serviceMarkers[serviceMarkers.length - 1].addListener("click", function(){
                     var infowindow = infoWindows[serviceMarkers.indexOf(this)];
-
-                    if(infowindow.map == null){
+                    
+                   if(infowindow.map == null){
                        infoWindows.forEach(function(info){
                            info.setMap(null);
                        });
