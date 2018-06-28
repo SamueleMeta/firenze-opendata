@@ -265,7 +265,7 @@ function addServiceMarkers(map, id) {
                 }));
 
                 infoWindows.push(new google.maps.InfoWindow({
-                    content: "PROVA INFOWINDOW",
+                    content: produceContent(callback.features[place].properties),
                     serviceID: id
                 }));
                  //TBD: FIX INFOWINDOWS
@@ -301,4 +301,34 @@ function addServiceMarkers(map, id) {
             infoWindows.splice(i,1);
         }
     }
+ }
+
+ function produceContent(jsonProperties){
+     var result;
+     result = "<h3>" + jsonProperties.DENOMINAZI + "</h3><br>"
+     if(jsonProperties.hasOwnProperty('INDIRIZZO'))
+        result += "<h5>Indirizzo: </h5>" + jsonProperties.INDIRIZZO + "<br>";
+    if(jsonProperties.hasOwnProperty('VIA'))
+        result += "<h5>Indirizzo: </h5>" + jsonProperties.VIA + ", " + jsonProperties.NCIVICO + "<br>";
+    if(jsonProperties.hasOwnProperty('TIPOSTRUTT'))
+        result += "<h5>Tipo struttura: </h5>" + jsonProperties.TIPOSTRUTT + "<br>";
+    if(jsonProperties.hasOwnProperty('TIPOLOGIA'))
+        result += "<h5>Tipologia: </h5>" + jsonProperties.TIPOLOGIA + "<br>"; 
+    if(jsonProperties.hasOwnProperty('PRINCIPALI'))
+        result += "<h5>Note: </h5>" + jsonProperties.PRINCIPALI + "<br>"; 
+    if(jsonProperties.hasOwnProperty('DATILOGIS'))
+        result += "<h5>Locali: </h5>" + jsonProperties.DATILOGIS+ "<br>"; 
+    if(jsonProperties.hasOwnProperty('TELEF')){
+        if(jsonProperties.TELEF != 0 && jsonProperties.TELEF != null)
+        result += "<h5>Telefono: </h5> 0" + jsonProperties.PREFTEL + " " + jsonProperties.TELEF + "<br>";
+    }
+    if(jsonProperties.hasOwnProperty('FAX')){
+        if(jsonProperties.FAX != 0 && jsonProperties.FAX != null)
+        result += "<h5>FAX: </h5> 0" + jsonProperties.PREFFAX + " " + jsonProperties.FAX + "<br>";
+    }
+    if(jsonProperties.hasOwnProperty('WEBSITE')){
+        if(jsonProperties.WEBSITE != "")
+        result += "<h5>Website: </h5>" + "<link "+jsonProperties.WEBSITE+" ref="+jsonProperties.WEBSITE+ ">"+ "<br>";
+    }
+     return result
  }
