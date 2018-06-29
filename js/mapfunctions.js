@@ -8,6 +8,7 @@ $('#pac-input').on("blur", function () {
 });
 
 $('.service-info').on("click", function () {
+    displayMarkers(this.parentNode.parentNode.id);
     $('#pac-input').hide();
     document.getElementById("sideOptions").classList.toggle('active');
 });
@@ -211,19 +212,21 @@ function initAutocomplete() {
         map.fitBounds(bounds);
     });
 
-   for(var i = 0; i < document.getElementsByClassName('serviceElement').length; i++){
-    document.getElementsByClassName('serviceElement')[i]
+   for(var i = 0; i < document.getElementsByClassName('service').length; i++){
+    document.getElementsByClassName('service')[i]
         .addEventListener('click', function () {
             if(this.getAttribute('data-selected') == 'false'){
+                $(this).css('background-color', '#8696ac')
                 this.setAttribute('data-selected', 'true');
                 addServiceMarkers(map, this.id); 
             }
             else{
+                $(this).css('background-color', '#3c4c5b')
                 this.setAttribute('data-selected', 'false');
                 deleteServiceMarkers(this.id);
             }
         });
-}
+    }
 }
 
 function addServiceMarkers(map, id) { 
@@ -268,7 +271,6 @@ function addServiceMarkers(map, id) {
                     content: produceContent(callback.features[place].properties),
                     serviceID: id
                 }));
-                 //TBD: FIX INFOWINDOWS
                 serviceMarkers[serviceMarkers.length - 1].addListener("click", function(){
                     var infowindow = infoWindows[serviceMarkers.indexOf(this)];
                     
@@ -303,6 +305,31 @@ function addServiceMarkers(map, id) {
     }
  }
 
+ function deleteServiceMarkers(id){
+    //Backward looping to avoid index skipping
+    var i = serviceMarkers.length;
+   while(i--){
+       if(serviceMarkers[i] != null && serviceMarkers[i].serviceID == id){
+           serviceMarkers[i].setMap(null);
+           serviceMarkers.splice(i,1);
+       }
+       if(infoWindows[i] != null && infoWindows[i].serviceID == id){
+           infoWindows[i].setMap(null);
+           infoWindows.splice(i,1);
+       }
+   }
+}
+function displayMarkers(id){
+    for(var i = 0; i < document.getElementsByClassName('service').length; i++){
+        if(document.getElementsByClassName('service')[i].getAttribute('data-selected') == 'true')
+            document.getElementsByClassName('service')[i].click();
+    }
+
+    if(document.getElementById(id).getAttribute('data-selected')=='true'){
+        document.getElementById(id).click();
+    }
+}
+
  function produceContent(jsonProperties){
      var result;
      result = "<h3>" + jsonProperties.DENOMINAZI + "</h3><br>"
@@ -328,7 +355,7 @@ function addServiceMarkers(map, id) {
     }
     if(jsonProperties.hasOwnProperty('WEBSITE')){
         if(jsonProperties.WEBSITE != "")
-        result += "<h5>Website: </h5>" + "<link "+jsonProperties.WEBSITE+" ref="+jsonProperties.WEBSITE+ ">"+ "<br>";
+        result += "<h5>Website: </h5>" +jsonProperties.WEBSITE+ "<br>";
     }
      return result
  }
