@@ -246,7 +246,7 @@ function addServiceMarkers(map, id) {
         case 'disabiliFisici': path = 'geojson/assist_disabili_fisiciPoint.json'; break;
         case 'dipendenze': path = 'geojson/dipendenzePoint.json'; break;
         case 'disabiliPsichici': path = 'geojson/assist_disabili_psichici.json'; break;
-        case 'siast': path = undefined; break;
+        case 'siast': path = 'geojson/siastPoint.json'; break;
         case 'saluteMentale': path = 'geojson/salute_mentale.json'; break;
         case 'assistMinori': path = 'geojson/minoriPoint.json'; break;
     }
@@ -288,21 +288,6 @@ function addServiceMarkers(map, id) {
           }
     };
     xobj.send();  
- }
-
- function deleteServiceMarkers(id){
-     //Backward looping to avoid index skipping
-     var i = serviceMarkers.length;
-    while(i--){
-        if(serviceMarkers[i] != null && serviceMarkers[i].serviceID == id){
-            serviceMarkers[i].setMap(null);
-            serviceMarkers.splice(i,1);
-        }
-        if(infoWindows[i] != null && infoWindows[i].serviceID == id){
-            infoWindows[i].setMap(null);
-            infoWindows.splice(i,1);
-        }
-    }
  }
 
  function deleteServiceMarkers(id){
