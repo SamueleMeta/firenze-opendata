@@ -110,9 +110,9 @@ h1 {
 
 #sideOptions {
     height: 100%;
-    width: calc(20% + 6px);
+    width: 20%;
     min-width: 288px;
-    background-color: #28303b;
+    background-color: #3c4c5b;
     position: absolute;
     left: -50%;
     transition-delay: 0ms;
@@ -128,18 +128,21 @@ h1 {
 }
   
 .range-slider {
-    width: 100%;
+    width: 90%;
+    margin: auto;
+    margin-bottom: 5%;
+    text-align: center;
 }
   
 .range-slider__range {
     -webkit-appearance: none;
-    width: calc(100% - (73px));
+    width: 100%;
     height: 10px;
     border-radius: 5px;
-    background: #d7dcdf;
+    background: rgba(255, 255, 255, 0.72);
     outline: none;
     padding: 0;
-    margin: 0;
+    margin: 0 0 4% 0;
 }
 .range-slider__range::-webkit-slider-thumb {
     -webkit-appearance: none;
@@ -147,16 +150,15 @@ h1 {
     width: 20px;
     height: 20px;
     border-radius: 50%;
-    background: #2c3e50;
+    background: #28303b;
     cursor: pointer;
     transition: background .15s ease-in-out;
   }
-  .range-slider__range::-webkit-slider-thumb:hover {
-    background: #1abc9c;
-  }
+
   .range-slider__range:active::-webkit-slider-thumb {
-    background: #1abc9c;
+    background: rgba(101, 235, 155, 0.95);
   }
+
   .range-slider__range::-moz-range-thumb {
     width: 20px;
     height: 20px;
@@ -167,39 +169,24 @@ h1 {
     transition: background .15s ease-in-out;
   }
   .range-slider__range::-moz-range-thumb:hover {
-    background: #1abc9c;
+    background: rgba(101, 235, 155, 0.95);
   }
   .range-slider__range:active::-moz-range-thumb {
-    background: #1abc9c;
-  }
-  .range-slider__range:focus::-webkit-slider-thumb {
-    box-shadow: 0 0 0 3px #fff, 0 0 0 6px #1abc9c;
+    background: rgba(101, 235, 155, 0.95);
   }
   
   .range-slider__value {
     display: inline-block;
     position: relative;
-    width: 60px;
-    color: #fff;
+    width: 10%;
+    color: rgba(255, 255, 255, 0.72);
     line-height: 20px;
     text-align: center;
-    border-radius: 3px;
-    background: #2c3e50;
+    border-radius: 8px;
+    background: #28303b;
     padding: 5px 10px;
-    margin-left: 8px;
   }
-  .range-slider__value:after {
-    position: absolute;
-    top: 8px;
-    left: -7px;
-    width: 0;
-    height: 0;
-    border-top: 7px solid transparent;
-    border-right: 7px solid #2c3e50;
-    border-bottom: 7px solid transparent;
-    content: '';
-  }
-  
+
   ::-moz-range-track {
     background: #d7dcdf;
     border: 0;
@@ -210,22 +197,29 @@ h1 {
     border: 0;
   }
 
+  #text {
+      font-family: 'Open Sans', sans-serif;
+      font-size: 16px;
+      font-weight: 300;
+      color: rgba(255, 255, 255, 0.72);
+  }
+
 .dropbtn {
-    background-color: #3498DB;
-    color: white;
-    padding: 16px;
+    background-color: #28303b;
+    color: rgba(255, 255, 255, 0.72);
     font-size: 16px;
     border: none;
     cursor: pointer;
-}
-
-.dropbtn:hover, .dropbtn:focus {
-    background-color: #2980B9;
+    padding: 6% 9%;
+    border-radius: 8px;
 }
 
 .dropdown {
     position: relative;
     display: inline-block;
+    width: 100%;
+    text-align: center;
+    margin-bottom: 5%;
 }
 
 .dropdown-content {
@@ -244,9 +238,53 @@ h1 {
     display: block;
 }
 
-.dropdown-content a:hover {background-color: #ddd}
-
 .show {display:block;}
+
+#cancelIcon {
+    position: absolute;
+    top: 2%;
+    right: 5%;
+}
+
+#advancedSearch {
+    display: block;
+    width: 86%;
+    height: auto;
+    margin-top: 22%;
+    margin-right: auto;
+    margin-left: auto;
+    margin-bottom: 8%;
+    padding: 2% 2% 0%;
+    border: 4px solid rgba(101, 235, 155, 0.95);
+}
+
+#advancedTitle {
+    font-family: 'Open Sans', sans-serif;
+    font-size: 30px;
+    font-weight: 300;
+    color: rgba(101, 235, 155, 0.95);
+    text-align: center;
+}
+
+#advancedService {
+    font-family: 'cocogooseregular', sans-serif;
+    text-transform: uppercase;
+    text-align: center;
+    font-size: 18px;
+    background-color: rgba(101, 235, 155, 0.95);
+    color: #3c4c5b;
+    margin: 10px 0px;
+    padding-top: 2%;
+}
+
+.label {
+    text-align: center;
+    font-family: 'Nunito Sans', sans-serif;
+    font-weight: 900;
+    color: rgba(101, 235, 155, 0.95);
+    text-transform: uppercase;
+    margin-bottom: 3%;
+}
 
 /*------------- MAP SEARCHBOX -------------*/
 

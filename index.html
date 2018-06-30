@@ -14,16 +14,16 @@
     <div id="sideOptions">
         <img id="cancelIcon" src="img/cancel.png">
         <div id="advancedSearch">
-            <h3>Ricerca Avanzata</h3>
-            <h4>Centri Assistenziali Anziani Non Autosufficienti</h4>
+            <h3 id="advancedTitle">Ricerca Avanzata</h3>
+            <h4 id ="advancedService">Centri Assistenziali Anziani Non Autosufficienti</h4>
         </div>
         <div id="filters">
-            <h5 id="label">Cerca nei dintorni</h5>
+            <h5 class="label">Cerca nei dintorni</h5>
             <div class="range-slider">
                 <input class="range-slider__range" type="range" value="100" min="0" max="500">
                 <span class="range-slider__value">0</span>
             </div>
-            <h5 id="label">Orario di apertura</h5>
+            <h5 class="label">Orario di apertura</h5>
             <div class="dropdown">
                 <button onclick="showOpeningHour()" class="dropbtn">Dropdown</button>
                 <div id="openingDropdown" class="dropdown-content">
@@ -32,7 +32,7 @@
                     <a href="#">Link 3</a>
                 </div>
             </div>
-            <h5 id="label">Orario di chiusura</h5>
+            <h5 class="label">Orario di chiusura</h5>
             <div class="dropdown">
                 <button onclick="showClosingHour()" class="dropbtn">Dropdown</button>
                 <div id="closingDropdown" class="dropdown-content">
@@ -41,7 +41,7 @@
                     <a href="#">Link 3</a>
                 </div>
             </div>
-            <h5 id="label">Tipologia</h5>
+            <h5 class="label">Tipologia</h5>
         </div>
     </div>
     <!-- END OF BETA VERSION-->
