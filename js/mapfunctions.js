@@ -18,6 +18,45 @@ $('#backIcon').on("click", function () {
     $('#pac-input').delay(290).show(0);
 });
 
+var rangeSlider = function () {
+    var slider = $('.range-slider'),
+        range = $('.range-slider__range'),
+        value = $('.range-slider__value');
+    slider.each(function () {
+        value.each(function () {
+            var value = $(this).prev().attr('value');
+            $(this).html(value);
+        });
+        range.on('input', function () {
+            $(this).next(value).html(this.value);
+        });
+    });
+};
+
+rangeSlider();
+
+function showOpeningHour() {
+    document.getElementById("openingDropdown").classList.toggle("show");
+}
+
+function showClosingHour() {
+    document.getElementById("closingDropdown").classList.toggle("show");
+}
+
+window.onclick = function(event) {
+  if (!event.target.matches('.dropbtn')) {
+
+    var dropdowns = document.getElementsByClassName("dropdown-content");
+    var i;
+    for (i = 0; i < dropdowns.length; i++) {
+      var openDropdown = dropdowns[i];
+      if (openDropdown.classList.contains('show')) {
+        openDropdown.classList.remove('show');
+      }
+    }
+  }
+}
+
 // MAP FUNCTIONS
 var mapOptions = {
     center: { lat: 43.772330244, lng: 11.242165698 },
@@ -121,10 +160,10 @@ var infoWindows = [];
 var markers = [];
 function initAutocomplete() {
     //Set Center on user's position
-    function showPosition(position) { 
+    function showPosition(position) {
         map.setCenter(new google.maps.LatLng(position.coords.latitude, position.coords.longitude));
         var marker = (new google.maps.Marker({
-            position: {lat:position.coords.latitude, lng: position.coords.longitude},
+            position: { lat: position.coords.latitude, lng: position.coords.longitude },
             map: map,
         }));
     }
@@ -156,9 +195,9 @@ function initAutocomplete() {
     var input = document.getElementById('pac-input');
     var searchBox = new google.maps.places.SearchBox(input);
 
-	setTimeout(function(){ 
-		$(".pac-container").prependTo("#searchResults");
-	}, 300); 
+    setTimeout(function () {
+        $(".pac-container").prependTo("#searchResults");
+    }, 300);
 
     // Bias the SearchBox results towards current map's viewport.
     map.addListener('bounds_changed', function () {
@@ -176,7 +215,7 @@ function initAutocomplete() {
 
         // Clear out the old markers.
         markers.forEach(function (marker) {
-           marker.setMap(null);
+            marker.setMap(null);
         });
 
         // For each place, get the icon, name and location.
@@ -212,27 +251,27 @@ function initAutocomplete() {
         map.fitBounds(bounds);
     });
 
-   for(var i = 0; i < document.getElementsByClassName('service').length; i++){
-    document.getElementsByClassName('service')[i]
-        .addEventListener('click', function () {
-            if(this.getAttribute('data-selected') == 'false'){
-                $(this).css('background-color', '#8696ac')
-                this.setAttribute('data-selected', 'true');
-                addServiceMarkers(map, this.id); 
-            }
-            else{
-                $(this).css('background-color', '#3c4c5b')
-                this.setAttribute('data-selected', 'false');
-                deleteServiceMarkers(this.id);
-            }
-        });
+    for (var i = 0; i < document.getElementsByClassName('service').length; i++) {
+        document.getElementsByClassName('service')[i]
+            .addEventListener('click', function () {
+                if (this.getAttribute('data-selected') == 'false') {
+                    $(this).css('background-color', '#8696ac')
+                    this.setAttribute('data-selected', 'true');
+                    addServiceMarkers(map, this.id);
+                }
+                else {
+                    $(this).css('background-color', '#3c4c5b')
+                    this.setAttribute('data-selected', 'false');
+                    deleteServiceMarkers(this.id);
+                }
+            });
     }
 }
 
-function addServiceMarkers(map, id) { 
+function addServiceMarkers(map, id) {
     var path;
 
-    switch(id){
+    switch (id) {
         case 'farmacie': path = 'geojson/farmaciePoint.json'; break;
         case 'centriAnziani': path = 'geojson/centri_anzianiPoint.json'; break;
         case 'ospedali': path = 'geojson/ospedaliMPoint.json'; break;
@@ -242,27 +281,27 @@ function addServiceMarkers(map, id) {
         case 'cimiteri': path = 'geojson/cimiteriPoint.json'; break;
         case 'riabilitazione': path = 'geojson/riabilitaz_exart26.json'; break;
         case 'anzianiNONauto': path = 'geojson/assist_anziani_non_autoPoint.json'; break;
-        case 'anzianiAuto': path = 'geojson/assist_anziani_autoPoint.json';break;
+        case 'anzianiAuto': path = 'geojson/assist_anziani_autoPoint.json'; break;
         case 'disabiliFisici': path = 'geojson/assist_disabili_fisiciPoint.json'; break;
         case 'dipendenze': path = 'geojson/dipendenzePoint.json'; break;
         case 'disabiliPsichici': path = 'geojson/assist_disabili_psichici.json'; break;
-        case 'siast': path = 'geojson/siastPoint.json'; break;
+        case 'siast': path = undefined; break;
         case 'saluteMentale': path = 'geojson/salute_mentale.json'; break;
         case 'assistMinori': path = 'geojson/minoriPoint.json'; break;
     }
-    
+
     var xobj = new XMLHttpRequest();
-        xobj.overrideMimeType("application/json");
+    xobj.overrideMimeType("application/json");
     xobj.open('GET', path, true);
     xobj.onreadystatechange = function () {
-          if (xobj.readyState == 4 && xobj.status == "200") {
+        if (xobj.readyState == 4 && xobj.status == "200") {
             // Required use of an anonymous callback as .open will NOT return a value but simply returns undefined in asynchronous mode
             var callback = JSON.parse(xobj.responseText);
-            for(var place in callback.features){
-                var longitude= callback.features[place].geometry.coordinates[0];
-                var latitude= callback.features[place].geometry.coordinates[1]
+            for (var place in callback.features) {
+                var longitude = callback.features[place].geometry.coordinates[0];
+                var latitude = callback.features[place].geometry.coordinates[1]
                 serviceMarkers.push(new google.maps.Marker({
-                    position: {lat:latitude, lng: longitude},
+                    position: { lat: latitude, lng: longitude },
                     map: map,
                     serviceID: id
                 }));
@@ -271,76 +310,91 @@ function addServiceMarkers(map, id) {
                     content: produceContent(callback.features[place].properties),
                     serviceID: id
                 }));
-                serviceMarkers[serviceMarkers.length - 1].addListener("click", function(){
+                serviceMarkers[serviceMarkers.length - 1].addListener("click", function () {
                     var infowindow = infoWindows[serviceMarkers.indexOf(this)];
-                    
-                   if(infowindow.map == null){
-                       infoWindows.forEach(function(info){
-                           info.setMap(null);
-                       });
+
+                    if (infowindow.map == null) {
+                        infoWindows.forEach(function (info) {
+                            info.setMap(null);
+                        });
                         infowindow.open(map, this);
                     }
-                    else{
+                    else {
                         infowindow.setMap(null);
                     }
                 });
             }
-          }
+        }
     };
-    xobj.send();  
- }
+    xobj.send();
+}
 
- function deleteServiceMarkers(id){
+function deleteServiceMarkers(id) {
     //Backward looping to avoid index skipping
     var i = serviceMarkers.length;
-   while(i--){
-       if(serviceMarkers[i] != null && serviceMarkers[i].serviceID == id){
-           serviceMarkers[i].setMap(null);
-           serviceMarkers.splice(i,1);
-       }
-       if(infoWindows[i] != null && infoWindows[i].serviceID == id){
-           infoWindows[i].setMap(null);
-           infoWindows.splice(i,1);
-       }
-   }
+    while (i--) {
+        if (serviceMarkers[i] != null && serviceMarkers[i].serviceID == id) {
+            serviceMarkers[i].setMap(null);
+            serviceMarkers.splice(i, 1);
+        }
+        if (infoWindows[i] != null && infoWindows[i].serviceID == id) {
+            infoWindows[i].setMap(null);
+            infoWindows.splice(i, 1);
+        }
+    }
 }
-function displayMarkers(id){
-    for(var i = 0; i < document.getElementsByClassName('service').length; i++){
-        if(document.getElementsByClassName('service')[i].getAttribute('data-selected') == 'true')
+
+function deleteServiceMarkers(id) {
+    //Backward looping to avoid index skipping
+    var i = serviceMarkers.length;
+    while (i--) {
+        if (serviceMarkers[i] != null && serviceMarkers[i].serviceID == id) {
+            serviceMarkers[i].setMap(null);
+            serviceMarkers.splice(i, 1);
+        }
+        if (infoWindows[i] != null && infoWindows[i].serviceID == id) {
+            infoWindows[i].setMap(null);
+            infoWindows.splice(i, 1);
+        }
+    }
+}
+function displayMarkers(id) {
+    for (var i = 0; i < document.getElementsByClassName('service').length; i++) {
+        if (document.getElementsByClassName('service')[i].getAttribute('data-selected') == 'true')
             document.getElementsByClassName('service')[i].click();
     }
 
-    if(document.getElementById(id).getAttribute('data-selected')=='true'){
+    if (document.getElementById(id).getAttribute('data-selected') == 'true') {
         document.getElementById(id).click();
     }
 }
 
- function produceContent(jsonProperties){
-     var result;
-     result = "<h3>" + jsonProperties.DENOMINAZI + "</h3><br>"
-     if(jsonProperties.hasOwnProperty('INDIRIZZO'))
+function produceContent(jsonProperties) {
+    var result;
+    result = "<h3>" + jsonProperties.DENOMINAZI + "</h3><br>"
+    if (jsonProperties.hasOwnProperty('INDIRIZZO'))
         result += "<h5>Indirizzo: </h5>" + jsonProperties.INDIRIZZO + "<br>";
-    if(jsonProperties.hasOwnProperty('VIA'))
+    if (jsonProperties.hasOwnProperty('VIA'))
         result += "<h5>Indirizzo: </h5>" + jsonProperties.VIA + ", " + jsonProperties.NCIVICO + "<br>";
-    if(jsonProperties.hasOwnProperty('TIPOSTRUTT'))
+    if (jsonProperties.hasOwnProperty('TIPOSTRUTT'))
         result += "<h5>Tipo struttura: </h5>" + jsonProperties.TIPOSTRUTT + "<br>";
-    if(jsonProperties.hasOwnProperty('TIPOLOGIA'))
-        result += "<h5>Tipologia: </h5>" + jsonProperties.TIPOLOGIA + "<br>"; 
-    if(jsonProperties.hasOwnProperty('PRINCIPALI'))
-        result += "<h5>Note: </h5>" + jsonProperties.PRINCIPALI + "<br>"; 
-    if(jsonProperties.hasOwnProperty('DATILOGIS'))
-        result += "<h5>Locali: </h5>" + jsonProperties.DATILOGIS+ "<br>"; 
-    if(jsonProperties.hasOwnProperty('TELEF')){
-        if(jsonProperties.TELEF != 0 && jsonProperties.TELEF != null)
-        result += "<h5>Telefono: </h5> 0" + jsonProperties.PREFTEL + " " + jsonProperties.TELEF + "<br>";
+    if (jsonProperties.hasOwnProperty('TIPOLOGIA'))
+        result += "<h5>Tipologia: </h5>" + jsonProperties.TIPOLOGIA + "<br>";
+    if (jsonProperties.hasOwnProperty('PRINCIPALI'))
+        result += "<h5>Note: </h5>" + jsonProperties.PRINCIPALI + "<br>";
+    if (jsonProperties.hasOwnProperty('DATILOGIS'))
+        result += "<h5>Locali: </h5>" + jsonProperties.DATILOGIS + "<br>";
+    if (jsonProperties.hasOwnProperty('TELEF')) {
+        if (jsonProperties.TELEF != 0 && jsonProperties.TELEF != null)
+            result += "<h5>Telefono: </h5> 0" + jsonProperties.PREFTEL + " " + jsonProperties.TELEF + "<br>";
     }
-    if(jsonProperties.hasOwnProperty('FAX')){
-        if(jsonProperties.FAX != 0 && jsonProperties.FAX != null)
-        result += "<h5>FAX: </h5> 0" + jsonProperties.PREFFAX + " " + jsonProperties.FAX + "<br>";
+    if (jsonProperties.hasOwnProperty('FAX')) {
+        if (jsonProperties.FAX != 0 && jsonProperties.FAX != null)
+            result += "<h5>FAX: </h5> 0" + jsonProperties.PREFFAX + " " + jsonProperties.FAX + "<br>";
     }
-    if(jsonProperties.hasOwnProperty('WEBSITE')){
-        if(jsonProperties.WEBSITE != "")
-        result += "<h5>Website: </h5>" +jsonProperties.WEBSITE+ "<br>";
+    if (jsonProperties.hasOwnProperty('WEBSITE')) {
+        if (jsonProperties.WEBSITE != "")
+            result += "<h5>Website: </h5>" + jsonProperties.WEBSITE + "<br>";
     }
-     return result
- }
+    return result
+}
