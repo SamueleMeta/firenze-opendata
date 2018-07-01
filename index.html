@@ -32,8 +32,9 @@
             </div>
             <h5 class="label">Orario di apertura</h5>
             <div class="dropdown">
-                <button onclick="showOpeningHour()" class="dropbtn">08:00</button>
+                <button onclick="showOpeningHour()" class="dropbtn" id="opening">08:00</button>
                 <ul id="openingDropdown" class="dropdown-content">
+                    <li id="openingHour">08:00</li>
                     <li id="openingHour">09:00</li>
                     <li id="openingHour">15:30</li>
                     <li id="openingHour">16:00</li>
@@ -42,9 +43,10 @@
             </div>
             <h5 class="label">Orario di chiusura</h5>
             <div class="dropdown">
-                <button onclick="showClosingHour()" class="dropbtn">13:00</button>
+                <button onclick="showClosingHour()" class="dropbtn" id="closing">13:00</button>
                 <ul id="closingDropdown" class="dropdown-content">
                         <li id="closingHour">09:00</li>
+                        <li id="closingHour">13:00</li>
                         <li id="closingHour">19:30</li>
                         <li id="closingHour">20:00</li>
                         <li id="closingHour">21:00</li>
@@ -57,7 +59,7 @@
                 <li class="optionItem" id="comunale">
                     <div>Comunale</div>
                 </li>
-                <li class="optionItem" id="nonComunale">
+                <li class="optionItem lastItem" id="nonComunale">
                     <div>Non Comunale</div>
                 </li>
             </ul>

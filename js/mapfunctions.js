@@ -32,6 +32,14 @@ $('#cancelIcon').on("click", function () {
     $('#pac-input').delay(290).show(0);
 });
 
+$('.dropdown-content #openingHour').on("click", function () {
+    $("#opening").html($(this).html());
+});
+
+$('.dropdown-content #closingHour').on("click", function () {
+    $("#closing").html($(this).html());
+});
+
 $('#comunale').on("click", function () {
     document.getElementById("comunale").classList.toggle('selected');
 });
