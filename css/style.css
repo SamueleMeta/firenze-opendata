@@ -210,8 +210,10 @@ h1 {
     font-size: 16px;
     border: none;
     cursor: pointer;
-    padding: 6% 9%;
+    padding: 6% 9% 6% 0;
+    padding-left: calc(9% + 3px);
     border-radius: 8px;
+    margin-bottom: 5%;
 }
 
 .dropdown {
@@ -224,21 +226,58 @@ h1 {
 
 .dropdown-content {
     display: none;
-    position: absolute;
-    background-color: #f1f1f1;
-    min-width: 160px;
-    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
     z-index: 1;
 }
 
-.dropdown-content a {
-    color: black;
-    padding: 12px 16px;
+.dropdown-content li {
+    color: rgba(255, 255, 255, 0.72);
+    padding: 3% 4%;
     text-decoration: none;
-    display: block;
+    display: inline-block;
+    cursor: default;
 }
 
-.show {display:block;}
+.dropdown-content li:hover {
+    color: rgba(101, 235, 155, 0.95);
+    font-weight: 400;
+}
+
+.dropbtn:after {
+    content: url(../img/down-arrow.png);
+    padding-left: 5px;
+    width: 16px;
+    height: 16px;
+    vertical-align: sub;
+}
+
+.show {
+    display: block;
+    background-color: #28303b;
+}
+
+#moreOptions {
+    width: 90%;
+    margin: auto;
+    list-style: none;
+}
+
+.optionItem {
+    width: 60%;
+    margin: auto;
+    margin-bottom: 3%;
+    background-color: #3c4c5b;
+    line-height: 50px;
+    text-align: center;
+    color: rgba(255, 255, 255, 0.72);
+    border: 3px solid rgba(255, 255, 255, 0.72);
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.selected {
+    border-color: rgba(101, 235, 155, 0.95);
+    color: rgba(101, 235, 155, 0.95);
+}
 
 #cancelIcon {
     position: absolute;

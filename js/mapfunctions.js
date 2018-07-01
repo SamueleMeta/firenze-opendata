@@ -13,9 +13,17 @@ $('.service-info').on("click", function () {
     document.getElementById("sideOptions").classList.toggle('active');
 });
 
-$('#backIcon').on("click", function () {
+$('#cancelIcon').on("click", function () {
     document.getElementById("sideOptions").classList.toggle('active');
     $('#pac-input').delay(290).show(0);
+});
+
+$('#comunale').on("click", function () {
+    document.getElementById("comunale").classList.toggle('selected');
+});
+
+$('#nonComunale').on("click", function () {
+    document.getElementById("nonComunale").classList.toggle('selected');
 });
 
 var rangeSlider = function () {

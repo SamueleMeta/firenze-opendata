@@ -25,23 +25,35 @@
             </div>
             <h5 class="label">Orario di apertura</h5>
             <div class="dropdown">
-                <button onclick="showOpeningHour()" class="dropbtn">Dropdown</button>
-                <div id="openingDropdown" class="dropdown-content">
-                    <a href="#">Link 1</a>
-                    <a href="#">Link 2</a>
-                    <a href="#">Link 3</a>
-                </div>
+                <button onclick="showOpeningHour()" class="dropbtn">08:00</button>
+                <ul id="openingDropdown" class="dropdown-content">
+                    <li id="openingHour">09:00</li>
+                    <li id="openingHour">15:30</li>
+                    <li id="openingHour">16:00</li>
+                    <li id="openingHour">20:00</li>
+                </ul>
             </div>
             <h5 class="label">Orario di chiusura</h5>
             <div class="dropdown">
-                <button onclick="showClosingHour()" class="dropbtn">Dropdown</button>
-                <div id="closingDropdown" class="dropdown-content">
-                    <a href="#">Link 1</a>
-                    <a href="#">Link 2</a>
-                    <a href="#">Link 3</a>
-                </div>
+                <button onclick="showClosingHour()" class="dropbtn">13:00</button>
+                <ul id="closingDropdown" class="dropdown-content">
+                        <li id="closingHour">09:00</li>
+                        <li id="closingHour">19:30</li>
+                        <li id="closingHour">20:00</li>
+                        <li id="closingHour">21:00</li>
+                        <li id="closingHour">23:00</li>
+                        <li id="closingHour">00:00</li>
+                </ul>
             </div>
             <h5 class="label">Tipologia</h5>
+            <ul id="moreOptions">
+                <li class="optionItem" id="comunale">
+                    <div>Comunale</div>
+                </li>
+                <li class="optionItem" id="nonComunale">
+                    <div>Non Comunale</div>
+                </li>
+            </ul>
         </div>
     </div>
     <!-- END OF BETA VERSION-->
