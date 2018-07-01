@@ -77,7 +77,7 @@ h1 {
     display: block;
 }
 
-#search {
+.search {
     margin-top: 7%;
     background-color: #28303b;
     padding: 8% 0;
@@ -85,14 +85,14 @@ h1 {
     margin-bottom: 5%;
 }
 
-#searchWrapper {
+.searchWrapper {
     width: 100%;
     display: block;
     margin: auto;
     padding-left: 5%;
 }
 
-#searchIcon {
+.searchIcon {
     width: 16px;
     height: 16px;
     margin-right: 2%;
@@ -410,11 +410,27 @@ h1 {
     border-style: hidden hidden solid hidden;
   }
 
+  #pac-input-options {
+    background-color: #28303b;
+    font-family: 'Nunito Sans';
+    font-size: 16px;
+    font-weight: 400;
+    text-overflow: ellipsis;
+    color: rgba(255, 255, 255, 0.72);
+    width: 75%;
+    position: relative;
+    border-style: hidden hidden solid hidden;
+  }
+
 #target {
     width: 345px;
 }
 
 #pac-input:focus {
+    color: rgba(101, 235, 155, .95);
+}
+
+#pac-input-options:focus {
     color: rgba(101, 235, 155, .95);
 }
 

@@ -17,6 +17,13 @@
             <h3 id="advancedTitle">Ricerca Avanzata</h3>
             <h4 id ="advancedService">Centri Assistenziali Anziani Non Autosufficienti</h4>
         </div>
+        <div class="search">
+            <div class="searchWrapper">
+                <img class="searchIcon" src="img/searcher.png">
+                <input id="pac-input-options" class="controls" type="text" datatype="google-autocomplete" spellcheck="false" onfocus="this.placeholder = ''" placeholder="Cerca sulla mappa...">
+                <div id="searchResultsOptions"></div>
+            </div>
+        </div>
         <div id="filters">
             <h5 class="label">Cerca nei dintorni</h5>
             <div class="range-slider">
@@ -61,9 +68,9 @@
         <div id="contentWrapper">
             <h1 id="title">Firenze</h1>
             <h1 id="subtitle">{OpenData}</h1>
-            <div id="search">
-                <div id="searchWrapper">
-                    <img id="searchIcon" src="img/searcher.png">
+            <div class="search">
+                <div class="searchWrapper">
+                    <img class="searchIcon" src="img/searcher.png">
                     <input id="pac-input" class="controls" type="text" datatype="google-autocomplete" spellcheck="false" onfocus="this.placeholder = ''" placeholder="Cerca sulla mappa...">
                     <div id="searchResults"></div>
                 </div>
