@@ -191,6 +191,28 @@ var infoWindows = [];
 var markers = [];
 var userPosition = {};
 
+var ColorStack = function(){
+    this.size = 5;
+    this.storage = ["#27ae60", "#3498db", "#9b59b6", "#e67e22", "#e74c3c"];
+
+    this.push = function(data){
+        this.storage[this.size] = data;
+        this.size++;
+    }
+
+    this.pop = function(){
+        if(this.size === 0){
+            return undefined;
+        }
+        this.size--;
+        var removed = this.storage[this.size];
+        delete this.storage[this.size];
+        return removed;
+    }
+}
+
+var colorStack = new ColorStack();
+
 function initAutocomplete() {
     //Set Center on user's position
     function showPosition(position) {
@@ -326,7 +348,7 @@ function initAutocomplete() {
                 map: map,
                 icon: icon,
                 title: place.name,
-                position: place.geometry.location
+                position: place.geometry.location,
             }));
 
             if (place.geometry.viewport) {
@@ -343,14 +365,10 @@ function initAutocomplete() {
         document.getElementsByClassName('service')[i]
             .addEventListener('click', function () {
                 if (this.getAttribute('data-selected') == 'false') {
-                    $(this).css('background-color', '#8696ac')
-                    this.setAttribute('data-selected', 'true');
-                    addServiceMarkers(map, this.id);
+                    addServiceMarkers(map, this, this.id);
                 }
                 else {
-                    $(this).css('background-color', '#3c4c5b')
-                    this.setAttribute('data-selected', 'false');
-                    deleteServiceMarkers(this.id);
+                    deleteServiceMarkers(this, this.id);
                 }
             });
     }
@@ -391,7 +409,7 @@ function initAutocomplete() {
     }
 }
 
-function addServiceMarkers(map, id) {
+function addServiceMarkers(map, clss, id) {
     var path;
 
     switch (id) {
@@ -416,17 +434,25 @@ function addServiceMarkers(map, id) {
     var xobj = new XMLHttpRequest();
     xobj.overrideMimeType("application/json");
     xobj.open('GET', path, true);
+    var color = colorStack.pop();
+    if(color == null){
+        return 1;
+    }
+    $("#"+id).css('background-color', color);
+    $("#"+id).css('border-color', color);
+    clss.setAttribute('data-selected', 'true');
     xobj.onreadystatechange = function () {
         if (xobj.readyState == 4 && xobj.status == "200") {
             // Required use of an anonymous callback as .open will NOT return a value but simply returns undefined in asynchronous mode
             var callback = JSON.parse(xobj.responseText);
             for (var place in callback.features) {
                 var longitude = callback.features[place].geometry.coordinates[0];
-                var latitude = callback.features[place].geometry.coordinates[1]
+                var latitude = callback.features[place].geometry.coordinates[1];
                 serviceMarkers.push(new google.maps.Marker({
                     position: { lat: latitude, lng: longitude },
                     map: map,
-                    serviceID: id
+                    serviceID: id,
+                    icon: pinSymbol(color)
                 }));
 
                 infoWindows.push(new google.maps.InfoWindow({
@@ -452,7 +478,14 @@ function addServiceMarkers(map, id) {
     xobj.send();
 }
 
-function deleteServiceMarkers(id) {
+function deleteServiceMarkers(clss, id) {
+    var rgbColor = $("#"+id).css('backgroundColor');
+    var hexColor = hexc(rgbColor);
+    colorStack.push(hexColor);
+    clss.setAttribute('data-selected', 'false');
+    $("#"+id).css('background-color', "transparent");
+    $("#"+id).css('border-color', "hsla(0, 0%, 100%, .43)");
+
     //Backward looping to avoid index skipping
     var i = serviceMarkers.length;
     while (i--) {
@@ -467,20 +500,6 @@ function deleteServiceMarkers(id) {
     }
 }
 
-function deleteServiceMarkers(id) {
-    //Backward looping to avoid index skipping
-    var i = serviceMarkers.length;
-    while (i--) {
-        if (serviceMarkers[i] != null && serviceMarkers[i].serviceID == id) {
-            serviceMarkers[i].setMap(null);
-            serviceMarkers.splice(i, 1);
-        }
-        if (infoWindows[i] != null && infoWindows[i].serviceID == id) {
-            infoWindows[i].setMap(null);
-            infoWindows.splice(i, 1);
-        }
-    }
-}
 function displayMarkers(id) {
     for (var i = 0; i < document.getElementsByClassName('service').length; i++) {
         if (document.getElementsByClassName('service')[i].getAttribute('data-selected') == 'true')
@@ -520,4 +539,26 @@ function produceContent(jsonProperties) {
             result += "<h5>Website: </h5>" + jsonProperties.WEBSITE + "<br>";
     }
     return result
+}
+
+function pinSymbol(color) {
+    return {
+        path: 'M 0,0 C -2,-20 -10,-22 -10,-30 A 10,10 0 1,1 10,-30 C 10,-22 2,-20 0,0 z M -2,-30 a 2,2 0 1,1 4,0 2,2 0 1,1 -4,0',
+        fillColor: color,
+        fillOpacity: 1,
+        strokeColor: '#FFF',
+        strokeWeight: 2,
+        scale: 1,
+   };
+}
+
+function hexc(colorval) {
+    var parts = colorval.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/);
+    delete(parts[0]);
+    for (var i = 1; i <= 3; ++i) {
+        parts[i] = parseInt(parts[i]).toString(16);
+        if (parts[i].length == 1) parts[i] = '0' + parts[i];
+    }
+    color = '#' + parts.join('');
+    return color;
 }
