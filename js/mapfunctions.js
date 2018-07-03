@@ -26,6 +26,7 @@ $('.service-info').on("click", function () {
 
 $('#cancelIcon').on("click", function () {
     document.getElementById("sideOptions").classList.toggle('active');
+    $("#pac-input-options").attr("placeholder", "Cerca sulla mappa");
     setTimeout(function () {
         $(".pac-container").prependTo("#searchResults");
     }, 300);
@@ -73,18 +74,18 @@ function showClosingHour() {
     document.getElementById("closingDropdown").classList.toggle("show");
 }
 
-window.onclick = function(event) {
-  if (!event.target.matches('.dropbtn')) {
+window.onclick = function (event) {
+    if (!event.target.matches('.dropbtn')) {
 
-    var dropdowns = document.getElementsByClassName("dropdown-content");
-    var i;
-    for (i = 0; i < dropdowns.length; i++) {
-      var openDropdown = dropdowns[i];
-      if (openDropdown.classList.contains('show')) {
-        openDropdown.classList.remove('show');
-      }
+        var dropdowns = document.getElementsByClassName("dropdown-content");
+        var i;
+        for (i = 0; i < dropdowns.length; i++) {
+            var openDropdown = dropdowns[i];
+            if (openDropdown.classList.contains('show')) {
+                openDropdown.classList.remove('show');
+            }
+        }
     }
-  }
 }
 
 
@@ -189,19 +190,22 @@ var mapOptions = {
 var serviceMarkers = [];
 var infoWindows = [];
 var markers = [];
+var mainMarker;
 var userPosition = {};
+var firstCircle = true;
+var circle = {};
 
-var ColorStack = function(){
+var ColorStack = function () {
     this.size = 5;
     this.storage = ["#27ae60", "#3498db", "#9b59b6", "#e67e22", "#e74c3c"];
 
-    this.push = function(data){
+    this.push = function (data) {
         this.storage[this.size] = data;
         this.size++;
     }
 
-    this.pop = function(){
-        if(this.size === 0){
+    this.pop = function () {
+        if (this.size === 0) {
             return undefined;
         }
         this.size--;
@@ -217,7 +221,7 @@ function initAutocomplete() {
     //Set Center on user's position
     function showPosition(position) {
         map.setCenter(new google.maps.LatLng(position.coords.latitude, position.coords.longitude));
-        var marker = (new google.maps.Marker({
+        mainMarker = (new google.maps.Marker({
             position: { lat: position.coords.latitude, lng: position.coords.longitude },
             map: map,
         }));
@@ -290,20 +294,15 @@ function initAutocomplete() {
                 console.log("Returned place contains no geometry");
                 return;
             }
-            var icon = {
-                url: place.icon,
-                size: new google.maps.Size(71, 71),
-                origin: new google.maps.Point(0, 0),
-                anchor: new google.maps.Point(17, 34),
-                scaledSize: new google.maps.Size(25, 25)
-            };
 
-            // Create a marker for each place.
-            markers.push(new google.maps.Marker({
+            mainMarker.setMap(null);
+            userPosition.lat = place.geometry.location.lat();
+            userPosition.lng = place.geometry.location.lng();
+
+             // Create a marker for each place.
+             markers.push(new google.maps.Marker({
                 map: map,
-                icon: icon,
-                title: place.name,
-                position: place.geometry.location
+                position: place.geometry.location,
             }));
 
             if (place.geometry.viewport) {
@@ -314,6 +313,10 @@ function initAutocomplete() {
             }
         });
         map.fitBounds(bounds);
+        console.log(circle.length);
+        if(Object.keys(circle).length>0){
+            circle.setMap(null);
+        }
     });
 
     searchBoxOptions.addListener('places_changed', function () {
@@ -335,19 +338,14 @@ function initAutocomplete() {
                 console.log("Returned place contains no geometry");
                 return;
             }
-            var icon = {
-                url: place.icon,
-                size: new google.maps.Size(71, 71),
-                origin: new google.maps.Point(0, 0),
-                anchor: new google.maps.Point(17, 34),
-                scaledSize: new google.maps.Size(25, 25)
-            };
+
+            mainMarker.setMap(null);
+            userPosition.lat = place.geometry.location.lat();
+            userPosition.lng = place.geometry.location.lng();
 
             // Create a marker for each place.
             markers.push(new google.maps.Marker({
                 map: map,
-                icon: icon,
-                title: place.name,
                 position: place.geometry.location,
             }));
 
@@ -359,6 +357,11 @@ function initAutocomplete() {
             }
         });
         map.fitBounds(bounds);
+        $(".range-slider__range").val(0);
+        $(".range-slider__value").html("0");
+        if(Object.keys(circle).length>0){
+            circle.setMap(null);
+        }
     });
 
     for (var i = 0; i < document.getElementsByClassName('service').length; i++) {
@@ -373,15 +376,12 @@ function initAutocomplete() {
             });
     }
 
-    var firstCircle = true;
-    var circle = {};
-
-    $('.range-slider__range').on("change", function() {
+    $('.range-slider__range').on("change", function () {
         drawCircles(map, userPosition, $(this).val());
     });
 
-    function drawCircles(map, centerCoords, radius){
-        if(firstCircle){
+    function drawCircles(map, centerCoords, radius) {
+        if (firstCircle) {
             circle = new google.maps.Circle({
                 strokeColor: '#FF0000',
                 strokeOpacity: 0.8,
@@ -435,11 +435,11 @@ function addServiceMarkers(map, clss, id) {
     xobj.overrideMimeType("application/json");
     xobj.open('GET', path, true);
     var color = colorStack.pop();
-    if(color == null){
+    if (color == null) {
         return 1;
     }
-    $("#"+id).css('background-color', color);
-    $("#"+id).css('border-color', color);
+    $("#" + id).css('background-color', color);
+    $("#" + id).css('border-color', color);
     clss.setAttribute('data-selected', 'true');
     xobj.onreadystatechange = function () {
         if (xobj.readyState == 4 && xobj.status == "200") {
@@ -479,12 +479,12 @@ function addServiceMarkers(map, clss, id) {
 }
 
 function deleteServiceMarkers(clss, id) {
-    var rgbColor = $("#"+id).css('backgroundColor');
+    var rgbColor = $("#" + id).css('backgroundColor');
     var hexColor = hexc(rgbColor);
     colorStack.push(hexColor);
     clss.setAttribute('data-selected', 'false');
-    $("#"+id).css('background-color', "transparent");
-    $("#"+id).css('border-color', "hsla(0, 0%, 100%, .43)");
+    $("#" + id).css('background-color', "transparent");
+    $("#" + id).css('border-color', "hsla(0, 0%, 100%, .43)");
 
     //Backward looping to avoid index skipping
     var i = serviceMarkers.length;
@@ -549,12 +549,12 @@ function pinSymbol(color) {
         strokeColor: '#FFF',
         strokeWeight: 2,
         scale: 1,
-   };
+    };
 }
 
 function hexc(colorval) {
     var parts = colorval.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/);
-    delete(parts[0]);
+    delete (parts[0]);
     for (var i = 1; i <= 3; ++i) {
         parts[i] = parseInt(parts[i]).toString(16);
         if (parts[i].length == 1) parts[i] = '0' + parts[i];
