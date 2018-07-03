@@ -313,7 +313,8 @@ function initAutocomplete() {
             }
         });
         map.fitBounds(bounds);
-        console.log(circle.length);
+        $(".range-slider__range").val(0);
+        $(".range-slider__value").html("0");
         if(Object.keys(circle).length>0){
             circle.setMap(null);
         }
