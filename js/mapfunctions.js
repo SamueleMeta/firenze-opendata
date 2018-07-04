@@ -431,7 +431,7 @@ function addServiceMarkers(map, clss, id) {
         case 'disabiliFisici': path = 'geojson/assist_disabili_fisiciPoint.json'; break;
         case 'dipendenze': path = 'geojson/dipendenzePoint.json'; break;
         case 'disabiliPsichici': path = 'geojson/assist_disabili_psichici.json'; break;
-        case 'siast': path = undefined; break;
+        case 'siast': path = 'geojson/siastPoint.json'; break;
         case 'saluteMentale': path = 'geojson/salute_mentale.json'; break;
         case 'assistMinori': path = 'geojson/minoriPoint.json'; break;
     }
@@ -527,10 +527,14 @@ function produceContent(jsonProperties) {
         result += "<h5>Tipo struttura: </h5>" + jsonProperties.TIPOSTRUTT + "<br>";
     if (jsonProperties.hasOwnProperty('TIPOLOGIA'))
         result += "<h5>Tipologia: </h5>" + jsonProperties.TIPOLOGIA + "<br>";
-    if (jsonProperties.hasOwnProperty('PRINCIPALI'))
-        result += "<h5>Note: </h5>" + jsonProperties.PRINCIPALI + "<br>";
-    if (jsonProperties.hasOwnProperty('DATILOGIS'))
-        result += "<h5>Locali: </h5>" + jsonProperties.DATILOGIS + "<br>";
+    if (jsonProperties.hasOwnProperty('PRINCIPALI')){
+        if (jsonProperties.PRINCIPALI != "")
+            result += "<h5>Note: </h5>" + jsonProperties.PRINCIPALI + "<br>";
+    }
+    if (jsonProperties.hasOwnProperty('DATILOGIS')){
+        if (jsonProperties.DATILOGIS != "")
+            result += "<h5>Locali: </h5>" + jsonProperties.DATILOGIS + "<br>";
+    }
     if (jsonProperties.hasOwnProperty('TELEF')) {
         if (jsonProperties.TELEF != 0 && jsonProperties.TELEF != null)
             result += "<h5>Telefono: </h5> 0" + jsonProperties.PREFTEL + " " + jsonProperties.TELEF + "<br>";
