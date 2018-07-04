@@ -295,7 +295,9 @@ function initAutocomplete() {
                 return;
             }
 
-            mainMarker.setMap(null);
+            if(mainMarker !== undefined){
+                mainMarker.setMap(null);
+            }
             userPosition.lat = place.geometry.location.lat();
             userPosition.lng = place.geometry.location.lng();
 
@@ -340,7 +342,9 @@ function initAutocomplete() {
                 return;
             }
 
-            mainMarker.setMap(null);
+            if(mainMarker !== undefined){
+                mainMarker.setMap(null);
+            }
             userPosition.lat = place.geometry.location.lat();
             userPosition.lng = place.geometry.location.lng();
 
