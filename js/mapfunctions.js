@@ -16,7 +16,8 @@ $('#pac-input-options').on("blur", function () {
 });
 
 $('.service-info').on("click", function () {
-    displayMarkers(this.parentNode.parentNode.id);
+    displayAdvancedSearch(this.parentNode.parentNode.id);
+    drawCircles(null,{lat:0, lng:0},Infinity);
     $('#pac-input').hide();
     document.getElementById("sideOptions").classList.toggle('active');
     setTimeout(function () {
@@ -320,6 +321,7 @@ function initAutocomplete() {
         if(Object.keys(circle).length>0){
             circle.setMap(null);
         }
+        showInRangeMarkers(map,userPosition, Infinity);
     });
 
     searchBoxOptions.addListener('places_changed', function () {
@@ -367,6 +369,7 @@ function initAutocomplete() {
         if(Object.keys(circle).length>0){
             circle.setMap(null);
         }
+        showInRangeMarkers(map,userPosition, Infinity);
     });
 
     for (var i = 0; i < document.getElementsByClassName('service').length; i++) {
@@ -383,34 +386,35 @@ function initAutocomplete() {
 
     $('.range-slider__range').on("change", function () {
         drawCircles(map, userPosition, $(this).val());
+        showInRangeMarkers(map,userPosition,$(this).val());
     });
+}
 
-    function drawCircles(map, centerCoords, radius) {
-        if (firstCircle) {
-            circle = new google.maps.Circle({
-                strokeColor: '#FF0000',
-                strokeOpacity: 0.8,
-                strokeWeight: 2,
-                fillColor: '#FF0000',
-                fillOpacity: 0.35,
-                map: map,
-                center: centerCoords,
-                radius: parseFloat(radius)
-            });
-            firstCircle = false;
-        } else {
-            circle.setMap(null);
-            circle = new google.maps.Circle({
-                strokeColor: '#FF0000',
-                strokeOpacity: 0.8,
-                strokeWeight: 2,
-                fillColor: '#FF0000',
-                fillOpacity: 0.35,
-                map: map,
-                center: centerCoords,
-                radius: parseFloat(radius)
-            });
-        }
+function drawCircles(map, centerCoords, radius) {
+    if (firstCircle) {
+        circle = new google.maps.Circle({
+            strokeColor: '#FF0000',
+            strokeOpacity: 0.8,
+            strokeWeight: 2,
+            fillColor: '#FF0000',
+            fillOpacity: 0.35,
+            map: map,
+            center: centerCoords,
+            radius: parseFloat(radius)
+        });
+        firstCircle = false;
+    } else {
+        circle.setMap(null);
+        circle = new google.maps.Circle({
+            strokeColor: '#FF0000',
+            strokeOpacity: 0.8,
+            strokeWeight: 2,
+            fillColor: '#FF0000',
+            fillOpacity: 0.35,
+            map: map,
+            center: centerCoords,
+            radius: parseFloat(radius)
+        });
     }
 }
 
@@ -505,7 +509,17 @@ function deleteServiceMarkers(clss, id) {
     }
 }
 
-function displayMarkers(id) {
+function showInRangeMarkers(map, userPosition, range){
+    for(var i = 0; i < serviceMarkers.length; i++){
+        var distance = google.maps.geometry.spherical.computeDistanceBetween(new google.maps.LatLng(userPosition.lat, userPosition.lng), serviceMarkers[i].getPosition());
+        if (serviceMarkers[i] != null && distance > range)
+            serviceMarkers[i].setMap(null);
+        if (serviceMarkers[i] != null && distance <= range)
+            serviceMarkers[i].setMap(map);
+    }
+} 
+
+function displayAdvancedSearch(id) {
     for (var i = 0; i < document.getElementsByClassName('service').length; i++) {
         if (document.getElementsByClassName('service')[i].getAttribute('data-selected') == 'true')
             document.getElementsByClassName('service')[i].click();
