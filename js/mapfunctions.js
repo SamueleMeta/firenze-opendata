@@ -919,7 +919,7 @@ function deleteServiceMarkers(clss, id) {
         }
     }
 }
-a
+
 function showInRangeMarkers(){
     for(var i = 0; i < serviceMarkers.length; i++){
         var distance = google.maps.geometry.spherical.computeDistanceBetween(new google.maps.LatLng(userPosition.lat, userPosition.lng), serviceMarkers[i].getPosition());
