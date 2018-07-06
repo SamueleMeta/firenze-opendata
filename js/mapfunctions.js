@@ -27,6 +27,8 @@ $('.service-info').on("click", function () {
 
 $('#cancelIcon').on("click", function () {
     document.getElementById("sideOptions").classList.toggle('active');
+    drawCircles(null,{lat:0, lng:0},Infinity);
+    showInRangeMarkers(map, userPosition, Infinity);
     $("#pac-input-options").attr("placeholder", "Cerca sulla mappa");
     setTimeout(function () {
         $(".pac-container").prependTo("#searchResults");
@@ -188,6 +190,7 @@ var mapOptions = {
         }
     ]
 }
+var map;
 var serviceMarkers = [];
 var infoWindows = [];
 var markers = [];
@@ -236,7 +239,7 @@ function initAutocomplete() {
 
     var directionsService = new google.maps.DirectionsService();
     var directionsDisplay = new google.maps.DirectionsRenderer();
-    var map = new google.maps.Map(document.getElementById('map'), mapOptions);
+    map = new google.maps.Map(document.getElementById('map'), mapOptions);
     directionsDisplay.setMap(map);
 
     function calcRoute(directionsService, directionsDisplay) {
