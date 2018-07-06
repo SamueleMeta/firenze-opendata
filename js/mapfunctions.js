@@ -200,8 +200,9 @@ var firstCircle = true;
 var circle = {};
 
 var ColorStack = function () {
-    this.size = 5;
-    this.storage = ["#27ae60", "#3498db", "#9b59b6", "#e67e22", "#e74c3c"];
+    this.size = 16;
+    this.storage = ["#8D6E63", "#78909C", "#ccae62", "#0c2461", "#B53471", "#5C6BC0", "#1abc9c", "#fd79a8",
+                    "#006266", "#d4a415", "#f3a683", "#27ae60", "#3498db", "#7E57C2", "#e74c3c", "#e67e22"];
 
     this.push = function (data) {
         this.storage[this.size] = data;
