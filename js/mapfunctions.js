@@ -17,6 +17,9 @@ $('#pac-input-options').on("blur", function () {
 
 $('.service-info').on("click", function () {
     displayAdvancedSearch(this.parentNode.parentNode.id);
+    drawCircles(null,userPosition,Infinity);
+    $(".range-slider__range").val(0);
+    $(".range-slider__value").html("0");
     $('#pac-input').hide();
     document.getElementById("sideOptions").classList.toggle('active');
     setTimeout(function () {
@@ -486,7 +489,7 @@ function addServiceMarkers(clss, id) {
                     }
                 });
             }
-            showInRangeMarkers();
+            //showInRangeMarkers();
         }
     };
     xobj.send();
