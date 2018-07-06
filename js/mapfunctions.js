@@ -17,7 +17,6 @@ $('#pac-input-options').on("blur", function () {
 
 $('.service-info').on("click", function () {
     displayAdvancedSearch(this.parentNode.parentNode.id);
-    drawCircles(null,{lat:0, lng:0},Infinity);
     $('#pac-input').hide();
     document.getElementById("sideOptions").classList.toggle('active');
     setTimeout(function () {
@@ -27,8 +26,6 @@ $('.service-info').on("click", function () {
 
 $('#cancelIcon').on("click", function () {
     document.getElementById("sideOptions").classList.toggle('active');
-    drawCircles(null,{lat:0, lng:0},Infinity);
-    showInRangeMarkers(map, userPosition, Infinity);
     $("#pac-input-options").attr("placeholder", "Cerca sulla mappa");
     setTimeout(function () {
         $(".pac-container").prependTo("#searchResults");
@@ -322,9 +319,9 @@ function initAutocomplete() {
         $(".range-slider__range").val(0);
         $(".range-slider__value").html("0");
         if(Object.keys(circle).length>0){
-            circle.setMap(null);
+            drawCircles(null,userPosition,Infinity)
         }
-        showInRangeMarkers(map,userPosition, Infinity);
+        showInRangeMarkers();
     });
 
     searchBoxOptions.addListener('places_changed', function () {
@@ -370,16 +367,19 @@ function initAutocomplete() {
         $(".range-slider__range").val(0);
         $(".range-slider__value").html("0");
         if(Object.keys(circle).length>0){
-            circle.setMap(null);
+            drawCircles(null,userPosition,Infinity)
         }
-        showInRangeMarkers(map,userPosition, Infinity);
+        showInRangeMarkers();
     });
+    
+    //Initialize Circle
+    drawCircles(null,{lat:0, lng:0}, Infinity);
 
     for (var i = 0; i < document.getElementsByClassName('service').length; i++) {
         document.getElementsByClassName('service')[i]
             .addEventListener('click', function () {
                 if (this.getAttribute('data-selected') == 'false') {
-                    addServiceMarkers(map, this, this.id);
+                    addServiceMarkers(this, this.id);
                 }
                 else {
                     deleteServiceMarkers(this, this.id);
@@ -389,7 +389,7 @@ function initAutocomplete() {
 
     $('.range-slider__range').on("change", function () {
         drawCircles(map, userPosition, $(this).val());
-        showInRangeMarkers(map,userPosition,$(this).val());
+        showInRangeMarkers();
     });
 }
 
@@ -421,7 +421,7 @@ function drawCircles(map, centerCoords, radius) {
     }
 }
 
-function addServiceMarkers(map, clss, id) {
+function addServiceMarkers(clss, id) {
     var path;
 
     switch (id) {
@@ -485,6 +485,7 @@ function addServiceMarkers(map, clss, id) {
                     }
                 });
             }
+            showInRangeMarkers();
         }
     };
     xobj.send();
@@ -511,13 +512,13 @@ function deleteServiceMarkers(clss, id) {
         }
     }
 }
-
-function showInRangeMarkers(map, userPosition, range){
+a
+function showInRangeMarkers(){
     for(var i = 0; i < serviceMarkers.length; i++){
         var distance = google.maps.geometry.spherical.computeDistanceBetween(new google.maps.LatLng(userPosition.lat, userPosition.lng), serviceMarkers[i].getPosition());
-        if (serviceMarkers[i] != null && distance > range)
+        if (serviceMarkers[i] != null && distance > circle.radius)
             serviceMarkers[i].setMap(null);
-        if (serviceMarkers[i] != null && distance <= range)
+        if (serviceMarkers[i] != null && distance <= circle.radius)
             serviceMarkers[i].setMap(map);
     }
 } 
