@@ -513,3 +513,27 @@ h1 {
     width: 16px;
     height: 16px;
 }
+
+/*----------- PHONE PORTRAIT -----------*/
+
+@media (min-width: 320px) and (max-width: 480px) {
+
+    #sidemenu {
+        width: 100%;
+    }
+
+    #sideOptions {
+        width: 100%;
+        left: -100%;
+    }
+
+    #showMap {
+        display: block;
+    }
+
+    #map {
+        width: 100%;
+        max-width: 100%;
+        display: none;
+    }
+}
