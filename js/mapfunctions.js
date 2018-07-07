@@ -499,6 +499,7 @@ if (windowWidth > maxDeviceWidth) {
             center: { lat: 43.772330244, lng: 11.242165698 },
             zoom: 13,
             mapTypeId: 'roadmap',
+            fullscreenControl: false,
             styles: [
                 {
                     "featureType": "administrative",
