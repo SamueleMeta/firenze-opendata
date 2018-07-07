@@ -780,18 +780,29 @@ if (windowWidth > maxDeviceWidth) {
             
             //Initialize Circle
             drawCircles(null,{lat:0, lng:0}, Infinity);
+
+            var timer;
     
             for (var i = 0; i < document.getElementsByClassName('service').length; i++) {
                 document.getElementsByClassName('service')[i]
-                    .addEventListener('click', function () {
-                        if (this.getAttribute('data-selected') == 'false') {
-                            addServiceMarkers(this, this.id);
+                .addEventListener('touchstart', function() {
+                    var element = this;
+                    timer = setTimeout(function() {
+                        if (element.getAttribute('data-selected') == 'false') {
+                            addServiceMarkers(element, element.id);
                         }
                         else {
-                            deleteServiceMarkers(this, this.id);
+                            deleteServiceMarkers(element, element.id);
                         }
-                    });
+                    }, 1000)
+                  }, false)
             }
+
+            for (var i = 0; i < document.getElementsByClassName('service').length; i++) {
+                document.getElementsByClassName('service')[i]
+                .addEventListener('touchend', function() {
+                    clearTimeout(timer)
+                  }, false)}
     
             $('.range-slider__range').on("change", function () {
                 drawCircles(map, userPosition, $(this).val());
