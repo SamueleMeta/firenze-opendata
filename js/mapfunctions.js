@@ -129,6 +129,13 @@ function showInRangeMarkers(){
 } 
 
 function displayAdvancedSearch(id) {
+    var rgbColor = $("#" + id).css('backgroundColor');
+    var hexColor = hexc(rgbColor);
+    colorStack.push(hexColor);
+    circle.setOptions({
+        fillColor: hexColor,
+        strokeColor: hexColor
+    });
     for (var i = 0; i < document.getElementsByClassName('service').length; i++) {
         if (document.getElementsByClassName('service')[i].getAttribute('data-selected') == 'true')
             document.getElementsByClassName('service')[i].click();

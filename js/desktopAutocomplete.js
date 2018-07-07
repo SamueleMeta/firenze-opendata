@@ -16,8 +16,10 @@ $('#pac-input-options').on("blur", function () {
 });
 
 $('.service-info').on("click", function () {
-    displayAdvancedSearch(this.parentNode.parentNode.id);
-    drawCircles(null,userPosition,Infinity);
+    //displayAdvancedSearch(this.parentNode.parentNode.id);
+    circle.setMap(null);
+    //circle.setCenter(new google.maps.LatLng(userPosition.lat, userPosition.lng));
+    circle.radius = Infinity;
     $(".range-slider__range").val(0);
     $(".range-slider__value").html("0");
     $('#pac-input').hide();
@@ -25,6 +27,7 @@ $('.service-info').on("click", function () {
     setTimeout(function () {
         $(".pac-container").prependTo("#searchResultsOptions");
     }, 300);
+    displayAdvancedSearch(this.parentNode.parentNode.id);
 });
 
 $('#cancelIcon').on("click", function () {
@@ -323,7 +326,9 @@ function initAutocomplete() {
         $(".range-slider__range").val(0);
         $(".range-slider__value").html("0");
         if(Object.keys(circle).length>0){
-            drawCircles(null,userPosition,Infinity)
+            circle.setMap(null);
+            circle.setCenter(new google.maps.LatLng(userPosition.lat, userPosition.lng));
+            circle.radius = Infinity;
         }
         showInRangeMarkers();
     });
@@ -371,13 +376,24 @@ function initAutocomplete() {
         $(".range-slider__range").val(0);
         $(".range-slider__value").html("0");
         if(Object.keys(circle).length>0){
-            drawCircles(null,userPosition,Infinity)
+            circle.setMap(null);
+            circle.setCenter(new google.maps.LatLng(userPosition.lat, userPosition.lng));
+            circle.radius = Infinity;
         }
         showInRangeMarkers();
     });
     
     //Initialize Circle
-    drawCircles(null,{lat:0, lng:0}, Infinity);
+    circle = new google.maps.Circle({
+        strokeColor: '#FF0000',
+        strokeOpacity: 0.8,
+        strokeWeight: 2,
+        fillColor: '#FF0000',
+        fillOpacity: 0.35,
+        map: map,
+        center: new google.maps.LatLng(userPosition.lat, userPosition.lng),
+        radius: Infinity
+    });
 
     for (var i = 0; i < document.getElementsByClassName('service').length; i++) {
         document.getElementsByClassName('service')[i]
@@ -392,7 +408,9 @@ function initAutocomplete() {
     }
 
     $('.range-slider__range').on("change", function () {
-        drawCircles(map, userPosition, $(this).val());
+        circle.setMap(map);
+        circle.setCenter(new google.maps.LatLng(userPosition.lat, userPosition.lng));
+        circle.radius = parseFloat($(this).val());
         showInRangeMarkers();
     });
 }
