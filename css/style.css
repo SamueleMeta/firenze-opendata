@@ -370,6 +370,10 @@ h1 {
     display: none;
 }
 
+#backIcon {
+    display: none;
+}
+
 #infowindow-content .title {
     font-weight: bold;
 }
@@ -558,7 +562,18 @@ h1 {
     #levels {
         display: block;
         position: absolute;
+        width: 48px;
+        height: 48px;
         top: 3%;
         right: 3%;
+    }
+
+    #backIcon {
+        display: block;
+        position: absolute;
+        width: 48px;
+        height: 48px;
+        top: 3%;
+        left: 3%;
     }
 }

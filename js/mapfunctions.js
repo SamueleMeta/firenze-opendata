@@ -437,6 +437,11 @@ if (windowWidth > maxDeviceWidth) {
             }, 300);
             $('#pac-input').delay(290).show(0);
         });
+
+        $('#backIcon').on("click", function () {
+            $("#sidemenu").show();
+            $("#mapWrapper").hide();
+        });
     
         $('.dropdown-content #openingHour').on("click", function () {
             $("#opening").html($(this).html());
@@ -500,6 +505,7 @@ if (windowWidth > maxDeviceWidth) {
             zoom: 13,
             mapTypeId: 'roadmap',
             fullscreenControl: false,
+            mapTypeControl: false,
             styles: [
                 {
                     "featureType": "administrative",
@@ -803,7 +809,24 @@ if (windowWidth > maxDeviceWidth) {
                 document.getElementsByClassName('service')[i]
                 .addEventListener('touchend', function() {
                     clearTimeout(timer)
-                  }, false)}
+                  }, false)
+            }
+
+            for (var i = 0; i < document.getElementsByClassName('service').length; i++) {
+                document.getElementsByClassName('service')[i]
+                    .addEventListener('click', function () {
+                        $("#mapWrapper").show();
+                        $("#sidemenu").hide();
+                    });
+            }
+
+            $("#mapWrapper").on("navigate", function (event, data) {
+                var direction = data.state.direction;
+                if (direction == 'back') {
+                    $("#sidemenu").show();
+                    $("#mapWrapper").hide();
+                }
+              });
     
             $('.range-slider__range').on("change", function () {
                 drawCircles(map, userPosition, $(this).val());
