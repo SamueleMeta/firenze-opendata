@@ -17,7 +17,7 @@ $('#pac-input-options').on("blur", function () {
 
 $('.service-info').on("click", function () {
     displayAdvancedSearch(this.parentNode.parentNode.id);
-    drawCircles(null,userPosition,Infinity);
+    drawCircles(null, userPosition, Infinity);
     $(".range-slider__range").val(0);
     $(".range-slider__value").html("0");
     $('#pac-input').hide();
@@ -209,7 +209,7 @@ var circle = {};
 var ColorStack = function () {
     this.size = 16;
     this.storage = ["#8D6E63", "#78909C", "#ccae62", "#0c2461", "#B53471", "#5C6BC0", "#1abc9c", "#fd79a8",
-                    "#006266", "#d4a415", "#f3a683", "#27ae60", "#3498db", "#7E57C2", "#e74c3c", "#e67e22"];
+        "#006266", "#d4a415", "#f3a683", "#27ae60", "#3498db", "#7E57C2", "#e74c3c", "#e67e22"];
 
     this.push = function (data) {
         this.storage[this.size] = data;
@@ -307,7 +307,7 @@ function initAutocomplete() {
                 return;
             }
 
-            if(mainMarker !== undefined){
+            if (mainMarker !== undefined) {
                 mainMarker.setMap(null);
             }
             userPosition.lat = place.geometry.location.lat();
@@ -329,8 +329,8 @@ function initAutocomplete() {
         map.fitBounds(bounds);
         $(".range-slider__range").val(0);
         $(".range-slider__value").html("0");
-        if(Object.keys(circle).length>0){
-            drawCircles(null,userPosition,Infinity)
+        if (Object.keys(circle).length > 0) {
+            drawCircles(null, userPosition, Infinity)
         }
         showInRangeMarkers();
     });
@@ -355,7 +355,7 @@ function initAutocomplete() {
                 return;
             }
 
-            if(mainMarker !== undefined){
+            if (mainMarker !== undefined) {
                 mainMarker.setMap(null);
             }
             userPosition.lat = place.geometry.location.lat();
@@ -377,57 +377,39 @@ function initAutocomplete() {
         map.fitBounds(bounds);
         $(".range-slider__range").val(0);
         $(".range-slider__value").html("0");
-        if(Object.keys(circle).length>0){
-            drawCircles(null,userPosition,Infinity)
+        if (Object.keys(circle).length > 0) {
+            drawCircles(null, userPosition, Infinity)
         }
         showInRangeMarkers();
     });
-    
+
     //Initialize Circle
-    drawCircles(null,{lat:0, lng:0}, Infinity);
-
-    var timer;
-
-    for (var i = 0; i < document.getElementsByClassName('service').length; i++) {
-        document.getElementsByClassName('service')[i]
-        .addEventListener('touchstart', function() {
-            var element = this;
-            timer = setTimeout(function() {
-                if (element.getAttribute('data-selected') == 'false') {
-                    addServiceMarkers(element, element.id);
-                }
-                else {
-                    deleteServiceMarkers(element, element.id);
-                }
-            }, 1000)
-            }, false)
-    }
-
-    for (var i = 0; i < document.getElementsByClassName('service').length; i++) {
-        document.getElementsByClassName('service')[i]
-        .addEventListener('touchend', function() {
-            clearTimeout(timer)
-            }, false)
-    }
+    drawCircles(null, { lat: 0, lng: 0 }, Infinity);
 
     for (var i = 0; i < document.getElementsByClassName('service').length; i++) {
         document.getElementsByClassName('service')[i]
             .addEventListener('click', function () {
-                $("#mapWrapper").show();
-                $("#sidemenu").hide();
+                if (this.getAttribute('data-selected') == 'false') {
+                    addServiceMarkers(this, this.id);
+                }
+                else {
+                    deleteServiceMarkers(this, this.id);
+                }
             });
     }
-
-    $("#mapWrapper").on("navigate", function (event, data) {
-        var direction = data.state.direction;
-        if (direction == 'back') {
-            $("#sidemenu").show();
-            $("#mapWrapper").hide();
-        }
-        });
 
     $('.range-slider__range').on("change", function () {
         drawCircles(map, userPosition, $(this).val());
         showInRangeMarkers();
     });
+
+    for (var i = 0; i < document.getElementsByClassName('service').length; i++) {
+        var el = document.getElementsByClassName('service')[i];
+        swipedetect(el, function (swipedir) {
+            if (swipedir == "left") {
+                $("#mapWrapper").show();
+                $("#sidemenu").hide();
+            }
+        });
+    }
 }

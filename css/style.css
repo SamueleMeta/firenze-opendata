@@ -536,6 +536,18 @@ h1 {
         width: 100%;
     }
 
+    #sidemenu::-webkit-scrollbar-track {
+        display: none;
+    }
+    
+    #sidemenu::-webkit-scrollbar {
+        display: none;
+    }
+    
+    #sidemenu::-webkit-scrollbar-thumb {
+        display: none;
+    }
+
     #sideOptions {
         width: 100%;
         left: -100%;
