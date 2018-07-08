@@ -4,6 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="theme-color" content="#3c4c5b">
+    <meta name="msapplication-navbutton-color" content="#3c4c5b">
+    <meta name="apple-mobile-web-app-status-bar-style" content="#3c4c5b">
     <link rel="stylesheet" type="text/css" href="css/style.css"> 
     <link href="https://fonts.googleapis.com/css?family=Nunito+Sans|Open+Sans:300,400" rel="stylesheet">
     <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -15,7 +18,7 @@
         <img id="cancelIcon" src="img/cancel.png">
         <div id="advancedSearch">
             <h3 id="advancedTitle">Ricerca Avanzata</h3>
-            <h4 id ="advancedService">Centri Assistenziali Anziani Non Autosufficienti</h4>
+            <h4 id ="advancedService"></h4>
         </div>
         <div class="search">
             <div class="searchWrapper">
@@ -31,39 +34,6 @@
                 <span class="range-slider__value">0</span>
                 <span id="meters">metri</span>
             </div>
-            <h5 class="label">Orario di apertura</h5>
-            <div class="dropdown">
-                <button onclick="showOpeningHour()" class="dropbtn" id="opening">08:00</button>
-                <ul id="openingDropdown" class="dropdown-content">
-                    <li id="openingHour">08:00</li>
-                    <li id="openingHour">09:00</li>
-                    <li id="openingHour">15:30</li>
-                    <li id="openingHour">16:00</li>
-                    <li id="openingHour">20:00</li>
-                </ul>
-            </div>
-            <h5 class="label">Orario di chiusura</h5>
-            <div class="dropdown">
-                <button onclick="showClosingHour()" class="dropbtn" id="closing">13:00</button>
-                <ul id="closingDropdown" class="dropdown-content">
-                        <li id="closingHour">09:00</li>
-                        <li id="closingHour">13:00</li>
-                        <li id="closingHour">19:30</li>
-                        <li id="closingHour">20:00</li>
-                        <li id="closingHour">21:00</li>
-                        <li id="closingHour">23:00</li>
-                        <li id="closingHour">00:00</li>
-                </ul>
-            </div>
-            <h5 class="label">Tipologia</h5>
-            <ul id="moreOptions">
-                <li class="optionItem" id="comunale">
-                    <div>Comunale</div>
-                </li>
-                <li class="optionItem lastItem" id="nonComunale">
-                    <div>Non Comunale</div>
-                </li>
-            </ul>
         </div>
     </div>
     <!-- END OF BETA VERSION-->
@@ -85,6 +55,7 @@
                         <span class="service-name">Farmacie</span>
                         <span class="service-number">117</span>
                         <img src="img/info.png" class="service-info" alt="Opzioni avanzate per farmacie">
+                        <img src="img/swipe.png" class="swipe" alt="Swipe sinistra">
                     </div>
                 </li>
                 <li class="service" id='centriAnziani' data-selected = 'false'>
@@ -93,6 +64,7 @@
                         <span class="service-name">Centri Anziani</span>
                         <span class="service-number">27</span>
                         <img src="img/info.png" class="service-info" alt="Opzioni avanzate per centri per gli anziani">
+                        <img src="img/swipe.png" class="swipe" alt="Swipe sinistra">
                     </div>
                 </li>
                 <li class="service" id='ospedali' data-selected = 'false'>
@@ -101,6 +73,7 @@
                         <span class="service-name">Ospedali</span>
                         <span class="service-number">18</span>
                         <img src="img/info.png" class="service-info" alt="Opzioni avanzate per ospedali">
+                        <img src="img/swipe.png" class="swipe" alt="Swipe sinistra">
                     </div>
                 </li>
                 <li class="service" id='presidi' data-selected = 'false'>
@@ -109,6 +82,7 @@
                         <span class="service-name">Presidi ASL</span>
                         <span class="service-number">13</span>
                         <img src="img/info.png" class="service-info" alt="Opzioni avanzate per presidi ASL">
+                        <img src="img/swipe.png" class="swipe" alt="Swipe sinistra">
                     </div>
                 </li>
                 <li class="service" id='disabiliSociali' data-selected = 'false'>
@@ -117,6 +91,7 @@
                         <span class="service-name">Centri Assistenziali Disabili Sociali</span>
                         <span class="service-number">11</span>
                         <img src="img/info.png" class="service-info" alt="Opzioni avanzate centri assistenziali disabili sociali">
+                        <img src="img/swipe.png" class="swipe" alt="Swipe sinistra">
                     </div>
                 </li>
                 <li class="service" id='marginalita' data-selected = 'false'>
@@ -125,6 +100,7 @@
                         <span class="service-name">Centri Inclusione Sociale</span>
                         <span class="service-number">34</span>
                         <img src="img/info.png" class="service-info" alt="Opzioni avanzate centri inclusione sociale">
+                        <img src="img/swipe.png" class="swipe" alt="Swipe sinistra">
                     </div>
                 </li>
                 <li class="service" id='cimiteri' data-selected = 'false'>
@@ -133,6 +109,7 @@
                         <span class="service-name">Cimiteri</span>
                         <span class="service-number">17</span>
                         <img src="img/info.png" class="service-info" alt="Opzioni avanzate cimiteri">
+                        <img src="img/swipe.png" class="swipe" alt="Swipe sinistra">
                     </div>
                 </li>
                 <li class="service" id='riabilitazione' data-selected = 'false'>
@@ -141,6 +118,7 @@
                         <span class="service-name">Centri Riabilitazione</span>
                         <span class="service-number">10</span>
                         <img src="img/info.png" class="service-info" alt="Opzioni avanzate centri riabilitazione">
+                        <img src="img/swipe.png" class="swipe" alt="Swipe sinistra">
                     </div>
                 </li>
                 <li class="service" id='anzianiNONauto' data-selected = 'false'>
@@ -149,6 +127,7 @@
                         <span class="service-name">Centri Assistenziali Anziani Non Autosufficienti</span>
                         <span class="service-number">50</span>
                         <img src="img/info.png" class="service-info" alt="Opzioni avanzate centri assistenziali anziani non autosufficienti">
+                        <img src="img/swipe.png" class="swipe" alt="Swipe sinistra">
                     </div>
                 </li>
                 <li class="service" id='anzianiAuto' data-selected = 'false'>
@@ -157,6 +136,7 @@
                         <span class="service-name">Centri Assistenziali Anziani Autosufficienti</span>
                         <span class="service-number">36</span>
                         <img src="img/info.png" class="service-info" alt="Opzioni avanzate centri assistenziali anziani non autosufficienti">
+                        <img src="img/swipe.png" class="swipe" alt="Swipe sinistra">
                     </div>
                 </li>
                 <li class="service" id='disabiliFisici' data-selected = 'false'>
@@ -165,6 +145,7 @@
                         <span class="service-name">Centri Assistenziali Disabili Fisici</span>
                         <span class="service-number">4</span>
                         <img src="img/info.png" class="service-info" alt="Opzioni avanzate per centri assistenziali disabili fisici ">
+                        <img src="img/swipe.png" class="swipe" alt="Swipe sinistra">
                     </div>
                 </li>
                 <li class="service" id='dipendenze' data-selected = 'false'>
@@ -173,6 +154,7 @@
                         <span class="service-name">Centri Assistenziali Dipendenze</span>
                         <span class="service-number">16</span>
                         <img src="img/info.png" class="service-info" alt="Opzioni avanzate per centri assistenziali dipendenze">
+                        <img src="img/swipe.png" class="swipe" alt="Swipe sinistra">
                     </div>
                 </li>
                 <li class="service" id='disabiliPsichici' data-selected = 'false'>
@@ -181,6 +163,7 @@
                         <span class="service-name">Centri Assistenziali Disabili Psichici</span>
                         <span class="service-number">7</span>
                         <img src="img/info.png" class="service-info" alt="Opzioni avanzate centri assistenziali disabili psichici">
+                        <img src="img/swipe.png" class="swipe" alt="Swipe sinistra">
                     </div>
                 </li>
                 <li class="service" id='siast' data-selected = 'false'>
@@ -189,6 +172,7 @@
                         <span class="service-name">SIAST</span>
                         <span class="service-number">7</span>
                         <img src="img/info.png" class="service-info" alt="Opzioni avanzate SIAST">
+                        <img src="img/swipe.png" class="swipe" alt="Swipe sinistra">
                     </div>
                 </li>
                 <li class="service" id='saluteMentale' data-selected = 'false'>
@@ -197,6 +181,7 @@
                         <span class="service-name">Centri Salute Mentale</span>
                         <span class="service-number">62</span>
                         <img src="img/info.png" class="service-info" alt="Opzioni avanzate centri salute mentale">
+                        <img src="img/swipe.png" class="swipe" alt="Swipe sinistra">
                     </div>
                 </li>
                 <li class="service" id='assistMinori' data-selected = 'false'>
@@ -205,6 +190,7 @@
                         <span class="service-name">Centri Assistenziali Minori</span>
                         <span class="service-number">46</span>
                         <img src="img/info.png" class="service-info" alt="Opzioni avanzate centri assistenziali minori">
+                        <img src="img/swipe.png" class="swipe" alt="Swipe sinistra">
                     </div>
                 </li>
             </ul>

@@ -15,9 +15,9 @@ $('#pac-input-options').on("blur", function () {
     $('.searchIcon').attr("src", "img/searcher.png");
 });
 
-$('.service-info').on("click", function () {
-    displayAdvancedSearch(this.parentNode.parentNode.id);
-    circle.radius = Infinity;
+$('#levels').on("click", function () {
+    displayAdvancedSearch(this.classList[0]);
+    drawCircles(null, userPosition, Infinity);
     $(".range-slider__range").val(0);
     $(".range-slider__value").html("0");
     $('#pac-input').hide();
@@ -25,6 +25,12 @@ $('.service-info').on("click", function () {
     setTimeout(function () {
         $(".pac-container").prependTo("#searchResultsOptions");
     }, 300);
+    for (var i = 0; i < document.getElementsByClassName('optionItem').length; i++) {
+        document.getElementsByClassName('optionItem')[i]
+            .addEventListener('click', function () {
+                $(this).toggleClass('selected');
+            });
+    }
 });
 
 $('#cancelIcon').on("click", function () {
@@ -39,22 +45,28 @@ $('#cancelIcon').on("click", function () {
 $('#backIcon').on("click", function () {
     $("#sidemenu").show();
     $("#mapWrapper").hide();
+    var element = document.getElementById("levels");
+    var rgbColor = $("#"+element.className).css('backgroundColor');
+    var hexColor = hexc(rgbColor);
+    colorStack.push(hexColor);
+    $("#"+element.className).css('background-color', "transparent");
+    $("#"+element.className).css('border-color', "hsla(0, 0%, 100%, .43)");
+    element.setAttribute("data-selected", "false");
+    deleteMarkers(element.className);
+    circle.setMap(null);
+    $("#pac-input-options").attr("placeholder", "Cerca sulla mappa");
+    setTimeout(function () {
+        $(".pac-container").prependTo("#searchResults");
+    }, 300);
+    $('#pac-input').delay(290).show(0);
 });
 
-$('.dropdown-content #openingHour').on("click", function () {
+$('.dropdown-content .openingHour').on("click", function () {
     $("#opening").html($(this).html());
 });
 
-$('.dropdown-content #closingHour').on("click", function () {
+$('.dropdown-content .closingHour').on("click", function () {
     $("#closing").html($(this).html());
-});
-
-$('#comunale').on("click", function () {
-    document.getElementById("comunale").classList.toggle('selected');
-});
-
-$('#nonComunale').on("click", function () {
-    document.getElementById("nonComunale").classList.toggle('selected');
 });
 
 var rangeSlider = function () {
@@ -205,6 +217,7 @@ var mainMarker;
 var userPosition = {};
 var firstCircle = true;
 var circle = {};
+var selected = 0;
 
 var ColorStack = function () {
     this.size = 16;
@@ -335,6 +348,8 @@ function initAutocomplete() {
             circle.radius = Infinity;
         }
         showInRangeMarkers();
+        $("#mapWrapper").show();
+        $("#sidemenu").hide();
     });
 
     searchBoxOptions.addListener('places_changed', function () {
@@ -385,6 +400,8 @@ function initAutocomplete() {
             circle.radius = Infinity;
         }
         showInRangeMarkers();
+        $("#mapWrapper").show();
+        document.getElementById("sideOptions").classList.toggle('active');
     });
 
     //Initialize Circle
@@ -403,12 +420,17 @@ function initAutocomplete() {
         document.getElementsByClassName('service')[i]
             .addEventListener('click', function () {
                 if (this.getAttribute('data-selected') == 'false') {
-                    this.setAttribute('data-selected', 'true');
+                    this.setAttribute("data-selected", "true");
+                    $(".swipe").hide();
                     addServiceMarkers(this, this.id);
+                    selected += 1;
                 }
                 else {
-                    this.setAttribute('data-selected', 'false');
                     deleteServiceMarkers(this, this.id);
+                    selected -=1;
+                    if(selected < 1){
+                        $(".swipe").show();
+                    }
                 }
             });
     }
@@ -420,13 +442,115 @@ function initAutocomplete() {
         showInRangeMarkers();
     });
 
-    for (var i = 0; i < document.getElementsByClassName('service').length; i++) {
-        var el = document.getElementsByClassName('service')[i];
-        swipedetect(el, function (swipedir) {
-            if (swipedir == "left") {
-                $("#mapWrapper").show();
-                $("#sidemenu").hide();
-            }
-        });
-    }
+    var farmacie = document.getElementById("farmacie");
+    swipedetect(farmacie, function (swipedir) {
+        if (swipedir == "left") {
+            doSwipeLeft(farmacie, "farmacie", selected);
+        }
+    });
+
+    var centriAnziani = document.getElementById("centriAnziani");
+    swipedetect(centriAnziani, function (swipedir) {
+        if (swipedir == "left") {
+            doSwipeLeft(centriAnziani, "centriAnziani", selected);
+        }
+    });
+
+    var anzianiAuto = document.getElementById("anzianiAuto");
+    swipedetect(anzianiAuto, function (swipedir) {
+        if (swipedir == "left") {
+            doSwipeLeft(anzianiAuto, "anzianiAuto", selected);
+        }
+    });
+
+    var disabiliFisici = document.getElementById("disabiliFisici");
+    swipedetect(disabiliFisici, function (swipedir) {
+        if (swipedir == "left") {
+            doSwipeLeft(disabiliFisici, "disabiliFisici", selected);
+        }
+    });
+
+    var cimiteri = document.getElementById("cimiteri");
+    swipedetect(cimiteri, function (swipedir) {
+        if (swipedir == "left") {
+            doSwipeLeft(cimiteri, "cimiteri", selected);
+        }
+    });
+
+    var siast = document.getElementById("siast");
+    swipedetect(siast, function (swipedir) {
+        if (swipedir == "left") {
+            doSwipeLeft(siast, "siast", selected);
+        }
+    });
+
+    var riabilitazione = document.getElementById("riabilitazione");
+    swipedetect(riabilitazione, function (swipedir) {
+        if (swipedir == "left") {
+            doSwipeLeft(riabilitazione, "riabilitazione", selected);
+        }
+    });
+
+    var presidi = document.getElementById("presidi");
+    swipedetect(presidi, function (swipedir) {
+        if (swipedir == "left") {
+            doSwipeLeft(presidi, "presidi", selected);
+        }
+    });
+
+    var disabiliPsichici = document.getElementById("disabiliPsichici");
+    swipedetect(disabiliPsichici, function (swipedir) {
+        if (swipedir == "left") {
+            doSwipeLeft(disabiliPsichici, "disabiliPsichici", selected);
+        }
+    });
+
+    var disabiliSociali = document.getElementById("disabiliSociali");
+    swipedetect(disabiliSociali, function (swipedir) {
+        if (swipedir == "left") {
+            doSwipeLeft(disabiliSociali, "disabiliSociali", selected);
+        }
+    });
+
+    var anzianiNONauto = document.getElementById("anzianiNONauto");
+    swipedetect(anzianiNONauto, function (swipedir) {
+        if (swipedir == "left") {
+            doSwipeLeft(anzianiNONauto, "anzianiNONauto", selected);
+        }
+    });
+
+    var dipendenze = document.getElementById("dipendenze");
+    swipedetect(dipendenze, function (swipedir) {
+        if (swipedir == "left") {
+            doSwipeLeft(dipendenze, "dipendenze", selected);
+        }
+    });
+
+    var marginalita = document.getElementById("marginalita");
+    swipedetect(marginalita, function (swipedir) {
+        if (swipedir == "left") {
+            doSwipeLeft(marginalita, "marginalita", selected);
+        }
+    });
+
+    var assistMinori = document.getElementById("assistMinori");
+    swipedetect(assistMinori, function (swipedir) {
+        if (swipedir == "left") {
+            doSwipeLeft(assistMinori, "assistMinori", selected);
+        }
+    });
+
+    var ospedali = document.getElementById("ospedali");
+    swipedetect(ospedali, function (swipedir) {
+        if (swipedir == "left") {
+            doSwipeLeft(ospedali, "ospedali", selected);
+        }
+    });
+
+    var saluteMentale = document.getElementById("saluteMentale");
+    swipedetect(saluteMentale, function (swipedir) {
+        if (swipedir == "left") {
+            doSwipeLeft(saluteMentale, "saluteMentale", selected);
+        }
+    });
 }

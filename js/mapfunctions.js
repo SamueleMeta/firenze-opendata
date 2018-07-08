@@ -97,13 +97,20 @@ function addServiceMarkers(clss, id) {
 }
 
 function deleteServiceMarkers(clss, id) {
+    handleColor(clss, id);
+    deleteMarkers(id);
+}
+
+function handleColor(clss, id){
     var rgbColor = $("#" + id).css('backgroundColor');
     var hexColor = hexc(rgbColor);
     colorStack.push(hexColor);
     clss.setAttribute('data-selected', 'false');
     $("#" + id).css('background-color', "transparent");
     $("#" + id).css('border-color', "hsla(0, 0%, 100%, .43)");
+}
 
+function deleteMarkers(id){
     //Backward looping to avoid index skipping
     var i = serviceMarkers.length;
     while (i--) {
@@ -244,4 +251,374 @@ function swipedetect(el, callback){
         }
         handleswipe(swipedir)
     }, false)
+}
+
+function doSwipeLeft(serviceElement, serviceName, selected){
+    if(selected < 1){
+        $("#mapWrapper").show();
+        $("#sidemenu").hide();
+        populateOptions(serviceName);
+        $("#levels").removeClass();
+        $("#levels").addClass(serviceName);
+        triggerService(serviceElement);
+    }
+}
+
+function triggerService(service){
+    if (service.getAttribute('data-selected') == 'false') {
+        addServiceMarkers(service, service.id);
+    }
+}
+
+function populateOptions(id) {
+    switch (id) {
+        case 'farmacie':
+            document.getElementById("advancedService").innerHTML = "Farmacie";
+            $("#sideOptions").append(`
+            <h5 class="label">Orario di apertura</h5>
+            <div class="dropdown">
+                <button onclick="showOpeningHour()" class="dropbtn" id="opening">08:00</button>
+                <ul id="openingDropdown" class="dropdown-content">
+                    <li class="openingHour">08:00</li>
+                    <li class="openingHour">09:00</li>
+                    <li class="openingHour">15:30</li>
+                    <li class="openingHour">16:00</li>
+                    <li class="openingHour">20:00</li>
+                </ul>
+            </div>
+            <h5 class="label">Orario di chiusura</h5>
+            <div class="dropdown">
+                <button onclick="showClosingHour()" class="dropbtn" id="closing">13:00</button>
+                <ul id="closingDropdown" class="dropdown-content">
+                        <li class="closingHour">09:00</li>
+                        <li class="closingHour">13:00</li>
+                        <li class="closingHour">19:30</li>
+                        <li class="closingHour">20:00</li>
+                        <li class="closingHour">21:00</li>
+                        <li class="closingHour">23:00</li>
+                        <li class="closingHour">00:00</li>
+                </ul>
+            </div>
+            <h5 class="label">Tipologia</h5>
+            <ul class="moreOptions">
+                <li class="optionItem" id="comunale">
+                    <div>Comunale</div>
+                </li>
+                <li class="optionItem lastItem" id="nonComunale">
+                    <div>Non Comunale</div>
+                </li>
+            </ul>`);
+            break;
+        case 'centriAnziani': 
+            document.getElementById("advancedService").innerHTML = "Centri Anziani";
+            $("#sideOptions").append(`
+            <h5 class="label">Proprietà</h5>
+            <ul class="moreOptions">
+                <li class="optionItem">
+                    <div>Comune</div>
+                </li>
+                <li class="optionItem">
+                    <div>ASP</div>
+                </li>
+                <li class="optionItem lastItem">
+                    <div>ATER</div>
+                </li>
+            </ul>
+            <h5 class="label">Quota</h5>
+            <ul class="moreOptions">
+                <li class="optionItem">
+                    <div>0</div>
+                </li>
+                <li class="optionItem">
+                    <div>5</div>
+                </li>
+                <li class="optionItem">
+                    <div>8</div>
+                </li>
+                <li class="optionItem lastItem">
+                    <div>10</div>
+                </li>
+            </ul>
+            <h5 class="label">Iscrizione</h5>
+                <ul class="moreOptions">
+                    <li class="optionItem">
+                        <div>Sì</div>
+                    </li>
+                    <li class="optionItem lastItem">
+                        <div>No</div>
+                    </li>
+                </ul>
+            <h5 class="label">Statuto</h5>
+                <ul class="moreOptions">
+                    <li class="optionItem">
+                        <div>Sì</div>
+                    </li>
+                    <li class="optionItem lastItem">
+                        <div>No</div>
+                    </li>
+                </ul>    
+        `);
+            break;
+        case 'ospedali':
+            document.getElementById("advancedService").innerHTML = "Ospedali";
+            $("#sideOptions").append(`
+            <h5 class="label">Tipologia</h5>
+            <ul class="moreOptions">
+                <li class="optionItem">
+                    <div>Casa Di Cura</div>
+                </li>
+                <li class="optionItem">
+                    <div>Ospdale Pubblico</div>
+                </li>
+                <li class="optionItem">
+                    <div>URP</div>
+                </li>
+                <li class="optionItem lastItem">
+                    <div>Azienda Ospedaliera</div>
+                </li>
+            </ul>
+            `);
+            break;
+        case 'presidi':
+            document.getElementById("advancedService").innerHTML = "Presidi ASL";
+            break;
+        case 'disabiliSociali':
+            document.getElementById("advancedService").innerHTML = "Centri Assistenziali Disabili Sociali";
+            $("#sideOptions").append(`
+            <h5 class="label">Tipologia</h5>
+            <ul class="moreOptions">
+                <li class="optionItem">
+                    <div>Residenza</div>
+                </li>
+                <li class="optionItem lastItem">
+                    <div>Centro Diurno</div>
+                </li>
+            </ul>
+            `);
+            break;
+        case 'marginalita':
+            document.getElementById("advancedService").innerHTML = "Centri Inclusione Sociale";
+            $("#sideOptions").append(`
+            <h5 class="label">Tipologia Struttura</h5>
+            <ul class="moreOptions">
+                <li class="optionItem">
+                    <div>Residenziale Donne</div>
+                </li>
+                <li class="optionItem">
+                    <div>Residenziale Uomini</div>
+                </li>
+                <li class="optionItem">
+                    <div>Residenziale MSNA</div>
+                </li>
+                <li class="optionItem">
+                    <div>Appartamenti</div>
+                </li>
+                <li class="optionItem">
+                    <div>Campo Nomadi</div>
+                </li>
+                <li class="optionItem">
+                    <div>Mensa</div>
+                </li>
+                <li class="optionItem lastItem">
+                    <div>Centro Diurno</div>
+                </li>
+            </ul>
+            <h5 class="label">Tipologia</h5>
+            <ul class="moreOptions">
+                <li class="optionItem">
+                    <div>Nomadi</div>
+                </li>
+                <li class="optionItem">
+                    <div>(Ex) Detenuti</div>
+                </li>
+                <li class="optionItem">
+                    <div>Rifugiati</div>
+                </li>
+                <li class="optionItem">
+                    <div>Senza Fissa Dimora</div>
+                </li>
+                <li class="optionItem lastItem">
+                    <div>Immigrati</div>
+                </li>
+            </ul>
+            `);
+            break;
+        case 'cimiteri':
+            document.getElementById("advancedService").innerHTML = "Cimiteri";
+            break;
+        case 'riabilitazione':
+            document.getElementById("advancedService").innerHTML = "Centri Riabilitazione";
+            break;
+        case 'anzianiNONauto':
+            document.getElementById("advancedService").innerHTML = "Centri Assistenziali Anziani Non Autosufficienti";
+            $("#sideOptions").append(`
+            <h5 class="label">Tipologia</h5>
+            <ul class="moreOptions">
+                <li class="optionItem">
+                    <div>Residenza</div>
+                </li>
+                <li class="optionItem lastItem">
+                    <div>Centro Diurno</div>
+                </li>
+            </ul>
+            <h5 class="label">Gestione</h5>
+            <ul class="moreOptions">
+                <li class="optionItem">
+                    <div>Privata</div>
+                </li>
+                <li class="optionItem">
+                    <div>Convenzionata</div>
+                </li>
+                <li class="optionItem lastItem">
+                    <div>Diretta ASL</div>
+                </li>
+            </ul>
+            `);
+            break;
+        case 'anzianiAuto': 
+            document.getElementById("advancedService").innerHTML = "Centri Assistenziali Anziani Autosufficienti";
+            $("#sideOptions").append(`
+            <h5 class="label">Tipologia</h5>
+            <ul class="moreOptions">
+                <li class="optionItem">
+                    <div>Residenza</div>
+                </li>
+                <li class="optionItem">
+                    <div>Centro Diurno</div>
+                </li>
+                <li class="optionItem lastItem">
+                    <div>Comunità</div>
+                </li>
+            </ul>
+            <h5 class="label">Gestione</h5>
+            <ul class="moreOptions">
+                <li class="optionItem">
+                    <div>Pubblica</div>
+                </li>
+                <li class="optionItem">
+                    <div>Privata</div>
+                </li>
+                <li class="optionItem">
+                    <div>Convenzionata</div>
+                </li>
+                <li class="optionItem lastItem">
+                    <div>Diretta</div>
+                </li>
+            </ul>
+            `);
+            break;
+        case 'disabiliFisici':
+            document.getElementById("advancedService").innerHTML = "Centri Assistenziali Disabili Fisici";
+            break;
+        case 'dipendenze':
+            document.getElementById("advancedService").innerHTML = "Centri Assistenziali Dipendenze";
+            $("#sideOptions").append(`
+            <h5 class="label">Tipologia</h5>
+            <ul class="moreOptions">
+                <li class="optionItem">
+                    <div>Residenza</div>
+                </li>
+                <li class="optionItem">
+                    <div>Centro Diurno</div>
+                </li>
+                <li class="optionItem">
+                    <div>Centro Di Orientamento</div>
+                </li>
+                <li class="optionItem">
+                    <div>Centro Di Socializzazione</div>
+                </li>
+                <li class="optionItem lastItem">
+                    <div>Ambulatorio</div>
+                </li>
+            </ul>
+            <h5 class="label">Gestione</h5>
+            <ul class="moreOptions">
+                <li class="optionItem">
+                    <div>Diretta</div>
+                </li>
+                <li class="optionItem lastItem">
+                    <div>Convenzionata</div>
+                </li>
+            </ul>
+            `);
+            break;
+        case 'disabiliPsichici':
+            document.getElementById("advancedService").innerHTML = "Centri Assistenziali Disabili Psichici";
+            $("#sideOptions").append(`
+            <h5 class="label">Gestione</h5>
+            <ul class="moreOptions">
+                <li class="optionItem">
+                    <div>Convenzionata</div>
+                </li>
+                <li class="optionItem lastItem">
+                    <div>Fuori Convenzione</div>
+                </li>
+            </ul>
+            `);
+            break;
+        case 'siast':
+            document.getElementById("advancedService").innerHTML = "Siast";
+            break;
+        case 'saluteMentale':
+            document.getElementById("advancedService").innerHTML = "Centri Salute Mentale";
+            $("#sideOptions").append(`
+            <h5 class="label">Tipologia</h5>
+            <ul class="moreOptions">
+                <li class="optionItem">
+                    <div>Ambulatorio</div>
+                </li>
+                <li class="optionItem">
+                    <div>Centro Diurno</div>
+                </li>
+                <li class="optionItem lastItem">
+                    <div>Residenza</div>
+                </li>
+            </ul>
+            <h5 class="label">Gestione</h5>
+            <ul class="moreOptions">
+                <li class="optionItem">
+                    <div>Pubblica</div>
+                </li>
+                <li class="optionItem">
+                    <div>Privata</div>
+                </li>
+                <li class="optionItem lastItem">
+                    <div>Convenzionata</div>
+                </li>
+            </ul>
+            `);
+            break;
+        case 'assistMinori':
+            document.getElementById("advancedService").innerHTML = "Centri Assistenziali Minori";
+            $("#sideOptions").append(`
+            <h5 class="label">Tipologia Struttura</h5>
+            <ul class="moreOptions">
+                <li class="optionItem">
+                    <div>Centro Diurno</div>
+                </li>
+                <li class="optionItem">
+                    <div>Casa Famiglia</div>
+                </li>
+                <li class="optionItem">
+                    <div>Appartamenti Per Minori</div>
+                </li>
+                <li class="optionItem">
+                    <div>Madre con figlio</div>
+                </li>
+                <li class="optionItem">
+                    <div>Comunità</div>
+                </li>
+                <li class="optionItem">
+                    <div>Giovani 18-21</div>
+                </li>
+                <li class="optionItem">
+                    <div>Centro Pronto Accoglimento</div>
+                </li>
+                <li class="optionItem lastItem">
+                    <div>Semiconvitto</div>
+                </li>
+            </ul>
+            `);
+            break;
+    }
 }
