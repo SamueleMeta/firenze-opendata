@@ -399,9 +399,11 @@ function initAutocomplete() {
         document.getElementsByClassName('service')[i]
             .addEventListener('click', function () {
                 if (this.getAttribute('data-selected') == 'false') {
+                    this.setAttribute('data-selected', 'true');
                     addServiceMarkers(this, this.id);
                 }
                 else {
+                    this.setAttribute('data-selected', 'false');
                     deleteServiceMarkers(this, this.id);
                 }
             });
