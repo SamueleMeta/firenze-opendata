@@ -1,4 +1,4 @@
-function drawCircles(map, centerCoords, radius) {
+function drawCircles(map, centerCoords, radius) { //DEPRECATED
     if (firstCircle) {
         circle = new google.maps.Circle({
             strokeColor: '#FF0000',
@@ -57,7 +57,7 @@ function addServiceMarkers(clss, id) {
     }
     $("#" + id).css('background-color', color);
     $("#" + id).css('border-color', color);
-    clss.setAttribute('data-selected', 'true');
+    //clss.setAttribute('data-selected', 'true');
     xobj.onreadystatechange = function () {
         if (xobj.readyState == 4 && xobj.status == "200") {
             // Required use of an anonymous callback as .open will NOT return a value but simply returns undefined in asynchronous mode
