@@ -1,29 +1,23 @@
-function drawCircles(map, centerCoords, radius) { //DEPRECATED
-    if (firstCircle) {
-        circle = new google.maps.Circle({
-            strokeColor: '#FF0000',
-            strokeOpacity: 0.8,
-            strokeWeight: 2,
-            fillColor: '#FF0000',
-            fillOpacity: 0.35,
-            map: map,
-            center: centerCoords,
-            radius: parseFloat(radius)
-        });
-        firstCircle = false;
-    } else {
-        circle.setMap(null);
-        circle = new google.maps.Circle({
-            strokeColor: '#FF0000',
-            strokeOpacity: 0.8,
-            strokeWeight: 2,
-            fillColor: '#FF0000',
-            fillOpacity: 0.35,
-            map: map,
-            center: centerCoords,
-            radius: parseFloat(radius)
-        });
-    }
+//Set Center on user's position
+function showUserPosition(position) {
+    map.setCenter(new google.maps.LatLng(position.coords.latitude, position.coords.longitude));
+    mainMarker = (new google.maps.Marker({
+        position: { lat: position.coords.latitude, lng: position.coords.longitude },
+        map: map,
+    }));
+    userPosition.lat = position.coords.latitude;
+    userPosition.lng = position.coords.longitude;
+}
+
+function showDefaultLocation(){
+    //Default Location: Florence's town center
+    map.setCenter(new google.maps.LatLng(43.7792500, 11.2462600));
+        mainMarker = (new google.maps.Marker({
+            position: { lat: 43.7792500, lng: 11.2462600 },
+            map: null,
+        }));
+        userPosition.lat = 43.7792500;
+        userPosition.lng = 11.2462600;;
 }
 
 function addServiceMarkers(clss, id) {

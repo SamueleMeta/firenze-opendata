@@ -17,7 +17,9 @@ $('#pac-input-options').on("blur", function () {
 
 $('#levels').on("click", function () {
     displayAdvancedSearch(this.classList[0]);
-    drawCircles(null, userPosition, Infinity);
+    circle.setMap(null);
+    circle.setCenter(new google.maps.LatLng(userPosition.lat, userPosition.lng));
+    circle.radius = Infinity;
     $(".range-slider__range").val(0);
     $(".range-slider__value").html("0");
     $('#pac-input').hide();
@@ -233,19 +235,8 @@ var ColorStack = function () {
 var colorStack = new ColorStack();
 
 function initAutocomplete() {
-    //Set Center on user's position
-    function showPosition(position) {
-        map.setCenter(new google.maps.LatLng(position.coords.latitude, position.coords.longitude));
-        mainMarker = (new google.maps.Marker({
-            position: { lat: position.coords.latitude, lng: position.coords.longitude },
-            map: map,
-        }));
-        userPosition.lat = position.coords.latitude;
-        userPosition.lng = position.coords.longitude;
-    }
-
     if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(showPosition);
+        navigator.geolocation.getCurrentPosition(showUserPosition, showDefaultLocation);   
     }
 
     var directionsService = new google.maps.DirectionsService();
