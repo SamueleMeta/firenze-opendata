@@ -54,7 +54,7 @@ $('#resetIconDefault').on("click", function () {
     for(i=0; i<markers.length; i++){
         markers[i].setMap(null);
     }
-    circle.setCenter(43.7792500, 11.2462600);
+    circle.setCenter(new google.maps.LatLng(43.7792500, 11.2462600));
     circle.radius = Infinity;
     $(this).hide();
 });
@@ -71,7 +71,7 @@ $('#resetIconOptions').on("click", function () {
     for(i=0; i<markers.length; i++){
         markers[i].setMap(null);
     }
-    circle.setCenter(43.7792500, 11.2462600);
+    circle.setCenter(new google.maps.LatLng(43.7792500, 11.2462600));
     circle.setMap(null);
     circle.radius = Infinity;
     $(this).hide();

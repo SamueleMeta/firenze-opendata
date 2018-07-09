@@ -20,9 +20,7 @@ $('#pac-input-options').on("blur", function () {
 });
 
 $('.service-info').on("click", function () {
-    //displayAdvancedSearch(this.parentNode.parentNode.id);
     circle.setMap(null);
-    //circle.setCenter(new google.maps.LatLng(userPosition.lat, userPosition.lng));
     circle.radius = Infinity;
     $(".range-slider__range").val(0);
     $(".range-slider__value").html("0");
@@ -54,7 +52,7 @@ $('#resetIconDefault').on("click", function () {
     for(i=0; i<markers.length; i++){
         markers[i].setMap(null);
     }
-    circle.setCenter(43.7792500, 11.2462600);
+    circle.setCenter(new google.maps.LatLng(43.7792500, 11.2462600));
     circle.radius = Infinity;
     $(this).hide();
 });
@@ -71,7 +69,7 @@ $('#resetIconOptions').on("click", function () {
     for(i=0; i<markers.length; i++){
         markers[i].setMap(null);
     }
-    circle.setCenter(43.7792500, 11.2462600);
+    circle.setCenter(new google.maps.LatLng(43.7792500, 11.2462600));
     circle.setMap(null);
     circle.radius = Infinity;
     $(this).hide();
