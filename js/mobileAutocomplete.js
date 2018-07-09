@@ -25,12 +25,7 @@ $('#levels').on("click", function () {
     setTimeout(function () {
         $(".pac-container").prependTo("#searchResultsOptions");
     }, 300);
-    for (var i = 0; i < document.getElementsByClassName('optionItem').length; i++) {
-        document.getElementsByClassName('optionItem')[i]
-            .addEventListener('click', function () {
-                $(this).toggleClass('selected');
-            });
-    }
+    addListenersToOptionsMenu();
 });
 
 $('#cancelIcon').on("click", function () {
@@ -46,11 +41,11 @@ $('#backIcon').on("click", function () {
     $("#sidemenu").show();
     $("#mapWrapper").hide();
     var element = document.getElementById("levels");
-    var rgbColor = $("#"+element.className).css('backgroundColor');
+    var rgbColor = $("#" + element.className).css('backgroundColor');
     var hexColor = hexc(rgbColor);
     colorStack.push(hexColor);
-    $("#"+element.className).css('background-color', "transparent");
-    $("#"+element.className).css('border-color', "hsla(0, 0%, 100%, .43)");
+    $("#" + element.className).css('background-color', "transparent");
+    $("#" + element.className).css('border-color', "hsla(0, 0%, 100%, .43)");
     element.setAttribute("data-selected", "false");
     deleteMarkers(element.className);
     circle.setMap(null);
@@ -62,14 +57,6 @@ $('#backIcon').on("click", function () {
     $("#sideOptions .label").remove();
     $("#sideOptions .moreOptions").remove();
     $("#sideOptions .dropdown").remove();
-});
-
-$('.dropdown-content .openingHour').on("click", function () {
-    $("#opening").html($(this).html());
-});
-
-$('.dropdown-content .closingHour').on("click", function () {
-    $("#closing").html($(this).html());
 });
 
 var rangeSlider = function () {
@@ -430,8 +417,8 @@ function initAutocomplete() {
                 }
                 else {
                     deleteServiceMarkers(this, this.id);
-                    selected -=1;
-                    if(selected < 1){
+                    selected -= 1;
+                    if (selected < 1) {
                         $(".swipe").show();
                     }
                 }

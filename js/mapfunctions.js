@@ -277,7 +277,7 @@ function populateOptions(id) {
             $("#sideOptions").append(`
             <h5 class="label">Orario di apertura</h5>
             <div class="dropdown">
-                <button onclick="showOpeningHour()" class="dropbtn" id="opening">08:00</button>
+                <button onclick="showOpeningHour()" class="dropbtn" id="opening">--:--</button>
                 <ul id="openingDropdown" class="dropdown-content">
                     <li class="openingHour">08:00</li>
                     <li class="openingHour">09:00</li>
@@ -288,7 +288,7 @@ function populateOptions(id) {
             </div>
             <h5 class="label">Orario di chiusura</h5>
             <div class="dropdown">
-                <button onclick="showClosingHour()" class="dropbtn" id="closing">13:00</button>
+                <button onclick="showClosingHour()" class="dropbtn" id="closing">--:--</button>
                 <ul id="closingDropdown" class="dropdown-content">
                         <li class="closingHour">09:00</li>
                         <li class="closingHour">13:00</li>
@@ -620,5 +620,28 @@ function populateOptions(id) {
             </ul>
             `);
             break;
+    }
+}
+
+function addListenersToOptionsMenu() {
+    for (var i = 0; i < document.getElementsByClassName('optionItem').length; i++) {
+        document.getElementsByClassName('optionItem')[i]
+            .addEventListener('click', function () {
+                $(this).toggleClass('selected');
+            });
+    }
+
+    for (var i = 0; i < document.getElementsByClassName('openingHour').length; i++) {
+        document.getElementsByClassName('openingHour')[i]
+            .addEventListener('click', function () {
+                $("#opening").html($(this).html());
+            });
+    }
+    
+    for (var i = 0; i < document.getElementsByClassName('closingHour').length; i++) {
+        document.getElementsByClassName('closingHour')[i]
+            .addEventListener('click', function () {
+                $("#closing").html($(this).html());
+            });
     }
 }
