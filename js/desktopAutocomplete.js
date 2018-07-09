@@ -29,6 +29,8 @@ $('.service-info').on("click", function () {
     setTimeout(function () {
         $(".pac-container").prependTo("#searchResultsOptions");
     }, 300);
+    populateOptions(this.parentNode.parentNode.id);
+    addListenersToOptionsMenu();
     displayAdvancedSearch(this.parentNode.parentNode.id);
 });
 
@@ -39,6 +41,9 @@ $('#cancelIcon').on("click", function () {
         $(".pac-container").prependTo("#searchResults");
     }, 300);
     $('#pac-input').delay(290).show(0);
+    $("#sideOptions .label").remove();
+    $("#sideOptions .moreOptions").remove();
+    $("#sideOptions .dropdown").remove();
 });
 
 $('#pac-input').on("change", function () {
