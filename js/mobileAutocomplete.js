@@ -59,6 +59,9 @@ $('#backIcon').on("click", function () {
         $(".pac-container").prependTo("#searchResults");
     }, 300);
     $('#pac-input').delay(290).show(0);
+    $("#sideOptions .label").remove();
+    $("#sideOptions .moreOptions").remove();
+    $("#sideOptions .dropdown").remove();
 });
 
 $('.dropdown-content .openingHour').on("click", function () {

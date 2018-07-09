@@ -560,6 +560,18 @@ h1 {
         left: -100%;
     }
 
+    #sideOptions::-webkit-scrollbar-track {
+        display: none;
+    }
+    
+    #sideOptions::-webkit-scrollbar {
+        display: none;
+    }
+    
+    #sideOptions::-webkit-scrollbar-thumb {
+        display: none;
+    }
+
     #showMap {
         display: block;
     }
