@@ -17,7 +17,7 @@ function showDefaultLocation(){
             map: null,
         }));
         userPosition.lat = 43.7792500;
-        userPosition.lng = 11.2462600;;
+        userPosition.lng = 11.2462600;
 }
 
 function addServiceMarkers(clss, id) {

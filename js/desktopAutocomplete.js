@@ -1,18 +1,22 @@
 // JQUERY FUNCTIONS
 $('#pac-input').on("focus", function () {
     $('.searchIcon').attr("src", "img/green-searcher.png");
+    $('.resetIcon').attr("src", "img/green-close.png");
 });
 
 $('#pac-input').on("blur", function () {
     $('.searchIcon').attr("src", "img/searcher.png");
+    $('.resetIcon').attr("src", "img/close.png");
 });
 
 $('#pac-input-options').on("focus", function () {
     $('.searchIcon').attr("src", "img/green-searcher.png");
+    $('.resetIcon').attr("src", "img/green-close.png");
 });
 
 $('#pac-input-options').on("blur", function () {
     $('.searchIcon').attr("src", "img/searcher.png");
+    $('.resetIcon').attr("src", "img/close.png");
 });
 
 $('.service-info').on("click", function () {
@@ -37,6 +41,40 @@ $('#cancelIcon').on("click", function () {
         $(".pac-container").prependTo("#searchResults");
     }, 300);
     $('#pac-input').delay(290).show(0);
+});
+
+$('#pac-input').on("change", function () {
+    this.placeholder = "Cerca sulla mappa...";
+});
+
+$('#resetIconDefault').on("click", function () {
+    document.getElementById('pac-input').value='';
+    showDefaultLocation();
+    map.setZoom(13);
+    for(i=0; i<markers.length; i++){
+        markers[i].setMap(null);
+    }
+    circle.setCenter(43.7792500, 11.2462600);
+    circle.radius = Infinity;
+    $(this).hide();
+});
+
+$('#pac-input-options').on("change", function () {
+    this.placeholder = "Cerca sulla mappa...";
+});
+
+$('#resetIconOptions').on("click", function () {
+    document.getElementById('pac-input-options').value='';
+    $(".range-slider__range").val(0);
+    $(".range-slider__value").html("0");
+    showDefaultLocation();
+    for(i=0; i<markers.length; i++){
+        markers[i].setMap(null);
+    }
+    circle.setCenter(43.7792500, 11.2462600);
+    circle.setMap(null);
+    circle.radius = Infinity;
+    $(this).hide();
 });
 
 $('.dropdown-content #openingHour').on("click", function () {
@@ -321,6 +359,7 @@ function initAutocomplete() {
             circle.radius = Infinity;
         }
         showInRangeMarkers();
+        $("#resetIconDefault").show();
     });
 
     searchBoxOptions.addListener('places_changed', function () {
@@ -371,6 +410,7 @@ function initAutocomplete() {
             circle.radius = Infinity;
         }
         showInRangeMarkers();
+        $("#resetIconOptions").show();
     });
     
     //Initialize Circle

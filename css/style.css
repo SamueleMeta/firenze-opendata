@@ -86,10 +86,18 @@ h1 {
 }
 
 .searchWrapper {
-    width: 100%;
     display: block;
     margin: auto;
     padding-left: 5%;
+    vertical-align: middle;
+}
+
+.resetIcon {
+    width: 12px;
+    height: 12px;
+    margin-left: 2%;
+    vertical-align: -webkit-baseline-middle;
+    display: none;
 }
 
 .searchIcon {
