@@ -41,6 +41,11 @@ $('#cancelIcon').on("click", function () {
         $(".pac-container").prependTo("#searchResults");
     }, 300);
     $('#pac-input').delay(290).show(0);
+    firstFilter = true;
+    /*serviceMarkers.forEach(function(element){
+        element.filtered = false;
+    });
+    showInRangeMarkers();*/
 });
 
 $('#pac-input').on("change", function () {
@@ -241,12 +246,14 @@ var mapOptions = {
 }
 var map;
 var serviceMarkers = [];
+var markersData = [];
 var infoWindows = [];
 var markers = [];
 var mainMarker;
 var userPosition = {};
 var firstCircle = true;
 var circle = {};
+var firstFilter = true;
 var selected = 0;
 
 var ColorStack = function () {

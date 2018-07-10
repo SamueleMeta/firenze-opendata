@@ -51,11 +51,11 @@ function addServiceMarkers(clss, id) {
     }
     $("#" + id).css('background-color', color);
     $("#" + id).css('border-color', color);
-    //clss.setAttribute('data-selected', 'true');
     xobj.onreadystatechange = function () {
         if (xobj.readyState == 4 && xobj.status == "200") {
             // Required use of an anonymous callback as .open will NOT return a value but simply returns undefined in asynchronous mode
             var callback = JSON.parse(xobj.responseText);
+            markersData.push(callback);
             for (var place in callback.features) {
                 var longitude = callback.features[place].geometry.coordinates[0];
                 var latitude = callback.features[place].geometry.coordinates[1];
@@ -107,6 +107,7 @@ function handleColor(clss, id){
 function deleteMarkers(id){
     //Backward looping to avoid index skipping
     var i = serviceMarkers.length;
+    var j = markersData.length;
     while (i--) {
         if (serviceMarkers[i] != null && serviceMarkers[i].serviceID == id) {
             serviceMarkers[i].setMap(null);
@@ -117,6 +118,10 @@ function deleteMarkers(id){
             infoWindows.splice(i, 1);
         }
     }
+    while(j--){
+        if(markersData[j].id == id)
+            markersData.splice(j,1);
+}
 }
 
 function showInRangeMarkers(){
@@ -162,8 +167,10 @@ function produceContent(jsonProperties) {
         result += "<h5>Indirizzo: </h5>" + jsonProperties.VIA + ", " + jsonProperties.NCIVICO + "<br>";
     if (jsonProperties.hasOwnProperty('TIPOSTRUTT'))
         result += "<h5>Tipo struttura: </h5>" + jsonProperties.TIPOSTRUTT + "<br>";
-    if (jsonProperties.hasOwnProperty('TIPOLOGIA'))
+    if (jsonProperties.hasOwnProperty('TIPOLOGIA')){
+        if (jsonProperties.TIPOLOGIA != "")
         result += "<h5>Tipologia: </h5>" + jsonProperties.TIPOLOGIA + "<br>";
+    }
     if (jsonProperties.hasOwnProperty('PRINCIPALI')){
         if (jsonProperties.PRINCIPALI != "")
             result += "<h5>Note: </h5>" + jsonProperties.PRINCIPALI + "<br>";
@@ -298,7 +305,7 @@ function populateOptions(id) {
                 <li class="optionItem" id="comunale">
                     <div>Comunale</div>
                 </li>
-                <li class="optionItem lastItem" id="nonComunale">
+                <li class="optionItem lastItem" id="NONcomunale">
                     <div>Non Comunale</div>
                 </li>
             </ul>`);
@@ -308,46 +315,46 @@ function populateOptions(id) {
             $("#sideOptions").append(`
             <h5 class="label">Proprietà</h5>
             <ul class="moreOptions">
-                <li class="optionItem">
+                <li class="optionItem" id="comune">
                     <div>Comune</div>
                 </li>
-                <li class="optionItem">
+                <li class="optionItem" id="ASP">
                     <div>ASP</div>
                 </li>
-                <li class="optionItem lastItem">
+                <li class="optionItem lastItem" id="ATER">
                     <div>ATER</div>
                 </li>
             </ul>
             <h5 class="label">Quota</h5>
             <ul class="moreOptions">
-                <li class="optionItem">
-                    <div>0</div>
+                <li class="optionItem" id="0">
+                    <div>0€</div>
                 </li>
-                <li class="optionItem">
-                    <div>5</div>
+                <li class="optionItem" id="5">
+                    <div>5€</div>
                 </li>
-                <li class="optionItem">
-                    <div>8</div>
+                <li class="optionItem" id="8">
+                    <div>8€</div>
                 </li>
-                <li class="optionItem lastItem">
-                    <div>10</div>
+                <li class="optionItem lastItem" id="10">
+                    <div>10€</div>
                 </li>
             </ul>
             <h5 class="label">Iscrizione</h5>
                 <ul class="moreOptions">
-                    <li class="optionItem">
+                    <li class="optionItem" id="si">
                         <div>Sì</div>
                     </li>
-                    <li class="optionItem lastItem">
+                    <li class="optionItem lastItem" id="no">
                         <div>No</div>
                     </li>
                 </ul>
             <h5 class="label">Statuto</h5>
                 <ul class="moreOptions">
-                    <li class="optionItem">
+                    <li class="optionItem" id="Si">
                         <div>Sì</div>
                     </li>
-                    <li class="optionItem lastItem">
+                    <li class="optionItem lastItem" id="No">
                         <div>No</div>
                     </li>
                 </ul>    
@@ -358,16 +365,16 @@ function populateOptions(id) {
             $("#sideOptions").append(`
             <h5 class="label">Tipologia</h5>
             <ul class="moreOptions">
-                <li class="optionItem">
+                <li class="optionItem" id="casaDiCura">
                     <div>Casa Di Cura</div>
                 </li>
-                <li class="optionItem">
+                <li class="optionItem" id="ospedalePubblico">
                     <div>Ospdale Pubblico</div>
                 </li>
-                <li class="optionItem">
+                <li class="optionItem" id="URP">
                     <div>URP</div>
                 </li>
-                <li class="optionItem lastItem">
+                <li class="optionItem lastItem" id="azienda">
                     <div>Azienda Ospedaliera</div>
                 </li>
             </ul>
@@ -381,10 +388,10 @@ function populateOptions(id) {
             $("#sideOptions").append(`
             <h5 class="label">Tipologia</h5>
             <ul class="moreOptions">
-                <li class="optionItem">
+                <li class="optionItem" id="residenza">
                     <div>Residenza</div>
                 </li>
-                <li class="optionItem lastItem">
+                <li class="optionItem lastItem" id="diurno">
                     <div>Centro Diurno</div>
                 </li>
             </ul>
@@ -395,43 +402,43 @@ function populateOptions(id) {
             $("#sideOptions").append(`
             <h5 class="label">Tipologia Struttura</h5>
             <ul class="moreOptions">
-                <li class="optionItem">
+                <li class="optionItem" id="residenzaDonne">
                     <div>Residenziale Donne</div>
                 </li>
-                <li class="optionItem">
+                <li class="optionItem" id="residenzaUomini">
                     <div>Residenziale Uomini</div>
                 </li>
-                <li class="optionItem">
+                <li class="optionItem" id="MSNA">
                     <div>Residenziale MSNA</div>
                 </li>
-                <li class="optionItem">
+                <li class="optionItem" id="appartamenti">
                     <div>Appartamenti</div>
                 </li>
-                <li class="optionItem">
+                <li class="optionItem" id="campoNomadi">
                     <div>Campo Nomadi</div>
                 </li>
-                <li class="optionItem">
+                <li class="optionItem" id="mensa">
                     <div>Mensa</div>
                 </li>
-                <li class="optionItem lastItem">
+                <li class="optionItem lastItem" id="centroDiurno">
                     <div>Centro Diurno</div>
                 </li>
             </ul>
             <h5 class="label">Tipologia</h5>
             <ul class="moreOptions">
-                <li class="optionItem">
+                <li class="optionItem" id="nomadi">
                     <div>Nomadi</div>
                 </li>
-                <li class="optionItem">
+                <li class="optionItem" id="detenuti">
                     <div>(Ex) Detenuti</div>
                 </li>
-                <li class="optionItem">
+                <li class="optionItem" id="rifugiati">
                     <div>Rifugiati</div>
                 </li>
-                <li class="optionItem">
+                <li class="optionItem" id="senza fissa">
                     <div>Senza Fissa Dimora</div>
                 </li>
-                <li class="optionItem lastItem">
+                <li class="optionItem lastItem" id="immigrati">
                     <div>Immigrati</div>
                 </li>
             </ul>
@@ -448,22 +455,22 @@ function populateOptions(id) {
             $("#sideOptions").append(`
             <h5 class="label">Tipologia</h5>
             <ul class="moreOptions">
-                <li class="optionItem">
+                <li class="optionItem" id="Residenza">
                     <div>Residenza</div>
                 </li>
-                <li class="optionItem lastItem">
+                <li class="optionItem lastItem" id="CentroDiurno">
                     <div>Centro Diurno</div>
                 </li>
             </ul>
             <h5 class="label">Gestione</h5>
             <ul class="moreOptions">
-                <li class="optionItem">
+                <li class="optionItem" id="privata">
                     <div>Privata</div>
                 </li>
-                <li class="optionItem">
+                <li class="optionItem" id="convenzionata">
                     <div>Convenzionata</div>
                 </li>
-                <li class="optionItem lastItem">
+                <li class="optionItem lastItem" id="diretta">
                     <div>Diretta ASL</div>
                 </li>
             </ul>
@@ -474,28 +481,28 @@ function populateOptions(id) {
             $("#sideOptions").append(`
             <h5 class="label">Tipologia</h5>
             <ul class="moreOptions">
-                <li class="optionItem">
+                <li class="optionItem" id="resid.">
                     <div>Residenza</div>
                 </li>
-                <li class="optionItem">
+                <li class="optionItem" id="Diurno">
                     <div>Centro Diurno</div>
                 </li>
-                <li class="optionItem lastItem">
+                <li class="optionItem lastItem" id="comunita">
                     <div>Comunità</div>
                 </li>
             </ul>
             <h5 class="label">Gestione</h5>
             <ul class="moreOptions">
-                <li class="optionItem">
+                <li class="optionItem" id="pubblica">
                     <div>Pubblica</div>
                 </li>
-                <li class="optionItem">
+                <li class="optionItem" id="privata">
                     <div>Privata</div>
                 </li>
-                <li class="optionItem">
+                <li class="optionItem" id="convenzionata">
                     <div>Convenzionata</div>
                 </li>
-                <li class="optionItem lastItem">
+                <li class="optionItem lastItem" id="diretta">
                     <div>Diretta</div>
                 </li>
             </ul>
@@ -509,28 +516,28 @@ function populateOptions(id) {
             $("#sideOptions").append(`
             <h5 class="label">Tipologia</h5>
             <ul class="moreOptions">
-                <li class="optionItem">
+                <li class="optionItem" id="res">
                     <div>Residenza</div>
                 </li>
-                <li class="optionItem">
+                <li class="optionItem" id="centroD">
                     <div>Centro Diurno</div>
                 </li>
-                <li class="optionItem">
+                <li class="optionItem" id="orientamento">
                     <div>Centro Di Orientamento</div>
                 </li>
-                <li class="optionItem">
+                <li class="optionItem" id="socializzazione">
                     <div>Centro Di Socializzazione</div>
                 </li>
-                <li class="optionItem lastItem">
+                <li class="optionItem lastItem" id="ambulatorio">
                     <div>Ambulatorio</div>
                 </li>
             </ul>
             <h5 class="label">Gestione</h5>
             <ul class="moreOptions">
-                <li class="optionItem">
+                <li class="optionItem" id="diretta">
                     <div>Diretta</div>
                 </li>
-                <li class="optionItem lastItem">
+                <li class="optionItem lastItem" id="convenzionata">
                     <div>Convenzionata</div>
                 </li>
             </ul>
@@ -541,10 +548,10 @@ function populateOptions(id) {
             $("#sideOptions").append(`
             <h5 class="label">Gestione</h5>
             <ul class="moreOptions">
-                <li class="optionItem">
+                <li class="optionItem" id="convenzionata">
                     <div>Convenzionata</div>
                 </li>
-                <li class="optionItem lastItem">
+                <li class="optionItem lastItem" id="fuoriConvenzione">
                     <div>Fuori Convenzione</div>
                 </li>
             </ul>
@@ -558,25 +565,25 @@ function populateOptions(id) {
             $("#sideOptions").append(`
             <h5 class="label">Tipologia</h5>
             <ul class="moreOptions">
-                <li class="optionItem">
+                <li class="optionItem" id="Ambulatorio">
                     <div>Ambulatorio</div>
                 </li>
-                <li class="optionItem">
+                <li class="optionItem" id="cDiurno">
                     <div>Centro Diurno</div>
                 </li>
-                <li class="optionItem lastItem">
+                <li class="optionItem lastItem" id="Res">
                     <div>Residenza</div>
                 </li>
             </ul>
             <h5 class="label">Gestione</h5>
             <ul class="moreOptions">
-                <li class="optionItem">
-                    <div>Pubblica</div>
+                <li class="optionItem" id="diretta">
+                    <div>Diretta</div>
                 </li>
-                <li class="optionItem">
+                <li class="optionItem" id="privata">
                     <div>Privata</div>
                 </li>
-                <li class="optionItem lastItem">
+                <li class="optionItem lastItem" id="convenzionata">
                     <div>Convenzionata</div>
                 </li>
             </ul>
@@ -587,28 +594,28 @@ function populateOptions(id) {
             $("#sideOptions").append(`
             <h5 class="label">Tipologia Struttura</h5>
             <ul class="moreOptions">
-                <li class="optionItem">
+                <li class="optionItem" id="CDiurno">
                     <div>Centro Diurno</div>
                 </li>
-                <li class="optionItem">
+                <li class="optionItem" id="casaFamiglia">
                     <div>Casa Famiglia</div>
                 </li>
-                <li class="optionItem">
+                <li class="optionItem" id="appartamentiMinori">
                     <div>Appartamenti Per Minori</div>
                 </li>
-                <li class="optionItem">
+                <li class="optionItem" id="madreFiglio">
                     <div>Madre con figlio</div>
                 </li>
-                <li class="optionItem">
+                <li class="optionItem" id="Comunita">
                     <div>Comunità</div>
                 </li>
-                <li class="optionItem">
+                <li class="optionItem" id="18-21">
                     <div>Giovani 18-21</div>
                 </li>
-                <li class="optionItem">
+                <li class="optionItem" id="accoglimento">
                     <div>Centro Pronto Accoglimento</div>
                 </li>
-                <li class="optionItem lastItem">
+                <li class="optionItem lastItem" id="convitto">
                     <div>Semiconvitto</div>
                 </li>
             </ul>
@@ -622,6 +629,7 @@ function addListenersToOptionsMenu() {
         document.getElementsByClassName('optionItem')[i]
             .addEventListener('click', function () {
                 $(this).toggleClass('selected');
+                typeFilter(this.id, $(this).is('.selected'));
             });
     }
 
@@ -638,4 +646,161 @@ function addListenersToOptionsMenu() {
                 $("#closing").html($(this).html());
             });
     }
+}
+
+function typeFilter(id, selected){
+    var string;
+    var type = 'TIPOLOGIA';
+    switch(id){
+        //TIPOLOGIA
+
+        //OSPEDALI
+        case 'casaDiCura': string =  'Case di cura'; break;
+        case 'ospedalePubblico': string =  'Ospedale Pubblico'; break;
+        case 'URP': string =  'URP'; break;
+        case 'azienda': string =  'Azienda Ospedaliera'; break;
+        //CENTRI ASSISTENZIALI DISABILI SOCIALI
+        case 'residenza': string =  'Residenza'; break;
+        case 'diurno': string =  'Centro diurno'; break;
+        //CENTRI INCLUSIONE SOCIALE
+        case 'nomadi': string =  'Nomadi'; break;
+        case 'detenuti': string =  'Detenuti'; break;
+        case 'senza fissa': string =  'Senza fissa'; break;
+        case 'rifugiati': string =  'rifugiati'; break;
+        case 'immigrati': string =  'Immigrati'; break;
+        //CENTRI ANZIANI NON AUTOSUFF.
+        case 'Residenza': string =  'Residenza'; break;
+        case 'CentroDiurno': string =  'Centro Diurno'; break;
+        //CENTRI ANZIANI AUTOSUFF
+        case 'resid.': string =  'Residenza'; break;
+        case 'Diurno': string =  'Centro Diurno'; break;
+        case 'comunita': string =  'Comunit'; break;
+        //CENTRI ASSITENZIALI DIPENDENZE
+        case 'res': string =  'Residenza'; break;
+        case 'centroD': string =  'Centro Diurno'; break;
+        case 'orientamento': string =  'orientamento'; break;
+        case 'socializzazione': string =  'socializzazione'; break;
+        case 'ambulatorio': string =  'Ambulatorio'; break;
+        //CENTRI SALUTE MENTALE
+        case 'Res': string =  'Residenza'; break;
+        case 'cDiurno': string =  'Diurno'; break;
+        case 'Ambulatorio': string =  'Ambulatorio'; break;
+
+        //TIPOLOGIA STRUTTURA
+        default: type = 'TIPOSTRUTT';
+            switch(id){
+                //CENTRI INCLUSIONE SOCIALE
+                case 'residenzaDonne': string =  'donne'; break;
+                case 'residenzaUomini': string =  'uomini'; break;
+                case 'MSNA': string =  'MSNA'; break;
+                case 'appartamenti': string =  'Appartamenti'; break;
+                case 'campoNomadi': string =  'nomadi'; break;
+                case 'mensa': string =  'mensa'; break;
+                case 'centroDiurno': string =  'diurno'; break;
+                //CENTRI ASSISTENZIALI MINORI
+                case 'CDiurno': string =  'Diurno'; break;
+                case 'casaFamiglia': string =  'casa famiglia'; break;
+                case 'appartamentiMinori': string =  'appartament'; break;
+                case 'madreFiglio': string =  'madre'; break;
+                case 'Comunita': string =  'comunit'; break;
+                case '18-21': string =  '18/21'; break;
+                case 'accoglimento': string =  'accoglimento'; break;
+                case 'convitto': string =  'convitto'; break;
+
+                //GESTIONE
+                default: type = 'GESTIONE';
+                    switch(id){
+                        //CENTRI ANZIANI
+                        case 'comune': string =  'Comune'; break;
+                        case 'ASP': string =  'Asp'; break;
+                        case 'ATER': string =  'ATER'; break;
+                        //CENTRI ASSISTENZIALI (NON) AUTOSUFF. + DIPENDENZE + PSICHICI
+                        case 'privata': string =  'Privat'; break;
+                        case 'pubblica': string =  'Pubblico'; break;
+                        case 'convenzionata': string =  'Convenzionata'; break;
+                        case 'fuoriConvenzione': string =  'Fuori'; break;
+                        case 'diretta': string =  'Diretta'; break;
+                        //FARMACIE
+                        case 'comunale': string =  'COMUNALE'; break;
+                        case 'NONcomunale': string =  'Non'; break;
+
+                        //QUOTA
+                        default: type = 'QUOTA_ASSO';
+                            switch(id){
+                                case '0': string ='0,00'; break; 
+                                case '5': string ='5,00'; break; 
+                                case '8': string ='8,00'; break; 
+                                case '10': string ='10,00'; break;
+                                
+                                //ISCRIZIONE
+                                default: type = 'ISCRIZIONE';
+                                    switch(id){
+                                        case 'si': string ='si'; break; 
+                                        case 'no': string ='no'; break; 
+                                        //STATUTO
+                                        default: type = 'STATUTO';
+                                            switch(id){
+                                                case 'Si': string ='si'; break; 
+                                                case 'No': string ='no'; break; 
+                                    
+                                            } 
+                                    } 
+                            } 
+                        
+
+                    }
+
+            }
+
+    }
+    var property;
+    if(firstFilter){
+        for(var place in markersData[0].features){
+            switch(type){
+                case 'TIPOLOGIA': property = markersData[0].features[place].properties.TIPOLOGIA; break;
+                case 'TIPOSTRUTT': property = markersData[0].features[place].properties.TIPOSTRUTT; break;
+                case 'GESTIONE': property = markersData[0].features[place].properties.GESTIONE; break;
+                case 'QUOTA_ASSO': property = markersData[0].features[place].properties.QUOTA_ASSO; break;
+                case 'ISCRIZIONE': property = markersData[0].features[place].properties.ISCRIZIONE; break;
+                case 'STATUTO': property = markersData[0].features[place].properties.STATUTO; break;
+            }
+            if(markersData[0].features[place].properties.hasOwnProperty(type) && property.indexOf(string) < 0){
+                for(marker in serviceMarkers){
+                    if(markersData[0].features[place].geometry.coordinates[1].toFixed(9) == serviceMarkers[marker].getPosition().lat().toFixed(9) &&
+                        markersData[0].features[place].geometry.coordinates[0].toFixed(9) == serviceMarkers[marker].getPosition().lng().toFixed(9)){
+                            serviceMarkers[marker].setMap(null);
+                            serviceMarkers[marker].filtered = true;
+                            break;
+                        }
+                }
+            }
+        }
+        firstFilter = false;
+    }
+    else{
+        for(var place in markersData[0].features){
+            switch(type){
+                case 'TIPOLOGIA': property = markersData[0].features[place].properties.TIPOLOGIA; break;
+                case 'TIPOSTRUTT': property = markersData[0].features[place].properties.TIPOSTRUTT; break;
+                case 'GESTIONE': property = markersData[0].features[place].properties.GESTIONE; break;
+                case 'QUOTA_ASSO': property = markersData[0].features[place].properties.QUOTA_ASSO; break;
+                case 'ISCRIZIONE': property = markersData[0].features[place].properties.ISCRIZIONE; break;
+                case 'STATUTO': property = markersData[0].features[place].properties.STATUTO; break;
+            }
+            if(markersData[0].features[place].properties.hasOwnProperty(type) && property.indexOf(string) >= 0){
+                for(marker in serviceMarkers){
+                    if(markersData[0].features[place].geometry.coordinates[1].toFixed(9) == serviceMarkers[marker].getPosition().lat().toFixed(9) &&
+                        markersData[0].features[place].geometry.coordinates[0].toFixed(9) == serviceMarkers[marker].getPosition().lng().toFixed(9)){
+                            if(!selected)
+                                serviceMarkers[marker].setMap(null);
+                            else    
+                                serviceMarkers[marker].setMap(map);
+                            serviceMarkers[marker].filtered = !selected;
+                            break;
+                        }
+                }
+            }
+        }
+    }
+    //showInRangeMarkers();
 }

@@ -1,4 +1,4 @@
-{"type": "FeatureCollection", "features": [
+{"type": "FeatureCollection","id":"anzianiAuto", "features": [
 {"geometry": {"type": "Point", "coordinates": [11.26322334055707, 43.77752438864005]}, "type": "Feature", "properties": {"INDIRIZZO": "Via Giusti 39", "DENOMINAZI": "SUORE DI SAN FILIPPO NERI", "SETTORE": "Assistenza anziani autosuff.", "TIPOLOGIA": "Residenza", "ID": 1, "GESTIONE": "Convenzionata"}}, 
 {"geometry": {"type": "Point", "coordinates": [11.301401474059782, 43.75911756486511]}, "type": "Feature", "properties": {"INDIRIZZO": "Via San Piero in Palco 22", "DENOMINAZI": "PICCOLA BETANIA", "SETTORE": "Assistenza anziani autosuff.", "TIPOLOGIA": "Centro Diurno", "ID": 2, "GESTIONE": "Convenzionata"}}, 
 {"geometry": {"type": "Point", "coordinates": [11.300535104653667, 43.76670912295873]}, "type": "Feature", "properties": {"INDIRIZZO": "Via di Varlungo 63", "DENOMINAZI": "S. LUISA DE MARILLAC", "SETTORE": "Assistenza anziani autosuff.", "TIPOLOGIA": "Residenza", "ID": 4, "GESTIONE": "Convenzionata"}}, 

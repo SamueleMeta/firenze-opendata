@@ -1,5 +1,5 @@
 {
-"type": "FeatureCollection",
+"type": "FeatureCollection","id":"riabilitazione",
 "crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
 "features": [
 { "type": "Feature", "properties": { "Name": "riabilitaz_exart26.6", "description": "riabilitaz_exart26    ","DENOMINAZI":" RIABILITAZIONE CANOVA  ","SETTORE":" Riabilitazione ex art. 26  ","GESTIONE":" Diretta  ","INDIRIZZO":" VIA CHIUSI 2 \/ 4  ","CAP": 50142  ,"PREFTEL": 55  ,"TELEF": 2285415  ,"PREFFAX": 55  ,"FAX": 2758337  ,"WEBSITE":" www.asf.toscana.it", "timestamp": null, "begin": null, "end": null, "altitudeMode": null, "tessellate": -1, "extrude": 0, "visibility": -1, "drawOrder": null, "icon": null }, "geometry": { "type": "Point", "coordinates": [ 11.178626222644134, 43.781859092238882 ] } },

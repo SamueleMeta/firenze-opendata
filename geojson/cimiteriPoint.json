@@ -1,4 +1,4 @@
-{"type":"FeatureCollection", "features": [
+{"type":"FeatureCollection","id":"cimiteri", "features": [
 {"type":"Feature","geometry":{"type":"Point","coordinates":[11.23102753511076, 43.802156320855431]},"properties":{"DENOMINAZI":"Cimitero di RIFREDI","VIA":"via Panciatichi","NCIVICO":"0062","TIPOCIV":"N"}},
 {"type":"Feature","geometry":{"type":"Point","coordinates":[11.239841259610309, 43.740232619152692]},"properties":{"DENOMINAZI":"Cimitero di SAN FELICE A EMA","VIA":"via S. Felice a Ema","NCIVICO":"0041","TIPOCIV":"N"}},
 {"type":"Feature","geometry":{"type":"Point","coordinates":[11.257999908745939, 43.741086472750247]},"properties":{"DENOMINAZI":"Cimitero di MONTERIPALDI","VIA":"via S. Michele a Monterip","NCIVICO":"0050","TIPOCIV":"N"}},

@@ -1,4 +1,4 @@
-{"type": "FeatureCollection", "features": [
+{"type": "FeatureCollection","id":"turnoFarmacie", "features": [
 {"geometry": {"type": "Point", "coordinates": [11.269509207008081, 43.775485327505905]}, "type": "Feature", "properties": {"NCIVICO": "63", "DATA_VALID": "23-06-2018", "VIA": "Vle Antonio Gramsci", "ESPONENTEC": "", "ORARIO_TUR": "09:00 - 20:00", "DENOMINAZI": "Farmacia FEDEMA SNC", "TIPO_CIVIC": "N"}}, 
 {"geometry": {"type": "Point", "coordinates": [11.224613899665247, 43.73609557532674]}, "type": "Feature", "properties": {"NCIVICO": "206", "DATA_VALID": "23-06-2018", "VIA": "Via Senese", "ESPONENTEC": "", "ORARIO_TUR": "09:00 - 13:00 / 16:00 - 20:00", "DENOMINAZI": "Farmacia DEL GALLUZZO", "TIPO_CIVIC": "R"}}, 
 {"geometry": {"type": "Point", "coordinates": [11.298223187140167, 43.76921188792669]}, "type": "Feature", "properties": {"NCIVICO": "19", "DATA_VALID": "23-06-2018", "VIA": "Via del Gignoro", "ESPONENTEC": "", "ORARIO_TUR": "09:00 - 20:00", "DENOMINAZI": "Farmacia DEL GUARLONE", "TIPO_CIVIC": "N"}}, 

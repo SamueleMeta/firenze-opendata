@@ -1,4 +1,4 @@
-{"type":"FeatureCollection", "features": [
+{"type":"FeatureCollection","id":"siast", "features": [
 {"type":"Feature","geometry":{"type":"Point","coordinates":[11.244433,43.768095]},"properties":{"ID":106,"DENOMINAZI":"C. Soc. Oltrarno","TIPOLOGIA":"Centro Sociale","VIA":"Via Santa Monaca","NCIVICO":"37","ESPONENTEC":"0","TIPOCIV":"N"}},
 {"type":"Feature","geometry":{"type":"Point","coordinates":[11.234169,43.786827]},"properties":{"ID":107,"DENOMINAZI":"C. Soc. San Jacopino","TIPOLOGIA":"Centro Sociale","VIA":"Piazza Dalla Piccola","NCIVICO":"6","ESPONENTEC":"0","TIPOCIV":"N"}},
 {"type":"Feature","geometry":{"type":"Point","coordinates":[11.291510,43.775770]},"properties":{"ID":108,"DENOMINAZI":"Sede amministrativa SIAST 2 e C. Soc. Campo Marte - Aretina","TIPOLOGIA":"Centro Sociale/Amm.ne SIAST","VIA":"Viale D'Annunzio","NCIVICO":"29","ESPONENTEC":"0","TIPOCIV":"N"}},
