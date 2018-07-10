@@ -277,25 +277,7 @@ function initAutocomplete() {
         navigator.geolocation.getCurrentPosition(showUserPosition, showDefaultLocation);   
     }
 
-    var directionsService = new google.maps.DirectionsService();
-    var directionsDisplay = new google.maps.DirectionsRenderer();
     map = new google.maps.Map(document.getElementById('map'), mapOptions);
-    directionsDisplay.setMap(map);
-
-    function calcRoute(directionsService, directionsDisplay) {
-        var request = {
-            origin: { lat: 43.772330244, lng: 11.242165698 },
-            destination: { lat: 43.730703, lng: 11.150411 },
-            travelMode: 'DRIVING'
-        };
-        directionsService.route(request, function (result, status) {
-            if (status == 'OK') {
-                directionsDisplay.setDirections(result);
-            }
-        })
-    };
-
-    //calcRoute(directionsService, directionsDisplay);
 
     // Create the search box and link it to the UI element.
     var input = document.getElementById('pac-input');

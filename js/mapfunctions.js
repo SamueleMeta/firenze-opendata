@@ -69,6 +69,7 @@ function addServiceMarkers(clss, id) {
 
                 infoWindows.push(new google.maps.InfoWindow({
                     content: produceContent(callback.features[place].properties),
+                    maxWidth: screen.width * 0.8,
                     serviceID: id
                 }));
                 serviceMarkers[serviceMarkers.length - 1].addListener("click", function () {
@@ -79,6 +80,18 @@ function addServiceMarkers(clss, id) {
                             info.setMap(null);
                         });
                         infowindow.open(map, this);
+                        for (var i = 0; i < document.getElementsByClassName('car').length; i++) {
+                            document.getElementsByClassName('car')[i]
+                                .addEventListener('click', function () {
+                                    var directionsService = new google.maps.DirectionsService();
+                                    var directionsDisplay = new google.maps.DirectionsRenderer();
+                                    directionsDisplay.setMap(map);
+                                    // CHECK IF USER ALLOWS GEOLOCATION
+                                    var origin = new google.maps.LatLng(userPosition.lat, userPosition.lng);
+                                    var destination = new google.maps.LatLng(infowindow.getPosition().lat(), infowindow.getPosition().lng());
+                                    calcRoute(directionsService, directionsDisplay, origin, destination);
+                                });
+                        }
                     }
                     else {
                         infowindow.setMap(null);
@@ -192,6 +205,7 @@ function produceContent(jsonProperties) {
         if (jsonProperties.WEBSITE != "")
             result += "<h5>Website: </h5>" + jsonProperties.WEBSITE + "<br>";
     }
+    result += '<div class="routeAlternatives"><img src="img/car.png" alt="Auto" class="car"><img src="img/walk.png" alt="Pedone" class="walker"><img src="img/bus.png" alt="Autobus" class="autobus"></div>';
     return result
 }
 
@@ -791,3 +805,16 @@ function typeFilter(id, selected){
     }
     showInRangeMarkers();
 }
+
+function calcRoute(directionsService, directionsDisplay, origin, destination) {
+    var request = {
+        origin: origin,
+        destination: destination,
+        travelMode: 'DRIVING'
+    };
+    directionsService.route(request, function (result, status) {
+        if (status == 'OK') {
+            directionsDisplay.setDirections(result);
+        }
+    })
+};
