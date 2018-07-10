@@ -80,18 +80,44 @@ function addServiceMarkers(clss, id) {
                             info.setMap(null);
                         });
                         infowindow.open(map, this);
+                        var directionsService = new google.maps.DirectionsService();
+                        var directionsDisplay = new google.maps.DirectionsRenderer();
                         for (var i = 0; i < document.getElementsByClassName('car').length; i++) {
                             document.getElementsByClassName('car')[i]
                                 .addEventListener('click', function () {
-                                    var directionsService = new google.maps.DirectionsService();
-                                    var directionsDisplay = new google.maps.DirectionsRenderer();
                                     directionsDisplay.setMap(map);
                                     // CHECK IF USER ALLOWS GEOLOCATION
                                     var origin = new google.maps.LatLng(userPosition.lat, userPosition.lng);
                                     var destination = new google.maps.LatLng(infowindow.getPosition().lat(), infowindow.getPosition().lng());
-                                    calcRoute(directionsService, directionsDisplay, origin, destination);
+                                    calcRoute(directionsService, directionsDisplay, origin, destination, 'DRIVING');
                                 });
                         }
+
+                        for (var i = 0; i < document.getElementsByClassName('walker').length; i++) {
+                            document.getElementsByClassName('walker')[i]
+                                .addEventListener('click', function () {
+                                    directionsDisplay.setMap(map);
+                                    // CHECK IF USER ALLOWS GEOLOCATION
+                                    var origin = new google.maps.LatLng(userPosition.lat, userPosition.lng);
+                                    var destination = new google.maps.LatLng(infowindow.getPosition().lat(), infowindow.getPosition().lng());
+                                    calcRoute(directionsService, directionsDisplay, origin, destination, 'WALKING');
+                                });
+                        }
+                        for (var i = 0; i < document.getElementsByClassName('autobus').length; i++) {
+                            document.getElementsByClassName('autobus')[i]
+                                .addEventListener('click', function () { 
+                                    directionsDisplay.setMap(map);
+                                    // CHECK IF USER ALLOWS GEOLOCATION
+                                    var origin = new google.maps.LatLng(userPosition.lat, userPosition.lng);
+                                    var destination = new google.maps.LatLng(infowindow.getPosition().lat(), infowindow.getPosition().lng());
+                                    calcRoute(directionsService, directionsDisplay, origin, destination, 'TRANSIT');
+                                });
+                        }
+
+                        var el = document.getElementsByClassName('gm-style-iw')[0].nextSibling;
+                        el.addEventListener("click", function(){
+                            directionsDisplay.setMap(null);
+                        });
                     }
                     else {
                         infowindow.setMap(null);
@@ -806,11 +832,11 @@ function typeFilter(id, selected){
     showInRangeMarkers();
 }
 
-function calcRoute(directionsService, directionsDisplay, origin, destination) {
+function calcRoute(directionsService, directionsDisplay, origin, destination, mode) {
     var request = {
         origin: origin,
         destination: destination,
-        travelMode: 'DRIVING'
+        travelMode: mode
     };
     directionsService.route(request, function (result, status) {
         if (status == 'OK') {
