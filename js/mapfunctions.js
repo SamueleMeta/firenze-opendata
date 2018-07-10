@@ -72,6 +72,10 @@ function addServiceMarkers(clss, id) {
                     maxWidth: screen.width * 0.8,
                     serviceID: id
                 }));
+
+                var directionsService = new google.maps.DirectionsService();
+                var directionsDisplay = new google.maps.DirectionsRenderer();
+
                 serviceMarkers[serviceMarkers.length - 1].addListener("click", function () {
                     var infowindow = infoWindows[serviceMarkers.indexOf(this)];
 
@@ -80,8 +84,7 @@ function addServiceMarkers(clss, id) {
                             info.setMap(null);
                         });
                         infowindow.open(map, this);
-                        var directionsService = new google.maps.DirectionsService();
-                        var directionsDisplay = new google.maps.DirectionsRenderer();
+                        
                         for (var i = 0; i < document.getElementsByClassName('car').length; i++) {
                             document.getElementsByClassName('car')[i]
                                 .addEventListener('click', function () {
