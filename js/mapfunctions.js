@@ -189,6 +189,10 @@ function produceContent(jsonProperties) {
         if (jsonProperties.PRINCIPALI != "")
             result += "<h5>Note: </h5>" + jsonProperties.PRINCIPALI + "<br>";
     }
+    if (jsonProperties.hasOwnProperty('ORARIO_APE')){
+        if (jsonProperties.ORARIO_APE != "")
+            result += "<h5>Orario di apertura: </h5>" + jsonProperties.ORARIO_APE + "<br>";
+    }
     if (jsonProperties.hasOwnProperty('DATILOGIS')){
         if (jsonProperties.DATILOGIS != "")
             result += "<h5>Locali: </h5>" + jsonProperties.DATILOGIS + "<br>";
