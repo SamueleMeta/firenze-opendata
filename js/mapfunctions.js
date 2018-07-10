@@ -63,7 +63,7 @@ function addServiceMarkers(clss, id) {
                     position: { lat: latitude, lng: longitude },
                     map: map,
                     serviceID: id,
-                    filtered: false,
+                    filters: 0,
                     icon: pinSymbol(color)
                 }));
 
@@ -128,9 +128,9 @@ function deleteMarkers(id){
 function showInRangeMarkers(){
     for(var i = 0; i < serviceMarkers.length; i++){
         var distance = google.maps.geometry.spherical.computeDistanceBetween(new google.maps.LatLng(userPosition.lat, userPosition.lng), serviceMarkers[i].getPosition());
-        if (serviceMarkers[i] != null && distance > circle.radius)
+        if (serviceMarkers[i] != null && (serviceMarkers[i].filters < 0 || distance > circle.radius))
             serviceMarkers[i].setMap(null);
-        if (serviceMarkers[i] != null&& !serviceMarkers[i].filtered && distance <= circle.radius)
+        if (serviceMarkers[i] != null && (serviceMarkers[i].filters == 0 && distance <= circle.radius))
             serviceMarkers[i].setMap(map);
     }
 } 
@@ -302,7 +302,7 @@ function populateOptions(id) {
                 </ul>
             </div>
             <h5 class="label">Tipologia</h5>
-            <ul class="moreOptions">
+            <ul class="moreOptions" id="Comunale">
                 <li class="optionItem" id="comunale">
                     <div>Comunale</div>
                 </li>
@@ -315,7 +315,7 @@ function populateOptions(id) {
             document.getElementById("advancedService").innerHTML = "Centri Anziani";
             $("#sideOptions").append(`
             <h5 class="label">Proprietà</h5>
-            <ul class="moreOptions">
+            <ul class="moreOptions" id="proprieta">
                 <li class="optionItem" id="comune">
                     <div>Comune</div>
                 </li>
@@ -327,7 +327,7 @@ function populateOptions(id) {
                 </li>
             </ul>
             <h5 class="label">Quota</h5>
-            <ul class="moreOptions">
+            <ul class="moreOptions"id="quota">
                 <li class="optionItem" id="0">
                     <div>0€</div>
                 </li>
@@ -342,7 +342,7 @@ function populateOptions(id) {
                 </li>
             </ul>
             <h5 class="label">Iscrizione</h5>
-                <ul class="moreOptions">
+                <ul class="moreOptions" id="iscrizione">
                     <li class="optionItem" id="si">
                         <div>Sì</div>
                     </li>
@@ -351,7 +351,7 @@ function populateOptions(id) {
                     </li>
                 </ul>
             <h5 class="label">Statuto</h5>
-                <ul class="moreOptions">
+                <ul class="moreOptions" id="statuto">
                     <li class="optionItem" id="Si">
                         <div>Sì</div>
                     </li>
@@ -365,7 +365,7 @@ function populateOptions(id) {
             document.getElementById("advancedService").innerHTML = "Ospedali";
             $("#sideOptions").append(`
             <h5 class="label">Tipologia</h5>
-            <ul class="moreOptions">
+            <ul class="moreOptions" id="tipologia">
                 <li class="optionItem" id="casaDiCura">
                     <div>Casa Di Cura</div>
                 </li>
@@ -388,7 +388,7 @@ function populateOptions(id) {
             document.getElementById("advancedService").innerHTML = "Centri Assistenziali Disabili Sociali";
             $("#sideOptions").append(`
             <h5 class="label">Tipologia</h5>
-            <ul class="moreOptions">
+            <ul class="moreOptions" id="tipologia2">
                 <li class="optionItem" id="residenza">
                     <div>Residenza</div>
                 </li>
@@ -402,7 +402,7 @@ function populateOptions(id) {
             document.getElementById("advancedService").innerHTML = "Centri Inclusione Sociale";
             $("#sideOptions").append(`
             <h5 class="label">Tipologia Struttura</h5>
-            <ul class="moreOptions">
+            <ul class="moreOptions" id="struttura">
                 <li class="optionItem" id="residenzaDonne">
                     <div>Residenziale Donne</div>
                 </li>
@@ -426,7 +426,7 @@ function populateOptions(id) {
                 </li>
             </ul>
             <h5 class="label">Tipologia</h5>
-            <ul class="moreOptions">
+            <ul class="moreOptions" id="tipologia3">
                 <li class="optionItem" id="nomadi">
                     <div>Nomadi</div>
                 </li>
@@ -455,7 +455,7 @@ function populateOptions(id) {
             document.getElementById("advancedService").innerHTML = "Centri Assistenziali Anziani Non Autosufficienti";
             $("#sideOptions").append(`
             <h5 class="label">Tipologia</h5>
-            <ul class="moreOptions">
+            <ul class="moreOptions" id="tipologia4">
                 <li class="optionItem" id="Residenza">
                     <div>Residenza</div>
                 </li>
@@ -464,7 +464,7 @@ function populateOptions(id) {
                 </li>
             </ul>
             <h5 class="label">Gestione</h5>
-            <ul class="moreOptions">
+            <ul class="moreOptions" id="gestione">
                 <li class="optionItem" id="privata">
                     <div>Privata</div>
                 </li>
@@ -481,7 +481,7 @@ function populateOptions(id) {
             document.getElementById("advancedService").innerHTML = "Centri Assistenziali Anziani Autosufficienti";
             $("#sideOptions").append(`
             <h5 class="label">Tipologia</h5>
-            <ul class="moreOptions">
+            <ul class="moreOptions" id="tipologia5">
                 <li class="optionItem" id="resid.">
                     <div>Residenza</div>
                 </li>
@@ -493,7 +493,7 @@ function populateOptions(id) {
                 </li>
             </ul>
             <h5 class="label">Gestione</h5>
-            <ul class="moreOptions">
+            <ul class="moreOptions" id="gestione2">
                 <li class="optionItem" id="pubblica">
                     <div>Pubblica</div>
                 </li>
@@ -516,7 +516,7 @@ function populateOptions(id) {
             document.getElementById("advancedService").innerHTML = "Centri Assistenziali Dipendenze";
             $("#sideOptions").append(`
             <h5 class="label">Tipologia</h5>
-            <ul class="moreOptions">
+            <ul class="moreOptions" id="tipologia6">
                 <li class="optionItem" id="res">
                     <div>Residenza</div>
                 </li>
@@ -534,7 +534,7 @@ function populateOptions(id) {
                 </li>
             </ul>
             <h5 class="label">Gestione</h5>
-            <ul class="moreOptions">
+            <ul class="moreOptions" id="gestione3">
                 <li class="optionItem" id="diretta">
                     <div>Diretta</div>
                 </li>
@@ -548,7 +548,7 @@ function populateOptions(id) {
             document.getElementById("advancedService").innerHTML = "Centri Assistenziali Disabili Psichici";
             $("#sideOptions").append(`
             <h5 class="label">Gestione</h5>
-            <ul class="moreOptions">
+            <ul class="moreOptions" id="gestione4">
                 <li class="optionItem" id="convenzionata">
                     <div>Convenzionata</div>
                 </li>
@@ -565,7 +565,7 @@ function populateOptions(id) {
             document.getElementById("advancedService").innerHTML = "Centri Salute Mentale";
             $("#sideOptions").append(`
             <h5 class="label">Tipologia</h5>
-            <ul class="moreOptions">
+            <ul class="moreOptions" id="tipologia7">
                 <li class="optionItem" id="Ambulatorio">
                     <div>Ambulatorio</div>
                 </li>
@@ -577,7 +577,7 @@ function populateOptions(id) {
                 </li>
             </ul>
             <h5 class="label">Gestione</h5>
-            <ul class="moreOptions">
+            <ul class="moreOptions" id="gestione5">
                 <li class="optionItem" id="diretta">
                     <div>Diretta</div>
                 </li>
@@ -594,7 +594,7 @@ function populateOptions(id) {
             document.getElementById("advancedService").innerHTML = "Centri Assistenziali Minori";
             $("#sideOptions").append(`
             <h5 class="label">Tipologia Struttura</h5>
-            <ul class="moreOptions">
+            <ul class="moreOptions" id="struttura3">
                 <li class="optionItem" id="CDiurno">
                     <div>Centro Diurno</div>
                 </li>
@@ -629,6 +629,16 @@ function addListenersToOptionsMenu() {
     for (var i = 0; i < document.getElementsByClassName('optionItem').length; i++) {
         document.getElementsByClassName('optionItem')[i]
             .addEventListener('click', function () {
+                var parent = $(this).parent().attr('id')
+                var thisID = $(this).attr('id')
+
+                $('#' + parent + ' > .optionItem').each(function(){
+                    if($(this).is('.selected') && $(this).attr('id') != thisID){
+                        $(this).toggleClass('selected');
+                        typeFilter(this.id, $(this).is('.selected'));
+                    }
+                })
+
                 $(this).toggleClass('selected');
                 typeFilter(this.id, $(this).is('.selected'));
             });
@@ -728,7 +738,7 @@ function typeFilter(id, selected){
                         //QUOTA
                         default: type = 'QUOTA_ASSO';
                             switch(id){
-                                case '0': string ='0,00'; break; 
+                                case '0': string =' 0,00'; break; 
                                 case '5': string ='5,00'; break; 
                                 case '8': string ='8,00'; break; 
                                 case '10': string ='10,00'; break;
@@ -755,51 +765,27 @@ function typeFilter(id, selected){
 
     }
     var property;
-    if(firstFilter){
-        for(var place in markersData[0].features){
-            switch(type){
-                case 'TIPOLOGIA': property = markersData[0].features[place].properties.TIPOLOGIA; break;
-                case 'TIPOSTRUTT': property = markersData[0].features[place].properties.TIPOSTRUTT; break;
-                case 'GESTIONE': property = markersData[0].features[place].properties.GESTIONE; break;
-                case 'QUOTA_ASSO': property = markersData[0].features[place].properties.QUOTA_ASSO; break;
-                case 'ISCRIZIONE': property = markersData[0].features[place].properties.ISCRIZIONE; break;
-                case 'STATUTO': property = markersData[0].features[place].properties.STATUTO; break;
-            }
-            if(markersData[0].features[place].properties.hasOwnProperty(type) && property.indexOf(string) < 0){
-                for(marker in serviceMarkers){
-                    if(markersData[0].features[place].geometry.coordinates[1].toFixed(9) == serviceMarkers[marker].getPosition().lat().toFixed(9) &&
-                        markersData[0].features[place].geometry.coordinates[0].toFixed(9) == serviceMarkers[marker].getPosition().lng().toFixed(9)){
-                            serviceMarkers[marker].setMap(null);
-                            serviceMarkers[marker].filtered = true;
-                            break;
-                        }
-                }
-            }
+    for(var place in markersData[0].features){
+        switch(type){
+            case 'TIPOLOGIA': property = markersData[0].features[place].properties.TIPOLOGIA; break;
+            case 'TIPOSTRUTT': property = markersData[0].features[place].properties.TIPOSTRUTT; break;
+            case 'GESTIONE': property = markersData[0].features[place].properties.GESTIONE; break;
+            case 'QUOTA_ASSO': property = markersData[0].features[place].properties.QUOTA_ASSO; break;
+            case 'ISCRIZIONE': property = markersData[0].features[place].properties.ISCRIZIONE; break;
+            case 'STATUTO': property = markersData[0].features[place].properties.STATUTO; break;
         }
-        firstFilter = false;
-    }
-    else{
-        for(var place in markersData[0].features){
-            switch(type){
-                case 'TIPOLOGIA': property = markersData[0].features[place].properties.TIPOLOGIA; break;
-                case 'TIPOSTRUTT': property = markersData[0].features[place].properties.TIPOSTRUTT; break;
-                case 'GESTIONE': property = markersData[0].features[place].properties.GESTIONE; break;
-                case 'QUOTA_ASSO': property = markersData[0].features[place].properties.QUOTA_ASSO; break;
-                case 'ISCRIZIONE': property = markersData[0].features[place].properties.ISCRIZIONE; break;
-                case 'STATUTO': property = markersData[0].features[place].properties.STATUTO; break;
-            }
-            if(markersData[0].features[place].properties.hasOwnProperty(type) && property.indexOf(string) >= 0){
-                for(marker in serviceMarkers){
-                    if(markersData[0].features[place].geometry.coordinates[1].toFixed(9) == serviceMarkers[marker].getPosition().lat().toFixed(9) &&
-                        markersData[0].features[place].geometry.coordinates[0].toFixed(9) == serviceMarkers[marker].getPosition().lng().toFixed(9)){
-                            if(!selected)
-                                serviceMarkers[marker].setMap(null);
-                            else    
-                                serviceMarkers[marker].setMap(map);
-                            serviceMarkers[marker].filtered = !selected;
-                            break;
+        if(markersData[0].features[place].properties.hasOwnProperty(type) && property.indexOf(string) < 0){
+            for(marker in serviceMarkers){
+                if(markersData[0].features[place].geometry.coordinates[1].toFixed(9) == serviceMarkers[marker].getPosition().lat().toFixed(9) &&
+                    markersData[0].features[place].geometry.coordinates[0].toFixed(9) == serviceMarkers[marker].getPosition().lng().toFixed(9)){
+                        if(selected){
+                            serviceMarkers[marker].filters--;
                         }
-                }
+                        else{
+                            serviceMarkers[marker].filters++;
+                        }
+                        break;
+                    }
             }
         }
     }

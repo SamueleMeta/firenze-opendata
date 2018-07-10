@@ -44,7 +44,6 @@ $('#cancelIcon').on("click", function () {
     $("#sideOptions .label").remove();
     $("#sideOptions .moreOptions").remove();
     $("#sideOptions .dropdown").remove();
-    firstFilter = true;
     serviceMarkers.forEach(function(element){
         element.filtered = false;
     });
@@ -248,7 +247,6 @@ var markers = [];
 var mainMarker;
 var userPosition = {};
 var circle = {};
-var firstFilter = true;
 
 var ColorStack = function () {
     this.size = 16;
