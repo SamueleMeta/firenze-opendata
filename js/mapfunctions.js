@@ -63,6 +63,7 @@ function addServiceMarkers(clss, id) {
                     position: { lat: latitude, lng: longitude },
                     map: map,
                     serviceID: id,
+                    filtered: false,
                     icon: pinSymbol(color)
                 }));
 
@@ -129,7 +130,7 @@ function showInRangeMarkers(){
         var distance = google.maps.geometry.spherical.computeDistanceBetween(new google.maps.LatLng(userPosition.lat, userPosition.lng), serviceMarkers[i].getPosition());
         if (serviceMarkers[i] != null && distance > circle.radius)
             serviceMarkers[i].setMap(null);
-        if (serviceMarkers[i] != null && distance <= circle.radius)
+        if (serviceMarkers[i] != null&& !serviceMarkers[i].filtered && distance <= circle.radius)
             serviceMarkers[i].setMap(map);
     }
 } 
@@ -802,5 +803,5 @@ function typeFilter(id, selected){
             }
         }
     }
-    //showInRangeMarkers();
+    showInRangeMarkers();
 }

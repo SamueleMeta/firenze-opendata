@@ -64,6 +64,7 @@ $('#resetIconDefault').on("click", function () {
     }
     circle.setCenter(new google.maps.LatLng(43.7792500, 11.2462600));
     circle.radius = Infinity;
+    showInRangeMarkers();
     $(this).hide();
 });
 

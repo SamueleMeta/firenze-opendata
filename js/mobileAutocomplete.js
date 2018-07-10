@@ -24,6 +24,7 @@ $('#levels').on("click", function () {
     circle.setMap(null);
     circle.setCenter(new google.maps.LatLng(userPosition.lat, userPosition.lng));
     circle.radius = Infinity;
+    showInRangeMarkers();
     $(".range-slider__range").val(0);
     $(".range-slider__value").html("0");
     $('#pac-input').hide();
@@ -61,6 +62,7 @@ $('#resetIconDefault').on("click", function () {
     }
     circle.setCenter(new google.maps.LatLng(43.7792500, 11.2462600));
     circle.radius = Infinity;
+    showInRangeMarkers();
     $(this).hide();
 });
 
