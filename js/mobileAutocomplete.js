@@ -20,7 +20,6 @@ $('#pac-input-options').on("blur", function () {
 });
 
 $('#levels').on("click", function () {
-    displayAdvancedSearch(this.classList[0]);
     circle.setMap(null);
     circle.setCenter(new google.maps.LatLng(userPosition.lat, userPosition.lng));
     circle.radius = Infinity;
@@ -32,6 +31,21 @@ $('#levels').on("click", function () {
     setTimeout(function () {
         $(".pac-container").prependTo("#searchResultsOptions");
     }, 300);
+    if(this.classList.length == 1){
+        var rgbColor = $("#" + this.classList[0]).css('backgroundColor');
+        var hexColor = hexc(rgbColor);
+        circle.setOptions({
+            fillColor: hexColor,
+            strokeColor: hexColor
+        });
+        populateOptions(this.classList[0]);
+    }
+    else{
+        circle.setOptions({
+            fillColor: '#65eb9bf2',
+            strokeColor: '#65eb9bf2'
+        });
+    }
     addListenersToOptionsMenu();
 });
 
@@ -82,14 +96,14 @@ $('#resetIconOptions').on("click", function () {
 $('#backIcon').on("click", function () {
     $("#sidemenu").show();
     $("#mapWrapper").hide();
-    var element = document.getElementById("levels");
+    /*var element = document.getElementById("levels");
     var rgbColor = $("#" + element.className).css('backgroundColor');
     var hexColor = hexc(rgbColor);
     colorStack.push(hexColor);
     $("#" + element.className).css('background-color', "transparent");
     $("#" + element.className).css('border-color', "hsla(0, 0%, 100%, .43)");
     element.setAttribute("data-selected", "false");
-    deleteMarkers(element.className);
+    deleteMarkers(element.className);*/
     circle.setMap(null);
     $("#pac-input-options").attr("placeholder", "Cerca sulla mappa");
     setTimeout(function () {
@@ -369,7 +383,11 @@ function initAutocomplete() {
             circle.setCenter(new google.maps.LatLng(userPosition.lat, userPosition.lng));
             circle.radius = Infinity;
         }
-        showInRangeMarkers();
+        for(i=0; i<serviceMarkers.length; i++){
+            serviceMarkers[i].setMap(map);
+        }
+        document.getElementById('pac-input-options').value='';
+        $('#resetIconOptions').hide();
         $("#mapWrapper").show();
         $("#sidemenu").hide();
         $("#resetIconDefault").show();
@@ -423,6 +441,8 @@ function initAutocomplete() {
             circle.radius = Infinity;
         }
         showInRangeMarkers();
+        document.getElementById('pac-input').value='';
+        $('#resetIconDefault').hide();
         $("#mapWrapper").show();
         document.getElementById("sideOptions").classList.toggle('active');
         $("#resetIconOptions").show();
@@ -430,10 +450,10 @@ function initAutocomplete() {
 
     //Initialize Circle
     circle = new google.maps.Circle({
-        strokeColor: '#FF0000',
+        strokeColor: '#65eb9bf2',
         strokeOpacity: 0.8,
         strokeWeight: 2,
-        fillColor: '#FF0000',
+        fillColor: '#65eb9bf2',
         fillOpacity: 0.35,
         map: map,
         center: new google.maps.LatLng(userPosition.lat, userPosition.lng),
@@ -443,6 +463,7 @@ function initAutocomplete() {
     for (var i = 0; i < document.getElementsByClassName('service').length; i++) {
         document.getElementsByClassName('service')[i]
             .addEventListener('click', function () {
+                document.getElementById('levels').classList.toggle($(this).attr('id'));
                 if (this.getAttribute('data-selected') == 'false') {
                     this.setAttribute("data-selected", "true");
                     $(".swipe").hide();
@@ -450,6 +471,7 @@ function initAutocomplete() {
                     selected += 1;
                 }
                 else {
+                    this.setAttribute("data-selected", "false");
                     deleteServiceMarkers(this, this.id);
                     selected -= 1;
                     if (selected < 1) {

@@ -192,7 +192,7 @@ function displayAdvancedSearch(id) {
     }
 
     setTimeout(function(){
-        var rgbColor = $("#" + id).css('backgroundColor');
+            var rgbColor = $("#" + id).css('backgroundColor');
             var hexColor = hexc(rgbColor);
             circle.setOptions({
                 fillColor: hexColor,
@@ -306,7 +306,7 @@ function doSwipeLeft(serviceElement, serviceName, selected){
     if(selected < 1){
         $("#mapWrapper").show();
         $("#sidemenu").hide();
-        populateOptions(serviceName);
+        //populateOptions(serviceName);
         $("#levels").removeClass();
         $("#levels").addClass(serviceName);
         triggerService(serviceElement);

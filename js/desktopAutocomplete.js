@@ -47,7 +47,7 @@ $('#cancelIcon').on("click", function () {
     serviceMarkers.forEach(function(element){
         element.filtered = false;
     });
-    showInRangeMarkers();
+    //showInRangeMarkers();
 });
 
 $('#pac-input').on("change", function () {
@@ -61,9 +61,12 @@ $('#resetIconDefault').on("click", function () {
     for(i=0; i<markers.length; i++){
         markers[i].setMap(null);
     }
+    for(i=0; i<serviceMarkers.length; i++){
+        serviceMarkers[i].setMap(map);
+    }
     circle.setCenter(new google.maps.LatLng(43.7792500, 11.2462600));
+    circle.setMap(null)
     circle.radius = Infinity;
-    showInRangeMarkers();
     $(this).hide();
 });
 
@@ -82,6 +85,7 @@ $('#resetIconOptions').on("click", function () {
     circle.setCenter(new google.maps.LatLng(43.7792500, 11.2462600));
     circle.setMap(null);
     circle.radius = Infinity;
+    showInRangeMarkers();
     $(this).hide();
 });
 
@@ -348,7 +352,11 @@ function initAutocomplete() {
             circle.setCenter(new google.maps.LatLng(userPosition.lat, userPosition.lng));
             circle.radius = Infinity;
         }
-        showInRangeMarkers();
+        for(i=0; i<serviceMarkers.length; i++){
+            serviceMarkers[i].setMap(map);
+        }
+        document.getElementById('pac-input-options').value='';
+        $('#resetIconOptions').hide();
         $("#resetIconDefault").show();
     });
 
@@ -400,6 +408,8 @@ function initAutocomplete() {
             circle.radius = Infinity;
         }
         showInRangeMarkers();
+        document.getElementById('pac-input').value='';
+        $('#resetIconDefault').hide();
         $("#resetIconOptions").show();
     });
     
