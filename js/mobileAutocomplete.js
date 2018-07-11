@@ -69,6 +69,9 @@ $('#resetIconDefault').on("click", function () {
     for(i=0; i<markers.length; i++){
         markers[i].setMap(null);
     }
+    for(i=0; i<serviceMarkers.length; i++){
+        serviceMarkers[i].setMap(map);
+    }
     circle.setCenter(new google.maps.LatLng(43.7792500, 11.2462600));
     circle.radius = Infinity;
     showInRangeMarkers();
