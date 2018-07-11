@@ -22,6 +22,17 @@ h1 {
     letter-spacing: 1.8px;
 }
 
+h3 {
+    font-size: 14px;
+    margin-bottom: 10px;
+    color: #28303b;
+}
+
+h5 {
+    margin-top: 5px;
+    color: #3c4c5b;
+}
+
 /*----------------- FONTS ----------------*/
 
 @font-face {
@@ -561,7 +572,42 @@ h1 {
 }
 
 .routeAlternatives {
-    margin-top: 3%;
+    margin-top: 10px;
+}
+
+.alert {
+    position: absolute;
+    bottom: 0;
+    background-color: #e74c3c;
+    width: 100%;
+    color: rgba(255, 255, 255, 0.72);
+    height: 8vh;
+    display: none;
+}
+
+.alertText {
+    display: table-cell;
+    vertical-align: middle;
+    text-align: center;
+}
+
+.resetRoute {
+    border: 2px solid #3c4c5b;
+    border-radius: 4px;
+    background-color: #3c4c5b;
+    color: white;
+    margin-top: 10px;
+    padding: 5px;
+}
+
+#infoCloseButton {
+    width: 37px;
+    height: 37px;
+    position: absolute;
+    right: 0;
+    top: 0;
+    background-color: transparent;
+    z-index: 100000;
 }
 
 /*----------- PHONE PORTRAIT -----------*/
@@ -643,5 +689,13 @@ h1 {
     
     .swipe {
         display: block;
+    }
+
+    .alert {
+        height: 12vh;
+    }
+
+    .alertText {
+        padding: 4% 5%;
     }
 }

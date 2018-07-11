@@ -7,6 +7,7 @@ function showUserPosition(position) {
     }));
     userPosition.lat = position.coords.latitude;
     userPosition.lng = position.coords.longitude;
+    defaultPosition = false;
 }
 
 function showDefaultLocation(){
@@ -18,6 +19,7 @@ function showDefaultLocation(){
         }));
         userPosition.lat = 43.7792500;
         userPosition.lng = 11.2462600;
+        defaultPosition = true;
 }
 
 function addServiceMarkers(clss, id) {
@@ -74,7 +76,9 @@ function addServiceMarkers(clss, id) {
                 }));
 
                 var directionsService = new google.maps.DirectionsService();
-                var directionsDisplay = new google.maps.DirectionsRenderer();
+                var directionsDisplay = new google.maps.DirectionsRenderer({
+                    suppressMarkers: true
+                });
 
                 serviceMarkers[serviceMarkers.length - 1].addListener("click", function () {
                     var infowindow = infoWindows[serviceMarkers.indexOf(this)];
@@ -84,12 +88,24 @@ function addServiceMarkers(clss, id) {
                             info.setMap(null);
                         });
                         infowindow.open(map, this);
+
+                        var sibling = document.getElementsByClassName("gm-style-iw")[0].nextSibling;
+                        sibling.className = "infoClose";
+                        $(".gm-style-iw").after("<div id='infoCloseButton'></div>");
+
+                        $("#infoCloseButton").on("click", function(){
+                            $(this).parent().hide();
+                            $(".alert").hide();
+                        });
                         
                         for (var i = 0; i < document.getElementsByClassName('car').length; i++) {
                             document.getElementsByClassName('car')[i]
                                 .addEventListener('click', function () {
                                     directionsDisplay.setMap(map);
-                                    // CHECK IF USER ALLOWS GEOLOCATION
+                                    if(defaultPosition){
+                                        showErrorAlert();
+                                        return;
+                                    }
                                     var origin = new google.maps.LatLng(userPosition.lat, userPosition.lng);
                                     var destination = new google.maps.LatLng(infowindow.getPosition().lat(), infowindow.getPosition().lng());
                                     calcRoute(directionsService, directionsDisplay, origin, destination, 'DRIVING');
@@ -100,7 +116,10 @@ function addServiceMarkers(clss, id) {
                             document.getElementsByClassName('walker')[i]
                                 .addEventListener('click', function () {
                                     directionsDisplay.setMap(map);
-                                    // CHECK IF USER ALLOWS GEOLOCATION
+                                    if(defaultPosition){
+                                        showErrorAlert();
+                                        return;
+                                    }
                                     var origin = new google.maps.LatLng(userPosition.lat, userPosition.lng);
                                     var destination = new google.maps.LatLng(infowindow.getPosition().lat(), infowindow.getPosition().lng());
                                     calcRoute(directionsService, directionsDisplay, origin, destination, 'WALKING');
@@ -110,17 +129,28 @@ function addServiceMarkers(clss, id) {
                             document.getElementsByClassName('autobus')[i]
                                 .addEventListener('click', function () { 
                                     directionsDisplay.setMap(map);
-                                    // CHECK IF USER ALLOWS GEOLOCATION
+                                    if(defaultPosition){
+                                        showErrorAlert();
+                                        return;
+                                    }
                                     var origin = new google.maps.LatLng(userPosition.lat, userPosition.lng);
                                     var destination = new google.maps.LatLng(infowindow.getPosition().lat(), infowindow.getPosition().lng());
                                     calcRoute(directionsService, directionsDisplay, origin, destination, 'TRANSIT');
                                 });
                         }
 
+                        for (var i = 0; i < document.getElementsByClassName('resetRoute').length; i++) {
+                            document.getElementsByClassName('resetRoute')[i]
+                                .addEventListener('click', function () { 
+                                    directionsDisplay.setDirections({routes: []});
+                                    infowindow.setMap(null);
+                                });
+                        }
+
                         var el = document.getElementsByClassName('gm-style-iw')[0].nextSibling;
                         el.addEventListener("click", function(){
-                            directionsDisplay.setMap(null);
-                        });
+                            $(".alert").hide();
+                        })
                     }
                     else {
                         infowindow.setMap(null);
@@ -203,7 +233,7 @@ function displayAdvancedSearch(id) {
 
 function produceContent(jsonProperties) {
     var result;
-    result = "<h3>" + jsonProperties.DENOMINAZI + "</h3><br>"
+    result = "<h3>" + jsonProperties.DENOMINAZI + "</h3>"
     if (jsonProperties.hasOwnProperty('INDIRIZZO'))
         result += "<h5>Indirizzo: </h5>" + jsonProperties.INDIRIZZO + "<br>";
     if (jsonProperties.hasOwnProperty('VIA'))
@@ -238,7 +268,8 @@ function produceContent(jsonProperties) {
         if (jsonProperties.WEBSITE != "")
             result += "<h5>Website: </h5>" + jsonProperties.WEBSITE + "<br>";
     }
-    result += '<div class="routeAlternatives"><img src="img/car.png" alt="Auto" class="car"><img src="img/walk.png" alt="Pedone" class="walker"><img src="img/bus.png" alt="Autobus" class="autobus"></div>';
+    result += '<h5>Indicazioni Stradali</h5><div class="routeAlternatives"><img src="img/car.png" alt="Auto" class="car"><img src="img/walk.png" alt="Pedone" class="walker"><img src="img/bus.png" alt="Autobus" class="autobus"></div>\
+               <button class="resetRoute">Cancella itinerario</button>';
     return result
 }
 
@@ -851,3 +882,7 @@ function calcRoute(directionsService, directionsDisplay, origin, destination, mo
         }
     })
 };
+
+function showErrorAlert() {
+    $(".alert").css('display', 'table');
+}

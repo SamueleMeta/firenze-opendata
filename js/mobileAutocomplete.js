@@ -2,6 +2,10 @@
 $('#pac-input').on("focus", function () {
     $('.searchIcon').attr("src", "img/green-searcher.png");
     $('.resetIcon').attr("src", "img/green-close.png");
+    if($(".resetRoute").length > 0){
+        $(".resetRoute").click();
+    }
+    $(".alert").hide();
 });
 
 $('#pac-input').on("blur", function () {
@@ -12,6 +16,10 @@ $('#pac-input').on("blur", function () {
 $('#pac-input-options').on("focus", function () {
     $('.searchIcon').attr("src", "img/green-searcher.png");
     $('.resetIcon').attr("src", "img/green-close.png");
+    if($(".resetRoute").length > 0){
+        $(".resetRoute").click();
+    }
+    $(".alert").hide();
 });
 
 $('#pac-input-options').on("blur", function () {
@@ -63,6 +71,9 @@ $('#pac-input').on("change", function () {
 });
 
 $('#resetIconDefault').on("click", function () {
+    if($(".resetRoute").length > 0){
+        $(".resetRoute").click();
+    }
     document.getElementById('pac-input').value='';
     showDefaultLocation();
     map.setZoom(13);
@@ -83,6 +94,9 @@ $('#pac-input-options').on("change", function () {
 });
 
 $('#resetIconOptions').on("click", function () {
+    if($(".resetRoute").length > 0){
+        $(".resetRoute").click();
+    }
     document.getElementById('pac-input-options').value='';
     $(".range-slider__range").val(0);
     $(".range-slider__value").html("0");
@@ -157,6 +171,9 @@ window.onclick = function (event) {
     }
 }
 
+$(".alert").on("click", function(){
+    $(".alert").hide();
+});
 
 // MAP FUNCTIONS
 var mapOptions = {
@@ -265,7 +282,7 @@ var infoWindows = [];
 var markers = [];
 var mainMarker;
 var userPosition = {};
-
+var defaultPosition = true;
 var circle = {};
 var selected = 0;
 
@@ -297,25 +314,7 @@ function initAutocomplete() {
         navigator.geolocation.getCurrentPosition(showUserPosition, showDefaultLocation);   
     }
 
-    var directionsService = new google.maps.DirectionsService();
-    var directionsDisplay = new google.maps.DirectionsRenderer();
     map = new google.maps.Map(document.getElementById('map'), mapOptions);
-    directionsDisplay.setMap(map);
-
-    function calcRoute(directionsService, directionsDisplay) {
-        var request = {
-            origin: { lat: 43.772330244, lng: 11.242165698 },
-            destination: { lat: 43.730703, lng: 11.150411 },
-            travelMode: 'DRIVING'
-        };
-        directionsService.route(request, function (result, status) {
-            if (status == 'OK') {
-                directionsDisplay.setDirections(result);
-            }
-        })
-    };
-
-    //calcRoute(directionsService, directionsDisplay);
 
     // Create the search box and link it to the UI element.
     var input = document.getElementById('pac-input');
@@ -394,6 +393,8 @@ function initAutocomplete() {
         $("#mapWrapper").show();
         $("#sidemenu").hide();
         $("#resetIconDefault").show();
+        defaultPosition = false;
+        $(".alert").hide();
     });
 
     searchBoxOptions.addListener('places_changed', function () {
@@ -449,6 +450,8 @@ function initAutocomplete() {
         $("#mapWrapper").show();
         document.getElementById("sideOptions").classList.toggle('active');
         $("#resetIconOptions").show();
+        defaultPosition = false;
+        $(".alert").hide();
     });
 
     //Initialize Circle
