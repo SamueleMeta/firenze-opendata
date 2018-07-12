@@ -76,7 +76,7 @@ function addServiceMarkers(clss, id) {
                 serviceMarkers.push(placeMarker);
 
                 infoWindows.push(new google.maps.InfoWindow({
-                    content: produceContent(callback.features[place].properties),
+                    content: produceContent(callback, place),
                     maxWidth: screen.width * 0.8,
                     serviceID: id
                 }));
@@ -184,8 +184,18 @@ function deleteMarkers(id){
     //Backward looping to avoid index skipping
     var i = serviceMarkers.length;
     var j = markersData.length;
+    var resetCircle = false;
+
+    for(var k = 0; k < document.getElementsByClassName('resetRoute').length; k++){
+        if(document.getElementsByClassName('resetRoute')[k].getAttribute('id') == id)
+            document.getElementsByClassName('resetRoute')[k].click()
+    }
+
     while (i--) {
         if (serviceMarkers[i] != null && serviceMarkers[i].serviceID == id) {
+            if(circle.radius < Infinity && 
+                serviceMarkers[i].icon.fillColor == circle.fillColor)
+                resetCircle = true
             serviceMarkers[i].setMap(null);
             serviceMarkers.splice(i, 1);
         }
@@ -197,14 +207,25 @@ function deleteMarkers(id){
     while(j--){
         if(markersData[j].id == id)
             markersData.splice(j,1);
-}
+    }
+    if(resetCircle){
+        circle.setMap(null);
+        circle.radius = Infinity;
+        $(".range-slider__range").val(0);
+        $(".range-slider__value").html("0");
+    }
+    
+        
 }
 
 function showInRangeMarkers(){
+    if($(".resetRoute").length > 0)
+        $(".resetRoute").click();
     for(var i = 0; i < serviceMarkers.length; i++){
         var distance = google.maps.geometry.spherical.computeDistanceBetween(new google.maps.LatLng(userPosition.lat, userPosition.lng), serviceMarkers[i].getPosition());
-        if (serviceMarkers[i] != null && (serviceMarkers[i].filters < 0 || distance > circle.radius))
+        if (serviceMarkers[i] != null && (serviceMarkers[i].filters < 0 || distance > circle.radius)){
             serviceMarkers[i].setMap(null);
+        }
         if (serviceMarkers[i] != null && (serviceMarkers[i].filters == 0 && distance <= circle.radius))
             serviceMarkers[i].setMap(map);
     }
@@ -234,7 +255,8 @@ function displayAdvancedSearch(id) {
         },1000);
 }
 
-function produceContent(jsonProperties) {
+function produceContent(callback, place) {
+    jsonProperties = callback.features[place].properties
     var result;
     result = "<h3>" + jsonProperties.DENOMINAZI + "</h3>"
     if (jsonProperties.hasOwnProperty('INDIRIZZO'))
@@ -272,7 +294,7 @@ function produceContent(jsonProperties) {
             result += "<h5>Website: </h5>" + jsonProperties.WEBSITE + "<br>";
     }
     result += '<h5>Indicazioni Stradali</h5><div class="routeAlternatives"><img src="img/car.png" alt="Auto" class="car"><img src="img/walk.png" alt="Pedone" class="walker"><img src="img/bus.png" alt="Autobus" class="autobus"></div>\
-               <button class="resetRoute">Cancella itinerario</button>';
+               <button class="resetRoute" id="' + callback.id + '">Cancella itinerario</button>';
     return result
 }
 
@@ -336,14 +358,19 @@ function swipedetect(el, callback){
     }, false)
 }
 
-function doSwipeLeft(serviceElement, serviceName, selected){
+function doSwipeLeft(serviceElement, serviceName){
     if(selected < 1){
+        selected++;
+        $("#activeServices").html(selected);
         $("#mapWrapper").show();
         $("#sidemenu").hide();
+        $("#selectedServices").show();
         //populateOptions(serviceName);
+        $(".swipe").hide();
         $("#levels").removeClass();
         $("#levels").addClass(serviceName);
         triggerService(serviceElement);
+        serviceElement.setAttribute("data-selected", "true");
     }
 }
 
@@ -716,7 +743,7 @@ function addListenersToOptionsMenu() {
     }
 }
 
-function typeFilter(id, selected){
+function typeFilter(id, selectedService){
     var string;
     var type = 'TIPOLOGIA';
     switch(id){
@@ -821,6 +848,7 @@ function typeFilter(id, selected){
             }
 
     }
+
     var property;
     for(var place in markersData[0].features){
         switch(type){
@@ -835,7 +863,7 @@ function typeFilter(id, selected){
             for(marker in serviceMarkers){
                 if(markersData[0].features[place].geometry.coordinates[1].toFixed(9) == serviceMarkers[marker].getPosition().lat().toFixed(9) &&
                     markersData[0].features[place].geometry.coordinates[0].toFixed(9) == serviceMarkers[marker].getPosition().lng().toFixed(9)){
-                        if(selected){
+                        if(selectedService){
                             serviceMarkers[marker].filters--;
                         }
                         else{

@@ -28,18 +28,16 @@ $('#pac-input-options').on("blur", function () {
 });
 
 $('#levels').on("click", function () {
-    circle.setMap(null);
-    circle.setCenter(new google.maps.LatLng(userPosition.lat, userPosition.lng));
-    circle.radius = Infinity;
+    $("#sideOptions .label").remove();
+    $("#sideOptions .moreOptions").remove();
+    $("#sideOptions .dropdown").remove();
     showInRangeMarkers();
-    $(".range-slider__range").val(0);
-    $(".range-slider__value").html("0");
     $('#pac-input').hide();
     document.getElementById("sideOptions").classList.toggle('active');
     setTimeout(function () {
         $(".pac-container").prependTo("#searchResultsOptions");
     }, 300);
-    if(this.classList.length == 1){
+    if(selected == 1){
         var rgbColor = $("#" + this.classList[0]).css('backgroundColor');
         var hexColor = hexc(rgbColor);
         circle.setOptions({
@@ -53,6 +51,7 @@ $('#levels').on("click", function () {
             fillColor: '#65eb9bf2',
             strokeColor: '#65eb9bf2'
         });
+        document.getElementById("advancedService").innerHTML = ""
     }
     addListenersToOptionsMenu();
 });
@@ -113,15 +112,6 @@ $('#resetIconOptions').on("click", function () {
 $('#backIcon').on("click", function () {
     $("#sidemenu").show();
     $("#mapWrapper").hide();
-    /*var element = document.getElementById("levels");
-    var rgbColor = $("#" + element.className).css('backgroundColor');
-    var hexColor = hexc(rgbColor);
-    colorStack.push(hexColor);
-    $("#" + element.className).css('background-color', "transparent");
-    $("#" + element.className).css('border-color', "hsla(0, 0%, 100%, .43)");
-    element.setAttribute("data-selected", "false");
-    deleteMarkers(element.className);*/
-    circle.setMap(null);
     $("#pac-input-options").attr("placeholder", "Cerca sulla mappa");
     setTimeout(function () {
         $(".pac-container").prependTo("#searchResults");
@@ -377,6 +367,10 @@ function initAutocomplete() {
             circle.setCenter(new google.maps.LatLng(userPosition.lat, userPosition.lng));
             circle.radius = Infinity;
         }
+        if(selected == 0)
+            $('#levels').hide();
+        else    
+            $('#levels').show();
         for(i=0; i<serviceMarkers.length; i++){
             serviceMarkers[i].setMap(map);
         }
@@ -458,6 +452,12 @@ function initAutocomplete() {
         radius: Infinity
     });
 
+    document.getElementById('selectedServices').addEventListener('click', function(){
+        $("#mapWrapper").show();
+        $("#sidemenu").hide();
+        $("#levels").show();
+    });
+
     for (var i = 0; i < document.getElementsByClassName('service').length; i++) {
         document.getElementsByClassName('service')[i]
             .addEventListener('click', function () {
@@ -493,112 +493,112 @@ function initAutocomplete() {
     var farmacie = document.getElementById("farmacie");
     swipedetect(farmacie, function (swipedir) {
         if (swipedir == "left") {
-            doSwipeLeft(farmacie, "farmacie", selected);
+            doSwipeLeft(farmacie, "farmacie");
         }
     });
 
     var centriAnziani = document.getElementById("centriAnziani");
     swipedetect(centriAnziani, function (swipedir) {
         if (swipedir == "left") {
-            doSwipeLeft(centriAnziani, "centriAnziani", selected);
+            doSwipeLeft(centriAnziani, "centriAnziani");
         }
     });
 
     var anzianiAuto = document.getElementById("anzianiAuto");
     swipedetect(anzianiAuto, function (swipedir) {
         if (swipedir == "left") {
-            doSwipeLeft(anzianiAuto, "anzianiAuto", selected);
+            doSwipeLeft(anzianiAuto, "anzianiAuto");
         }
     });
 
     var disabiliFisici = document.getElementById("disabiliFisici");
     swipedetect(disabiliFisici, function (swipedir) {
         if (swipedir == "left") {
-            doSwipeLeft(disabiliFisici, "disabiliFisici", selected);
+            doSwipeLeft(disabiliFisici, "disabiliFisici");
         }
     });
 
     var cimiteri = document.getElementById("cimiteri");
     swipedetect(cimiteri, function (swipedir) {
         if (swipedir == "left") {
-            doSwipeLeft(cimiteri, "cimiteri", selected);
+            doSwipeLeft(cimiteri, "cimiteri");
         }
     });
 
     var siast = document.getElementById("siast");
     swipedetect(siast, function (swipedir) {
         if (swipedir == "left") {
-            doSwipeLeft(siast, "siast", selected);
+            doSwipeLeft(siast, "siast");
         }
     });
 
     var riabilitazione = document.getElementById("riabilitazione");
     swipedetect(riabilitazione, function (swipedir) {
         if (swipedir == "left") {
-            doSwipeLeft(riabilitazione, "riabilitazione", selected);
+            doSwipeLeft(riabilitazione, "riabilitazione");
         }
     });
 
     var presidi = document.getElementById("presidi");
     swipedetect(presidi, function (swipedir) {
         if (swipedir == "left") {
-            doSwipeLeft(presidi, "presidi", selected);
+            doSwipeLeft(presidi, "presidi");
         }
     });
 
     var disabiliPsichici = document.getElementById("disabiliPsichici");
     swipedetect(disabiliPsichici, function (swipedir) {
         if (swipedir == "left") {
-            doSwipeLeft(disabiliPsichici, "disabiliPsichici", selected);
+            doSwipeLeft(disabiliPsichici, "disabiliPsichici");
         }
     });
 
     var disabiliSociali = document.getElementById("disabiliSociali");
     swipedetect(disabiliSociali, function (swipedir) {
         if (swipedir == "left") {
-            doSwipeLeft(disabiliSociali, "disabiliSociali", selected);
+            doSwipeLeft(disabiliSociali, "disabiliSociali");
         }
     });
 
     var anzianiNONauto = document.getElementById("anzianiNONauto");
     swipedetect(anzianiNONauto, function (swipedir) {
         if (swipedir == "left") {
-            doSwipeLeft(anzianiNONauto, "anzianiNONauto", selected);
+            doSwipeLeft(anzianiNONauto, "anzianiNONauto");
         }
     });
 
     var dipendenze = document.getElementById("dipendenze");
     swipedetect(dipendenze, function (swipedir) {
         if (swipedir == "left") {
-            doSwipeLeft(dipendenze, "dipendenze", selected);
+            doSwipeLeft(dipendenze, "dipendenze");
         }
     });
 
     var marginalita = document.getElementById("marginalita");
     swipedetect(marginalita, function (swipedir) {
         if (swipedir == "left") {
-            doSwipeLeft(marginalita, "marginalita", selected);
+            doSwipeLeft(marginalita, "marginalita");
         }
     });
 
     var assistMinori = document.getElementById("assistMinori");
     swipedetect(assistMinori, function (swipedir) {
         if (swipedir == "left") {
-            doSwipeLeft(assistMinori, "assistMinori", selected);
+            doSwipeLeft(assistMinori, "assistMinori");
         }
     });
 
     var ospedali = document.getElementById("ospedali");
     swipedetect(ospedali, function (swipedir) {
         if (swipedir == "left") {
-            doSwipeLeft(ospedali, "ospedali", selected);
+            doSwipeLeft(ospedali, "ospedali");
         }
     });
 
     var saluteMentale = document.getElementById("saluteMentale");
     swipedetect(saluteMentale, function (swipedir) {
         if (swipedir == "left") {
-            doSwipeLeft(saluteMentale, "saluteMentale", selected);
+            doSwipeLeft(saluteMentale, "saluteMentale");
         }
     });
 }
