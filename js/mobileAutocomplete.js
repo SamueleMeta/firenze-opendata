@@ -149,14 +149,6 @@ var rangeSlider = function () {
 
 rangeSlider();
 
-function showOpeningHour() {
-    document.getElementById("openingDropdown").classList.toggle("show");
-}
-
-function showClosingHour() {
-    document.getElementById("closingDropdown").classList.toggle("show");
-}
-
 window.onclick = function (event) {
     if (!event.target.matches('.dropbtn')) {
 
@@ -475,12 +467,16 @@ function initAutocomplete() {
                     $(".swipe").hide();
                     addServiceMarkers(this, this.id);
                     selected += 1;
+                    $("#selectedServices").show();
+                    $("#activeServices").html(selected);
                 }
                 else {
                     this.setAttribute("data-selected", "false");
                     deleteServiceMarkers(this, this.id);
                     selected -= 1;
+                    $("#activeServices").html(selected);
                     if (selected < 1) {
+                        $("#selectedServices").hide();
                         $(".swipe").show();
                     }
                 }

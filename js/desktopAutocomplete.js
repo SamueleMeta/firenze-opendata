@@ -134,14 +134,6 @@ var rangeSlider = function () {
 
 rangeSlider();
 
-function showOpeningHour() {
-    document.getElementById("openingDropdown").classList.toggle("show");
-}
-
-function showClosingHour() {
-    document.getElementById("closingDropdown").classList.toggle("show");
-}
-
 window.onclick = function (event) {
     if (!event.target.matches('.dropbtn')) {
 

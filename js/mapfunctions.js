@@ -61,13 +61,19 @@ function addServiceMarkers(clss, id) {
             for (var place in callback.features) {
                 var longitude = callback.features[place].geometry.coordinates[0];
                 var latitude = callback.features[place].geometry.coordinates[1];
-                serviceMarkers.push(new google.maps.Marker({
+                var placeMarker = new google.maps.Marker({
                     position: { lat: latitude, lng: longitude },
                     map: map,
                     serviceID: id,
                     filters: 0,
                     icon: pinSymbol(color)
-                }));
+                })
+
+                google.maps.event.addListener(placeMarker, 'click', function(){
+                    $("#infoCloseButton").parent().fadeIn();
+                })
+
+                serviceMarkers.push(placeMarker);
 
                 infoWindows.push(new google.maps.InfoWindow({
                     content: produceContent(callback.features[place].properties),
@@ -79,7 +85,7 @@ function addServiceMarkers(clss, id) {
                 var directionsDisplay = new google.maps.DirectionsRenderer({
                     suppressMarkers: true
                 });
-
+                
                 serviceMarkers[serviceMarkers.length - 1].addListener("click", function () {
                     var infowindow = infoWindows[serviceMarkers.indexOf(this)];
 
@@ -94,7 +100,7 @@ function addServiceMarkers(clss, id) {
                         $(".gm-style-iw").after("<div id='infoCloseButton'></div>");
 
                         $("#infoCloseButton").on("click", function(){
-                            $(this).parent().hide();
+                            $(this).parent().fadeOut();
                             $(".alert").hide();
                         });
                         
@@ -151,9 +157,6 @@ function addServiceMarkers(clss, id) {
                         el.addEventListener("click", function(){
                             $(".alert").hide();
                         })
-                    }
-                    else {
-                        infowindow.setMap(null);
                     }
                 });
             }
@@ -355,30 +358,6 @@ function populateOptions(id) {
         case 'farmacie':
             document.getElementById("advancedService").innerHTML = "Farmacie";
             $("#sideOptions").append(`
-            <h5 class="label">Orario di apertura</h5>
-            <div class="dropdown">
-                <button onclick="showOpeningHour()" class="dropbtn" id="opening">--:--</button>
-                <ul id="openingDropdown" class="dropdown-content">
-                    <li class="openingHour">08:00</li>
-                    <li class="openingHour">09:00</li>
-                    <li class="openingHour">15:30</li>
-                    <li class="openingHour">16:00</li>
-                    <li class="openingHour">20:00</li>
-                </ul>
-            </div>
-            <h5 class="label">Orario di chiusura</h5>
-            <div class="dropdown">
-                <button onclick="showClosingHour()" class="dropbtn" id="closing">--:--</button>
-                <ul id="closingDropdown" class="dropdown-content">
-                        <li class="closingHour">09:00</li>
-                        <li class="closingHour">13:00</li>
-                        <li class="closingHour">19:30</li>
-                        <li class="closingHour">20:00</li>
-                        <li class="closingHour">21:00</li>
-                        <li class="closingHour">23:00</li>
-                        <li class="closingHour">00:00</li>
-                </ul>
-            </div>
             <h5 class="label">Tipologia</h5>
             <ul class="moreOptions" id="Comunale">
                 <li class="optionItem" id="comunale">

@@ -125,6 +125,10 @@ h5 {
     color: rgba(255, 255, 255, 0.72);
 }
 
+#selectedServices {
+    display: none;
+}
+
 /*--------------- OPTION MENU --------------*/
 
 #sideOptions {
@@ -245,52 +249,6 @@ h5 {
       font-weight: 300;
       color: rgba(255, 255, 255, 0.72);
   }
-
-.dropbtn {
-    background-color: #28303b;
-    color: rgba(255, 255, 255, 0.72);
-    font-size: 16px;
-    border: none;
-    cursor: pointer;
-    padding: 6% 9% 6% 0;
-    padding-left: calc(9% + 3px);
-    border-radius: 8px;
-    margin-bottom: 5%;
-}
-
-.dropdown {
-    position: relative;
-    display: inline-block;
-    width: 100%;
-    text-align: center;
-    margin-bottom: 5%;
-}
-
-.dropdown-content {
-    display: none;
-    z-index: 1;
-}
-
-.dropdown-content li {
-    color: rgba(255, 255, 255, 0.72);
-    padding: 3% 4%;
-    text-decoration: none;
-    display: inline-block;
-    cursor: default;
-}
-
-.dropdown-content li:hover {
-    color: rgba(101, 235, 155, 0.95);
-    font-weight: 400;
-}
-
-.dropbtn:after {
-    content: url(../img/down-arrow.png);
-    padding-left: 5px;
-    width: 16px;
-    height: 16px;
-    vertical-align: sub;
-}
 
 .show {
     display: block;
@@ -697,5 +655,28 @@ h5 {
 
     .alertText {
         padding: 4% 5%;
+    }
+
+    #selectedServices {
+        display: none;
+        color: rgba(101, 235, 155, .95);
+        border: 3px solid rgba(101, 235, 155, .95);
+        width: 76%;
+        margin: auto;
+        margin-bottom: 5%;
+        padding: 4% 5%;
+        text-align: center;
+    }
+
+    #selectedServices:after {
+        content: url(../img/marker.png);
+        width: 16px;
+        height: 16px;
+        vertical-align: middle;
+    }
+
+    #activeServices {
+        font-size: 18px;
+        font-weight: 600;
     }
 }
