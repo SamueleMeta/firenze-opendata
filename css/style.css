@@ -570,7 +570,7 @@ h5 {
 
 /*----------- PHONE PORTRAIT -----------*/
 
-@media (min-width: 320px) and (max-width: 480px) {
+@media (min-width: 320px) and (max-width: 767px) {
 
     #sidemenu {
         width: 100%;
