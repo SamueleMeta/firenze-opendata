@@ -2,8 +2,9 @@
 $('#pac-input').on("focus", function () {
     $('.searchIcon').attr("src", "img/green-searcher.png");
     $('.resetIcon').attr("src", "img/green-close.png");
-    if($(".resetRoute").length > 0){
+    if ($(".resetRoute").length > 0) {
         $(".resetRoute").click();
+        activeRoute = false;
     }
     $(".alert").hide();
 });
@@ -16,8 +17,9 @@ $('#pac-input').on("blur", function () {
 $('#pac-input-options').on("focus", function () {
     $('.searchIcon').attr("src", "img/green-searcher.png");
     $('.resetIcon').attr("src", "img/green-close.png");
-    if($(".resetRoute").length > 0){
+    if ($(".resetRoute").length > 0) {
         $(".resetRoute").click();
+        activeRoute = false;
     }
     $(".alert").hide();
 });
@@ -28,41 +30,45 @@ $('#pac-input-options').on("blur", function () {
 });
 
 $('#levels').on("click", function () {
-    $("#sideOptions .label").remove();
-    $("#sideOptions .moreOptions").remove();
-    $("#sideOptions .dropdown").remove();
-    showInRangeMarkers();
-    $('#pac-input').hide();
-    document.getElementById("sideOptions").classList.toggle('active');
-    setTimeout(function () {
-        $(".pac-container").prependTo("#searchResultsOptions");
-    }, 300);
-    if(selected == 1){
-        var rgbColor = $("#" + this.classList[0]).css('backgroundColor');
-        var hexColor = hexc(rgbColor);
-        circle.setOptions({
-            fillColor: hexColor,
-            strokeColor: hexColor
-        });
-        populateOptions(this.classList[0]);
+    if ($(window).width() < 767) {
+        $("#sideOptions .label").remove();
+        $("#sideOptions .moreOptions").remove();
+        $("#sideOptions .dropdown").remove();
+        showInRangeMarkers();
+        $('#pac-input').hide();
+        document.getElementById("sideOptions").classList.toggle('active');
+        setTimeout(function () {
+            $(".pac-container").prependTo("#searchResultsOptions");
+        }, 300);
+        if (selected == 1) {
+            var rgbColor = $("#" + this.classList[0]).css('backgroundColor');
+            var hexColor = hexc(rgbColor);
+            circle.setOptions({
+                fillColor: hexColor,
+                strokeColor: hexColor
+            });
+            populateOptions(this.classList[0]);
+        }
+        else {
+            circle.setOptions({
+                fillColor: '#65eb9bf2',
+                strokeColor: '#65eb9bf2'
+            });
+            document.getElementById("advancedService").innerHTML = ""
+        }
+        addListenersToOptionsMenu();
     }
-    else{
-        circle.setOptions({
-            fillColor: '#65eb9bf2',
-            strokeColor: '#65eb9bf2'
-        });
-        document.getElementById("advancedService").innerHTML = ""
-    }
-    addListenersToOptionsMenu();
 });
 
 $('#cancelIcon').on("click", function () {
-    document.getElementById("sideOptions").classList.toggle('active');
-    $("#pac-input-options").attr("placeholder", "Cerca sulla mappa");
-    setTimeout(function () {
-        $(".pac-container").prependTo("#searchResults");
-    }, 300);
-    $('#pac-input').delay(290).show(0);
+    if ($(window).width() < 767) {
+        document.getElementById("sideOptions").classList.toggle('active');
+        $("#pac-input-options").attr("placeholder", "Cerca sulla mappa");
+        setTimeout(function () {
+            $(".pac-container").prependTo("#searchResults");
+        }, 300);
+        $('#pac-input').delay(290).show(0);
+    }
 });
 
 $('#pac-input').on("change", function () {
@@ -70,22 +76,25 @@ $('#pac-input').on("change", function () {
 });
 
 $('#resetIconDefault').on("click", function () {
-    if($(".resetRoute").length > 0){
-        $(".resetRoute").click();
+    if ($(window).width() < 767) {
+        if ($(".resetRoute").length > 0) {
+            $(".resetRoute").click();
+            activeRoute = false;
+        }
+        document.getElementById('pac-input').value = '';
+        showDefaultLocation();
+        map.setZoom(13);
+        for (i = 0; i < markers.length; i++) {
+            markers[i].setMap(null);
+        }
+        for (i = 0; i < serviceMarkers.length; i++) {
+            serviceMarkers[i].setMap(map);
+        }
+        circle.setCenter(new google.maps.LatLng(43.7792500, 11.2462600));
+        circle.radius = Infinity;
+        showInRangeMarkers();
+        $(this).hide();
     }
-    document.getElementById('pac-input').value='';
-    showDefaultLocation();
-    map.setZoom(13);
-    for(i=0; i<markers.length; i++){
-        markers[i].setMap(null);
-    }
-    for(i=0; i<serviceMarkers.length; i++){
-        serviceMarkers[i].setMap(map);
-    }
-    circle.setCenter(new google.maps.LatLng(43.7792500, 11.2462600));
-    circle.radius = Infinity;
-    showInRangeMarkers();
-    $(this).hide();
 });
 
 $('#pac-input-options').on("change", function () {
@@ -93,33 +102,38 @@ $('#pac-input-options').on("change", function () {
 });
 
 $('#resetIconOptions').on("click", function () {
-    if($(".resetRoute").length > 0){
-        $(".resetRoute").click();
+    if ($(window).width() < 767) {
+        if ($(".resetRoute").length > 0) {
+            $(".resetRoute").click();
+            activeRoute = false;
+        }
+        document.getElementById('pac-input-options').value = '';
+        $(".range-slider__range").val(0);
+        $(".range-slider__value").html("0");
+        showDefaultLocation();
+        for (i = 0; i < markers.length; i++) {
+            markers[i].setMap(null);
+        }
+        circle.setCenter(new google.maps.LatLng(43.7792500, 11.2462600));
+        circle.setMap(null);
+        circle.radius = Infinity;
+        $(this).hide();
     }
-    document.getElementById('pac-input-options').value='';
-    $(".range-slider__range").val(0);
-    $(".range-slider__value").html("0");
-    showDefaultLocation();
-    for(i=0; i<markers.length; i++){
-        markers[i].setMap(null);
-    }
-    circle.setCenter(new google.maps.LatLng(43.7792500, 11.2462600));
-    circle.setMap(null);
-    circle.radius = Infinity;
-    $(this).hide();
 });
 
 $('#backIcon').on("click", function () {
-    $("#sidemenu").show();
-    $("#mapWrapper").hide();
-    $("#pac-input-options").attr("placeholder", "Cerca sulla mappa");
-    setTimeout(function () {
-        $(".pac-container").prependTo("#searchResults");
-    }, 300);
-    $('#pac-input').delay(290).show(0);
-    $("#sideOptions .label").remove();
-    $("#sideOptions .moreOptions").remove();
-    $("#sideOptions .dropdown").remove();
+    if ($(window).width() < 767) {
+        $("#sidemenu").show();
+        $("#mapWrapper").hide();
+        $("#pac-input-options").attr("placeholder", "Cerca sulla mappa");
+        setTimeout(function () {
+            $(".pac-container").prependTo("#searchResults");
+        }, 300);
+        $('#pac-input').delay(290).show(0);
+        $("#sideOptions .label").remove();
+        $("#sideOptions .moreOptions").remove();
+        $("#sideOptions .dropdown").remove();
+    }
 });
 
 var rangeSlider = function () {
@@ -139,22 +153,155 @@ var rangeSlider = function () {
 
 rangeSlider();
 
-window.onclick = function (event) {
-    if (!event.target.matches('.dropbtn')) {
+$(".alert").on("click", function () {
+    $(".alert").hide();
+});
 
-        var dropdowns = document.getElementsByClassName("dropdown-content");
-        var i;
-        for (i = 0; i < dropdowns.length; i++) {
-            var openDropdown = dropdowns[i];
-            if (openDropdown.classList.contains('show')) {
-                openDropdown.classList.remove('show');
-            }
-        }
+document.getElementById('selectedServices').addEventListener('click', function () {
+    if ($(window).width() < 767) {
+        $("#mapWrapper").show();
+        $("#sidemenu").hide();
+        $("#levels").show();
     }
+});
+
+for (var i = 0; i < document.getElementsByClassName('service').length; i++) {
+    document.getElementsByClassName('service')[i]
+        .addEventListener('click', function () {
+            if ($(window).width() < 767) {
+                document.getElementById('levels').classList.toggle($(this).attr('id'));
+                if (this.getAttribute('data-selected') == 'false') {
+                    this.setAttribute("data-selected", "true");
+                    $(".swipe").hide();
+                    addServiceMarkers(this, this.id);
+                    selected += 1;
+                    $("#selectedServices").show();
+                    $("#activeServices").html(selected);
+                }
+                else {
+                    this.setAttribute("data-selected", "false");
+                    deleteServiceMarkers(this, this.id);
+                    selected -= 1;
+                    $("#activeServices").html(selected);
+                    if (selected < 1) {
+                        $("#selectedServices").hide();
+                        $(".swipe").show();
+                    }
+                }
+            }
+        });
 }
 
-$(".alert").on("click", function(){
-    $(".alert").hide();
+var farmacie = document.getElementById("farmacie");
+swipedetect(farmacie, function (swipedir) {
+    if (swipedir == "left") {
+        doSwipeLeft(farmacie, "farmacie");
+    }
+});
+
+var centriAnziani = document.getElementById("centriAnziani");
+swipedetect(centriAnziani, function (swipedir) {
+    if (swipedir == "left") {
+        doSwipeLeft(centriAnziani, "centriAnziani");
+    }
+});
+
+var anzianiAuto = document.getElementById("anzianiAuto");
+swipedetect(anzianiAuto, function (swipedir) {
+    if (swipedir == "left") {
+        doSwipeLeft(anzianiAuto, "anzianiAuto");
+    }
+});
+
+var disabiliFisici = document.getElementById("disabiliFisici");
+swipedetect(disabiliFisici, function (swipedir) {
+    if (swipedir == "left") {
+        doSwipeLeft(disabiliFisici, "disabiliFisici");
+    }
+});
+
+var cimiteri = document.getElementById("cimiteri");
+swipedetect(cimiteri, function (swipedir) {
+    if (swipedir == "left") {
+        doSwipeLeft(cimiteri, "cimiteri");
+    }
+});
+
+var siast = document.getElementById("siast");
+swipedetect(siast, function (swipedir) {
+    if (swipedir == "left") {
+        doSwipeLeft(siast, "siast");
+    }
+});
+
+var riabilitazione = document.getElementById("riabilitazione");
+swipedetect(riabilitazione, function (swipedir) {
+    if (swipedir == "left") {
+        doSwipeLeft(riabilitazione, "riabilitazione");
+    }
+});
+
+var presidi = document.getElementById("presidi");
+swipedetect(presidi, function (swipedir) {
+    if (swipedir == "left") {
+        doSwipeLeft(presidi, "presidi");
+    }
+});
+
+var disabiliPsichici = document.getElementById("disabiliPsichici");
+swipedetect(disabiliPsichici, function (swipedir) {
+    if (swipedir == "left") {
+        doSwipeLeft(disabiliPsichici, "disabiliPsichici");
+    }
+});
+
+var disabiliSociali = document.getElementById("disabiliSociali");
+swipedetect(disabiliSociali, function (swipedir) {
+    if (swipedir == "left") {
+        doSwipeLeft(disabiliSociali, "disabiliSociali");
+    }
+});
+
+var anzianiNONauto = document.getElementById("anzianiNONauto");
+swipedetect(anzianiNONauto, function (swipedir) {
+    if (swipedir == "left") {
+        doSwipeLeft(anzianiNONauto, "anzianiNONauto");
+    }
+});
+
+var dipendenze = document.getElementById("dipendenze");
+swipedetect(dipendenze, function (swipedir) {
+    if (swipedir == "left") {
+        doSwipeLeft(dipendenze, "dipendenze");
+    }
+});
+
+var marginalita = document.getElementById("marginalita");
+swipedetect(marginalita, function (swipedir) {
+    if (swipedir == "left") {
+        doSwipeLeft(marginalita, "marginalita");
+    }
+});
+
+var assistMinori = document.getElementById("assistMinori");
+swipedetect(assistMinori, function (swipedir) {
+    if (swipedir == "left") {
+        doSwipeLeft(assistMinori, "assistMinori");
+    }
+});
+
+var ospedali = document.getElementById("ospedali");
+swipedetect(ospedali, function (swipedir) {
+    if (swipedir == "left") {
+        doSwipeLeft(ospedali, "ospedali");
+    }
+});
+
+var saluteMentale = document.getElementById("saluteMentale");
+swipedetect(saluteMentale, function (swipedir) {
+    if (swipedir == "left") {
+        doSwipeLeft(saluteMentale, "saluteMentale");
+    }
 });
 
 // MAP FUNCTIONS
@@ -266,7 +413,6 @@ var mainMarker;
 var userPosition = {};
 var defaultPosition = true;
 var circle = {};
-var selected = 0;
 
 var ColorStack = function () {
     this.size = 16;
@@ -293,12 +439,11 @@ var colorStack = new ColorStack();
 
 function initAutocomplete() {
     if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(showUserPosition, showDefaultLocation);   
+        navigator.geolocation.getCurrentPosition(showUserPosition, showDefaultLocation);
     }
 
     map = new google.maps.Map(document.getElementById('map'), mapOptions);
 
-    // Create the search box and link it to the UI element.
     var input = document.getElementById('pac-input');
     var searchBox = new google.maps.places.SearchBox(input);
 
@@ -318,8 +463,6 @@ function initAutocomplete() {
         searchBoxOptions.setBounds(map.getBounds());
     });
 
-    // Listen for the event fired when the user selects a prediction and retrieve
-    // more details for that place.
     searchBox.addListener('places_changed', function () {
         var places = searchBox.getPlaces();
 
@@ -367,20 +510,29 @@ function initAutocomplete() {
             circle.setCenter(new google.maps.LatLng(userPosition.lat, userPosition.lng));
             circle.radius = Infinity;
         }
-        if(selected == 0)
-            $('#levels').hide();
-        else    
-            $('#levels').show();
-        for(i=0; i<serviceMarkers.length; i++){
-            serviceMarkers[i].setMap(map);
+
+        if ($(window).width() > 767) {
+            document.getElementById('pac-input-options').value = '';
+            $('#resetIconOptions').hide();
+            $("#resetIconDefault").show();
+            defaultPosition = false;
+            $(".alert").hide();
+        } else {
+            if (selected == 0)
+                $('#levels').hide();
+            else
+                $('#levels').show();
+            for (i = 0; i < serviceMarkers.length; i++) {
+                serviceMarkers[i].setMap(map);
+            }
+            document.getElementById('pac-input-options').value = '';
+            $('#resetIconOptions').hide();
+            $("#mapWrapper").show();
+            $("#sidemenu").hide();
+            $("#resetIconDefault").show();
+            defaultPosition = false;
+            $(".alert").hide();
         }
-        document.getElementById('pac-input-options').value='';
-        $('#resetIconOptions').hide();
-        $("#mapWrapper").show();
-        $("#sidemenu").hide();
-        $("#resetIconDefault").show();
-        defaultPosition = false;
-        $(".alert").hide();
     });
 
     searchBoxOptions.addListener('places_changed', function () {
@@ -431,13 +583,23 @@ function initAutocomplete() {
             circle.radius = Infinity;
         }
         showInRangeMarkers();
-        document.getElementById('pac-input').value='';
-        $('#resetIconDefault').hide();
-        $("#mapWrapper").show();
-        document.getElementById("sideOptions").classList.toggle('active');
-        $("#resetIconOptions").show();
-        defaultPosition = false;
-        $(".alert").hide();
+        document.getElementById('pac-input').value = '';
+
+        if ($(window).width() > 767) {
+            $('#resetIconDefault').hide();
+            $("#resetIconOptions").show();
+            defaultPosition = false;
+            $(".alert").hide();
+        } else {
+            $('#resetIconDefault').hide();
+            $("#mapWrapper").show();
+            document.getElementById("sideOptions").classList.toggle('active');
+            $("#resetIconOptions").show();
+            defaultPosition = false;
+            $(".alert").hide();
+
+        }
+
     });
 
     //Initialize Circle
@@ -452,153 +614,10 @@ function initAutocomplete() {
         radius: Infinity
     });
 
-    document.getElementById('selectedServices').addEventListener('click', function(){
-        $("#mapWrapper").show();
-        $("#sidemenu").hide();
-        $("#levels").show();
-    });
-
-    for (var i = 0; i < document.getElementsByClassName('service').length; i++) {
-        document.getElementsByClassName('service')[i]
-            .addEventListener('click', function () {
-                document.getElementById('levels').classList.toggle($(this).attr('id'));
-                if (this.getAttribute('data-selected') == 'false') {
-                    this.setAttribute("data-selected", "true");
-                    $(".swipe").hide();
-                    addServiceMarkers(this, this.id);
-                    selected += 1;
-                    $("#selectedServices").show();
-                    $("#activeServices").html(selected);
-                }
-                else {
-                    this.setAttribute("data-selected", "false");
-                    deleteServiceMarkers(this, this.id);
-                    selected -= 1;
-                    $("#activeServices").html(selected);
-                    if (selected < 1) {
-                        $("#selectedServices").hide();
-                        $(".swipe").show();
-                    }
-                }
-            });
-    }
-
     $('.range-slider__range').on("change", function () {
         circle.setMap(map);
         circle.setCenter(new google.maps.LatLng(userPosition.lat, userPosition.lng));
         circle.radius = parseFloat($(this).val());
         showInRangeMarkers();
-    });
-
-    var farmacie = document.getElementById("farmacie");
-    swipedetect(farmacie, function (swipedir) {
-        if (swipedir == "left") {
-            doSwipeLeft(farmacie, "farmacie");
-        }
-    });
-
-    var centriAnziani = document.getElementById("centriAnziani");
-    swipedetect(centriAnziani, function (swipedir) {
-        if (swipedir == "left") {
-            doSwipeLeft(centriAnziani, "centriAnziani");
-        }
-    });
-
-    var anzianiAuto = document.getElementById("anzianiAuto");
-    swipedetect(anzianiAuto, function (swipedir) {
-        if (swipedir == "left") {
-            doSwipeLeft(anzianiAuto, "anzianiAuto");
-        }
-    });
-
-    var disabiliFisici = document.getElementById("disabiliFisici");
-    swipedetect(disabiliFisici, function (swipedir) {
-        if (swipedir == "left") {
-            doSwipeLeft(disabiliFisici, "disabiliFisici");
-        }
-    });
-
-    var cimiteri = document.getElementById("cimiteri");
-    swipedetect(cimiteri, function (swipedir) {
-        if (swipedir == "left") {
-            doSwipeLeft(cimiteri, "cimiteri");
-        }
-    });
-
-    var siast = document.getElementById("siast");
-    swipedetect(siast, function (swipedir) {
-        if (swipedir == "left") {
-            doSwipeLeft(siast, "siast");
-        }
-    });
-
-    var riabilitazione = document.getElementById("riabilitazione");
-    swipedetect(riabilitazione, function (swipedir) {
-        if (swipedir == "left") {
-            doSwipeLeft(riabilitazione, "riabilitazione");
-        }
-    });
-
-    var presidi = document.getElementById("presidi");
-    swipedetect(presidi, function (swipedir) {
-        if (swipedir == "left") {
-            doSwipeLeft(presidi, "presidi");
-        }
-    });
-
-    var disabiliPsichici = document.getElementById("disabiliPsichici");
-    swipedetect(disabiliPsichici, function (swipedir) {
-        if (swipedir == "left") {
-            doSwipeLeft(disabiliPsichici, "disabiliPsichici");
-        }
-    });
-
-    var disabiliSociali = document.getElementById("disabiliSociali");
-    swipedetect(disabiliSociali, function (swipedir) {
-        if (swipedir == "left") {
-            doSwipeLeft(disabiliSociali, "disabiliSociali");
-        }
-    });
-
-    var anzianiNONauto = document.getElementById("anzianiNONauto");
-    swipedetect(anzianiNONauto, function (swipedir) {
-        if (swipedir == "left") {
-            doSwipeLeft(anzianiNONauto, "anzianiNONauto");
-        }
-    });
-
-    var dipendenze = document.getElementById("dipendenze");
-    swipedetect(dipendenze, function (swipedir) {
-        if (swipedir == "left") {
-            doSwipeLeft(dipendenze, "dipendenze");
-        }
-    });
-
-    var marginalita = document.getElementById("marginalita");
-    swipedetect(marginalita, function (swipedir) {
-        if (swipedir == "left") {
-            doSwipeLeft(marginalita, "marginalita");
-        }
-    });
-
-    var assistMinori = document.getElementById("assistMinori");
-    swipedetect(assistMinori, function (swipedir) {
-        if (swipedir == "left") {
-            doSwipeLeft(assistMinori, "assistMinori");
-        }
-    });
-
-    var ospedali = document.getElementById("ospedali");
-    swipedetect(ospedali, function (swipedir) {
-        if (swipedir == "left") {
-            doSwipeLeft(ospedali, "ospedali");
-        }
-    });
-
-    var saluteMentale = document.getElementById("saluteMentale");
-    swipedetect(saluteMentale, function (swipedir) {
-        if (swipedir == "left") {
-            doSwipeLeft(saluteMentale, "saluteMentale");
-        }
     });
 }

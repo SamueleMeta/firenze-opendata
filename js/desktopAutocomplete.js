@@ -4,6 +4,7 @@ $('#pac-input').on("focus", function () {
     $('.resetIcon').attr("src", "img/green-close.png");
     if($(".resetRoute").length > 0){
         $(".resetRoute").click();
+        activeRoute = false;
     }
     $(".alert").hide();
 });
@@ -18,6 +19,7 @@ $('#pac-input-options').on("focus", function () {
     $('.resetIcon').attr("src", "img/green-close.png");
     if($(".resetRoute").length > 0){
         $(".resetRoute").click();
+        activeRoute = false;
     }
     $(".alert").hide();
 });
@@ -28,6 +30,8 @@ $('#pac-input-options').on("blur", function () {
 });
 
 $('.service-info').on("click", function () {
+    if($(window).width() > 767){
+    $("#sideOptions").show();
     circle.setMap(null);
     circle.radius = Infinity;
     $(".range-slider__range").val(0);
@@ -40,9 +44,11 @@ $('.service-info').on("click", function () {
     populateOptions(this.parentNode.parentNode.id);
     addListenersToOptionsMenu();
     displayAdvancedSearch(this.parentNode.parentNode.id);
+}
 });
 
 $('#cancelIcon').on("click", function () {
+    if($(window).width() > 767){
     document.getElementById("sideOptions").classList.toggle('active');
     $("#pac-input-options").attr("placeholder", "Cerca sulla mappa");
     setTimeout(function () {
@@ -55,6 +61,7 @@ $('#cancelIcon').on("click", function () {
     serviceMarkers.forEach(function(element){
         element.filtered = false;
     });
+}
     //showInRangeMarkers();
 });
 
@@ -63,9 +70,11 @@ $('#pac-input').on("change", function () {
 });
 
 $('#resetIconDefault').on("click", function () {
+    if($(window).width() > 767){
     $(".alert").hide();
     if($(".resetRoute").length > 0){
         $(".resetRoute").click();
+        activeRoute = false;
     }
     document.getElementById('pac-input').value='';
     showDefaultLocation();
@@ -80,6 +89,7 @@ $('#resetIconDefault').on("click", function () {
     circle.setMap(null)
     circle.radius = Infinity;
     $(this).hide();
+}
 });
 
 $('#pac-input-options').on("change", function () {
@@ -87,6 +97,7 @@ $('#pac-input-options').on("change", function () {
 });
 
 $('#resetIconOptions').on("click", function () {
+    if($(window).width() > 767){
     document.getElementById('pac-input-options').value='';
     $(".range-slider__range").val(0);
     $(".range-slider__value").html("0");
@@ -99,22 +110,7 @@ $('#resetIconOptions').on("click", function () {
     circle.radius = Infinity;
     showInRangeMarkers();
     $(this).hide();
-});
-
-$('.dropdown-content #openingHour').on("click", function () {
-    $("#opening").html($(this).html());
-});
-
-$('.dropdown-content #closingHour').on("click", function () {
-    $("#closing").html($(this).html());
-});
-
-$('#comunale').on("click", function () {
-    document.getElementById("comunale").classList.toggle('selected');
-});
-
-$('#nonComunale').on("click", function () {
-    document.getElementById("nonComunale").classList.toggle('selected');
+}
 });
 
 var rangeSlider = function () {
@@ -134,23 +130,29 @@ var rangeSlider = function () {
 
 rangeSlider();
 
-window.onclick = function (event) {
-    if (!event.target.matches('.dropbtn')) {
-
-        var dropdowns = document.getElementsByClassName("dropdown-content");
-        var i;
-        for (i = 0; i < dropdowns.length; i++) {
-            var openDropdown = dropdowns[i];
-            if (openDropdown.classList.contains('show')) {
-                openDropdown.classList.remove('show');
-            }
-        }
-    }
-}
-
 $(".alert").on("click", function(){
     $(".alert").hide();
 });
+
+for (var i = 0; i < document.getElementsByClassName('service').length; i++) {
+    document.getElementsByClassName('service')[i]
+        .addEventListener('click', function () {
+            if($(window).width() > 767){
+            if (this.getAttribute('data-selected') == 'false') {
+                this.setAttribute('data-selected', 'true');
+                addServiceMarkers(this, this.id);
+                selected += 1;
+                $("#levels").addClass(this.id);
+            }
+            else {
+                this.setAttribute('data-selected', 'false');
+                deleteServiceMarkers(this, this.id);
+                selected -= 1;
+                $("#levels").removeClass();
+            }
+        }
+        });
+}
 
 // MAP FUNCTIONS
 var mapOptions = {
@@ -289,11 +291,7 @@ function initAutocomplete() {
         navigator.geolocation.getCurrentPosition(showUserPosition, showDefaultLocation);   
     }
 
-    map = new google.maps.Map(document.getElementById('map'), mapOptions);
-
-    // Create the search box and link it to the UI element.
-    var input = document.getElementById('pac-input');
-    var searchBox = new google.maps.places.SearchBox(input);
+    map = new google.maps.Map(document.getElementById('map'), mapOptions);    
 
     setTimeout(function () {
         $(".pac-container").prependTo("#searchResults");
@@ -310,120 +308,6 @@ function initAutocomplete() {
     map.addListener('bounds_changed', function () {
         searchBoxOptions.setBounds(map.getBounds());
     });
-
-    // Listen for the event fired when the user selects a prediction and retrieve
-    // more details for that place.
-    searchBox.addListener('places_changed', function () {
-        var places = searchBox.getPlaces();
-
-        if (places.length == 0) {
-            return;
-        }
-
-        // Clear out the old markers.
-        markers.forEach(function (marker) {
-            marker.setMap(null);
-        });
-
-        // For each place, get the icon, name and location.
-        var bounds = new google.maps.LatLngBounds();
-        places.forEach(function (place) {
-            if (!place.geometry) {
-                console.log("Returned place contains no geometry");
-                return;
-            }
-
-            if(mainMarker !== undefined){
-                mainMarker.setMap(null);
-            }
-            userPosition.lat = place.geometry.location.lat();
-            userPosition.lng = place.geometry.location.lng();
-
-            // Create a marker for each place.
-            markers.push(new google.maps.Marker({
-                map: map,
-                position: place.geometry.location,
-            }));
-
-            if (place.geometry.viewport) {
-                // Only geocodes have viewport.
-                bounds.union(place.geometry.viewport);
-            } else {
-                bounds.extend(place.geometry.location);
-            }
-        });
-        map.fitBounds(bounds);
-        $(".range-slider__range").val(0);
-        $(".range-slider__value").html("0");
-        if(Object.keys(circle).length>0){
-            circle.setMap(null);
-            circle.setCenter(new google.maps.LatLng(userPosition.lat, userPosition.lng));
-            circle.radius = Infinity;
-        }
-        for(i=0; i<serviceMarkers.length; i++){
-            serviceMarkers[i].setMap(map);
-        }
-        document.getElementById('pac-input-options').value='';
-        $('#resetIconOptions').hide();
-        $("#resetIconDefault").show();
-        defaultPosition = false;
-        $(".alert").hide();
-    });
-
-    searchBoxOptions.addListener('places_changed', function () {
-        var places = searchBoxOptions.getPlaces();
-
-        if (places.length == 0) {
-            return;
-        }
-
-        // Clear out the old markers.
-        markers.forEach(function (marker) {
-            marker.setMap(null);
-        });
-
-        // For each place, get the icon, name and location.
-        var bounds = new google.maps.LatLngBounds();
-        places.forEach(function (place) {
-            if (!place.geometry) {
-                console.log("Returned place contains no geometry");
-                return;
-            }
-
-            if(mainMarker !== undefined){
-                mainMarker.setMap(null);
-            }
-            userPosition.lat = place.geometry.location.lat();
-            userPosition.lng = place.geometry.location.lng();
-
-            // Create a marker for each place.
-            markers.push(new google.maps.Marker({
-                map: map,
-                position: place.geometry.location,
-            }));
-
-            if (place.geometry.viewport) {
-                // Only geocodes have viewport.
-                bounds.union(place.geometry.viewport);
-            } else {
-                bounds.extend(place.geometry.location);
-            }
-        });
-        map.fitBounds(bounds);
-        $(".range-slider__range").val(0);
-        $(".range-slider__value").html("0");
-        if(Object.keys(circle).length>0){
-            circle.setMap(null);
-            circle.setCenter(new google.maps.LatLng(userPosition.lat, userPosition.lng));
-            circle.radius = Infinity;
-        }
-        showInRangeMarkers();
-        document.getElementById('pac-input').value='';
-        $('#resetIconDefault').hide();
-        $("#resetIconOptions").show();
-        defaultPosition = false;
-        $(".alert").hide();
-    });
     
     //Initialize Circle
     circle = new google.maps.Circle({
@@ -436,20 +320,6 @@ function initAutocomplete() {
         center: new google.maps.LatLng(userPosition.lat, userPosition.lng),
         radius: Infinity
     });
-
-    for (var i = 0; i < document.getElementsByClassName('service').length; i++) {
-        document.getElementsByClassName('service')[i]
-            .addEventListener('click', function () {
-                if (this.getAttribute('data-selected') == 'false') {
-                    this.setAttribute('data-selected', 'true');
-                    addServiceMarkers(this, this.id);
-                }
-                else {
-                    this.setAttribute('data-selected', 'false');
-                    deleteServiceMarkers(this, this.id);
-                }
-            });
-    }
 
     $('.range-slider__range').on("change", function () {
         circle.setMap(map);

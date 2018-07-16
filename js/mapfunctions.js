@@ -1,26 +1,5 @@
-//Set Center on user's position
-function showUserPosition(position) {
-    map.setCenter(new google.maps.LatLng(position.coords.latitude, position.coords.longitude));
-    mainMarker = (new google.maps.Marker({
-        position: { lat: position.coords.latitude, lng: position.coords.longitude },
-        map: map,
-    }));
-    userPosition.lat = position.coords.latitude;
-    userPosition.lng = position.coords.longitude;
-    defaultPosition = false;
-}
-
-function showDefaultLocation(){
-    //Default Location: Florence's town center
-    map.setCenter(new google.maps.LatLng(43.7792500, 11.2462600));
-        mainMarker = (new google.maps.Marker({
-            position: { lat: 43.7792500, lng: 11.2462600 },
-            map: null,
-        }));
-        userPosition.lat = 43.7792500;
-        userPosition.lng = 11.2462600;
-        defaultPosition = true;
-}
+var selected = 0;
+var activeRoute = false;
 
 function addServiceMarkers(clss, id) {
     var path;
@@ -69,7 +48,7 @@ function addServiceMarkers(clss, id) {
                     icon: pinSymbol(color)
                 })
 
-                google.maps.event.addListener(placeMarker, 'click', function(){
+                google.maps.event.addListener(placeMarker, 'click', function () {
                     $("#infoCloseButton").parent().fadeIn();
                 })
 
@@ -85,7 +64,7 @@ function addServiceMarkers(clss, id) {
                 var directionsDisplay = new google.maps.DirectionsRenderer({
                     suppressMarkers: true
                 });
-                
+
                 serviceMarkers[serviceMarkers.length - 1].addListener("click", function () {
                     var infowindow = infoWindows[serviceMarkers.indexOf(this)];
 
@@ -99,21 +78,22 @@ function addServiceMarkers(clss, id) {
                         sibling.className = "infoClose";
                         $(".gm-style-iw").after("<div id='infoCloseButton'></div>");
 
-                        $("#infoCloseButton").on("click", function(){
+                        $("#infoCloseButton").on("click", function () {
                             $(this).parent().fadeOut();
                             $(".alert").hide();
                         });
-                        
+
                         for (var i = 0; i < document.getElementsByClassName('car').length; i++) {
                             document.getElementsByClassName('car')[i]
                                 .addEventListener('click', function () {
                                     directionsDisplay.setMap(map);
-                                    if(defaultPosition){
+                                    if (defaultPosition) {
                                         showErrorAlert();
                                         return;
                                     }
                                     var origin = new google.maps.LatLng(userPosition.lat, userPosition.lng);
                                     var destination = new google.maps.LatLng(infowindow.getPosition().lat(), infowindow.getPosition().lng());
+                                    activeRoute = true;
                                     calcRoute(directionsService, directionsDisplay, origin, destination, 'DRIVING');
                                 });
                         }
@@ -122,39 +102,41 @@ function addServiceMarkers(clss, id) {
                             document.getElementsByClassName('walker')[i]
                                 .addEventListener('click', function () {
                                     directionsDisplay.setMap(map);
-                                    if(defaultPosition){
+                                    if (defaultPosition) {
                                         showErrorAlert();
                                         return;
                                     }
                                     var origin = new google.maps.LatLng(userPosition.lat, userPosition.lng);
                                     var destination = new google.maps.LatLng(infowindow.getPosition().lat(), infowindow.getPosition().lng());
+                                    activeRoute = true;
                                     calcRoute(directionsService, directionsDisplay, origin, destination, 'WALKING');
                                 });
                         }
                         for (var i = 0; i < document.getElementsByClassName('autobus').length; i++) {
                             document.getElementsByClassName('autobus')[i]
-                                .addEventListener('click', function () { 
+                                .addEventListener('click', function () {
                                     directionsDisplay.setMap(map);
-                                    if(defaultPosition){
+                                    if (defaultPosition) {
                                         showErrorAlert();
                                         return;
                                     }
                                     var origin = new google.maps.LatLng(userPosition.lat, userPosition.lng);
                                     var destination = new google.maps.LatLng(infowindow.getPosition().lat(), infowindow.getPosition().lng());
+                                    activeRoute = true;
                                     calcRoute(directionsService, directionsDisplay, origin, destination, 'TRANSIT');
                                 });
                         }
 
                         for (var i = 0; i < document.getElementsByClassName('resetRoute').length; i++) {
                             document.getElementsByClassName('resetRoute')[i]
-                                .addEventListener('click', function () { 
-                                    directionsDisplay.setDirections({routes: []});
+                                .addEventListener('click', function () {
+                                    directionsDisplay.setDirections({ routes: [] });
                                     infowindow.setMap(null);
                                 });
                         }
 
                         var el = document.getElementsByClassName('gm-style-iw')[0].nextSibling;
-                        el.addEventListener("click", function(){
+                        el.addEventListener("click", function () {
                             $(".alert").hide();
                         })
                     }
@@ -171,7 +153,7 @@ function deleteServiceMarkers(clss, id) {
     deleteMarkers(id);
 }
 
-function handleColor(clss, id){
+function handleColor(clss, id) {
     var rgbColor = $("#" + id).css('backgroundColor');
     var hexColor = hexc(rgbColor);
     colorStack.push(hexColor);
@@ -180,20 +162,20 @@ function handleColor(clss, id){
     $("#" + id).css('border-color', "hsla(0, 0%, 100%, .43)");
 }
 
-function deleteMarkers(id){
+function deleteMarkers(id) {
     //Backward looping to avoid index skipping
     var i = serviceMarkers.length;
     var j = markersData.length;
     var resetCircle = false;
 
-    for(var k = 0; k < document.getElementsByClassName('resetRoute').length; k++){
-        if(document.getElementsByClassName('resetRoute')[k].getAttribute('id') == id)
+    for (var k = 0; k < document.getElementsByClassName('resetRoute').length; k++) {
+        if (document.getElementsByClassName('resetRoute')[k].getAttribute('id') == id)
             document.getElementsByClassName('resetRoute')[k].click()
     }
 
     while (i--) {
         if (serviceMarkers[i] != null && serviceMarkers[i].serviceID == id) {
-            if(circle.radius < Infinity && 
+            if (circle.radius < Infinity &&
                 serviceMarkers[i].icon.fillColor == circle.fillColor)
                 resetCircle = true
             serviceMarkers[i].setMap(null);
@@ -204,55 +186,55 @@ function deleteMarkers(id){
             infoWindows.splice(i, 1);
         }
     }
-    while(j--){
-        if(markersData[j].id == id)
-            markersData.splice(j,1);
+    while (j--) {
+        if (markersData[j].id == id)
+            markersData.splice(j, 1);
     }
-    if(resetCircle){
+    if (resetCircle) {
         circle.setMap(null);
         circle.radius = Infinity;
         $(".range-slider__range").val(0);
         $(".range-slider__value").html("0");
     }
-    
-        
+
+
 }
 
-function showInRangeMarkers(){
-    if($(".resetRoute").length > 0)
+function showInRangeMarkers() {
+    if ($(".resetRoute").length > 0)
         $(".resetRoute").click();
-    for(var i = 0; i < serviceMarkers.length; i++){
+    for (var i = 0; i < serviceMarkers.length; i++) {
         var distance = google.maps.geometry.spherical.computeDistanceBetween(new google.maps.LatLng(userPosition.lat, userPosition.lng), serviceMarkers[i].getPosition());
-        if (serviceMarkers[i] != null && (serviceMarkers[i].filters < 0 || distance > circle.radius)){
+        if (serviceMarkers[i] != null && (serviceMarkers[i].filters < 0 || distance > circle.radius)) {
             serviceMarkers[i].setMap(null);
         }
         if (serviceMarkers[i] != null && (serviceMarkers[i].filters == 0 && distance <= circle.radius))
             serviceMarkers[i].setMap(map);
     }
-} 
+}
 
 function displayAdvancedSearch(id) {
     for (var i = 0; i < document.getElementsByClassName('service').length; i++) {
-        if (document.getElementsByClassName('service')[i].getAttribute('data-selected') == 'true'){
-            if(document.getElementsByClassName('service')[i].id != id)
+        if (document.getElementsByClassName('service')[i].getAttribute('data-selected') == 'true') {
+            if (document.getElementsByClassName('service')[i].id != id)
                 document.getElementsByClassName('service')[i].click();
         }
     }
-    
-    if(document.getElementById(id).getAttribute('data-selected') == 'true'){
-        setTimeout(function(){
-                document.getElementById(id).click();
+
+    if (document.getElementById(id).getAttribute('data-selected') == 'true') {
+        setTimeout(function () {
+            document.getElementById(id).click();
         }, 400);
     }
 
-    setTimeout(function(){
-            var rgbColor = $("#" + id).css('backgroundColor');
-            var hexColor = hexc(rgbColor);
-            circle.setOptions({
-                fillColor: hexColor,
-                strokeColor: hexColor
-            });
-        },1000);
+    setTimeout(function () {
+        var rgbColor = $("#" + id).css('backgroundColor');
+        var hexColor = hexc(rgbColor);
+        circle.setOptions({
+            fillColor: hexColor,
+            strokeColor: hexColor
+        });
+    }, 1000);
 }
 
 function produceContent(callback, place) {
@@ -265,19 +247,19 @@ function produceContent(callback, place) {
         result += "<h5>Indirizzo: </h5>" + jsonProperties.VIA + ", " + jsonProperties.NCIVICO + "<br>";
     if (jsonProperties.hasOwnProperty('TIPOSTRUTT'))
         result += "<h5>Tipo struttura: </h5>" + jsonProperties.TIPOSTRUTT + "<br>";
-    if (jsonProperties.hasOwnProperty('TIPOLOGIA')){
+    if (jsonProperties.hasOwnProperty('TIPOLOGIA')) {
         if (jsonProperties.TIPOLOGIA != "")
-        result += "<h5>Tipologia: </h5>" + jsonProperties.TIPOLOGIA + "<br>";
+            result += "<h5>Tipologia: </h5>" + jsonProperties.TIPOLOGIA + "<br>";
     }
-    if (jsonProperties.hasOwnProperty('PRINCIPALI')){
+    if (jsonProperties.hasOwnProperty('PRINCIPALI')) {
         if (jsonProperties.PRINCIPALI != "")
             result += "<h5>Note: </h5>" + jsonProperties.PRINCIPALI + "<br>";
     }
-    if (jsonProperties.hasOwnProperty('ORARIO_APE')){
+    if (jsonProperties.hasOwnProperty('ORARIO_APE')) {
         if (jsonProperties.ORARIO_APE != "")
             result += "<h5>Orario di apertura: </h5>" + jsonProperties.ORARIO_APE + "<br>";
     }
-    if (jsonProperties.hasOwnProperty('DATILOGIS')){
+    if (jsonProperties.hasOwnProperty('DATILOGIS')) {
         if (jsonProperties.DATILOGIS != "")
             result += "<h5>Locali: </h5>" + jsonProperties.DATILOGIS + "<br>";
     }
@@ -320,21 +302,21 @@ function hexc(colorval) {
     return color;
 }
 
-function swipedetect(el, callback){
+function swipedetect(el, callback) {
     var touchsurface = el,
-    swipedir,
-    startX,
-    startY,
-    distX,
-    distY,
-    threshold = 60, //required min distance traveled to be considered swipe
-    restraint = 100, // maximum distance allowed at the same time in perpendicular direction
-    allowedTime = 300, // maximum time allowed to travel that distance
-    elapsedTime,
-    startTime,
-    handleswipe = callback || function(swipedir){}
-  
-    touchsurface.addEventListener('touchstart', function(e){
+        swipedir,
+        startX,
+        startY,
+        distX,
+        distY,
+        threshold = 60, //required min distance traveled to be considered swipe
+        restraint = 100, // maximum distance allowed at the same time in perpendicular direction
+        allowedTime = 300, // maximum time allowed to travel that distance
+        elapsedTime,
+        startTime,
+        handleswipe = callback || function (swipedir) { }
+
+    touchsurface.addEventListener('touchstart', function (e) {
         var touchobj = e.changedTouches[0]
         swipedir = 'none'
         dist = 0
@@ -344,37 +326,39 @@ function swipedetect(el, callback){
 
     }, false)
 
-    touchsurface.addEventListener('touchend', function(e){
+    touchsurface.addEventListener('touchend', function (e) {
         var touchobj = e.changedTouches[0]
         distX = touchobj.pageX - startX // get horizontal dist traveled by finger while in contact with surface
         distY = touchobj.pageY - startY // get vertical dist traveled by finger while in contact with surface
         elapsedTime = new Date().getTime() - startTime // get time elapsed
-        if (elapsedTime <= allowedTime){ // first condition for awipe met
-            if (Math.abs(distX) >= threshold && Math.abs(distY) <= restraint){ // 2nd condition for horizontal swipe met
-                swipedir = (distX < 0)? 'left' : 'right' // if dist traveled is negative, it indicates left swipe
+        if (elapsedTime <= allowedTime) { // first condition for awipe met
+            if (Math.abs(distX) >= threshold && Math.abs(distY) <= restraint) { // 2nd condition for horizontal swipe met
+                swipedir = (distX < 0) ? 'left' : 'right' // if dist traveled is negative, it indicates left swipe
             }
         }
         handleswipe(swipedir)
     }, false)
 }
 
-function doSwipeLeft(serviceElement, serviceName){
-    if(selected < 1){
-        selected++;
-        $("#activeServices").html(selected);
-        $("#mapWrapper").show();
-        $("#sidemenu").hide();
-        $("#selectedServices").show();
-        //populateOptions(serviceName);
-        $(".swipe").hide();
-        $("#levels").removeClass();
-        $("#levels").addClass(serviceName);
-        triggerService(serviceElement);
-        serviceElement.setAttribute("data-selected", "true");
+function doSwipeLeft(serviceElement, serviceName) {
+    if ($(window).width() < 767) {
+        if (selected < 1) {
+            selected++;
+            $("#activeServices").html(selected);
+            $("#mapWrapper").show();
+            $("#sidemenu").hide();
+            $("#selectedServices").show();
+            //populateOptions(serviceName);
+            $(".swipe").hide();
+            $("#levels").removeClass();
+            $("#levels").addClass(serviceName);
+            triggerService(serviceElement);
+            serviceElement.setAttribute("data-selected", "true");
+        }
     }
 }
 
-function triggerService(service){
+function triggerService(service) {
     if (service.getAttribute('data-selected') == 'false') {
         addServiceMarkers(service, service.id);
     }
@@ -395,7 +379,7 @@ function populateOptions(id) {
                 </li>
             </ul>`);
             break;
-        case 'centriAnziani': 
+        case 'centriAnziani':
             document.getElementById("advancedService").innerHTML = "Centri Anziani";
             $("#sideOptions").append(`
             <h5 class="label">Proprietà</h5>
@@ -561,7 +545,7 @@ function populateOptions(id) {
             </ul>
             `);
             break;
-        case 'anzianiAuto': 
+        case 'anzianiAuto':
             document.getElementById("advancedService").innerHTML = "Centri Assistenziali Anziani Autosufficienti";
             $("#sideOptions").append(`
             <h5 class="label">Tipologia</h5>
@@ -716,8 +700,8 @@ function addListenersToOptionsMenu() {
                 var parent = $(this).parent().attr('id')
                 var thisID = $(this).attr('id')
 
-                $('#' + parent + ' > .optionItem').each(function(){
-                    if($(this).is('.selected') && $(this).attr('id') != thisID){
+                $('#' + parent + ' > .optionItem').each(function () {
+                    if ($(this).is('.selected') && $(this).attr('id') != thisID) {
                         $(this).toggleClass('selected');
                         typeFilter(this.id, $(this).is('.selected'));
                     }
@@ -734,7 +718,7 @@ function addListenersToOptionsMenu() {
                 $("#opening").html($(this).html());
             });
     }
-    
+
     for (var i = 0; i < document.getElementsByClassName('closingHour').length; i++) {
         document.getElementsByClassName('closingHour')[i]
             .addEventListener('click', function () {
@@ -743,105 +727,105 @@ function addListenersToOptionsMenu() {
     }
 }
 
-function typeFilter(id, selectedService){
+function typeFilter(id, selectedService) {
     var string;
     var type = 'TIPOLOGIA';
-    switch(id){
+    switch (id) {
         //TIPOLOGIA
 
         //OSPEDALI
-        case 'casaDiCura': string =  'Case di cura'; break;
-        case 'ospedalePubblico': string =  'Ospedale Pubblico'; break;
-        case 'URP': string =  'URP'; break;
-        case 'azienda': string =  'Azienda Ospedaliera'; break;
+        case 'casaDiCura': string = 'Case di cura'; break;
+        case 'ospedalePubblico': string = 'Ospedale Pubblico'; break;
+        case 'URP': string = 'URP'; break;
+        case 'azienda': string = 'Azienda Ospedaliera'; break;
         //CENTRI ASSISTENZIALI DISABILI SOCIALI
-        case 'residenza': string =  'Residenza'; break;
-        case 'diurno': string =  'Centro diurno'; break;
+        case 'residenza': string = 'Residenza'; break;
+        case 'diurno': string = 'Centro diurno'; break;
         //CENTRI INCLUSIONE SOCIALE
-        case 'nomadi': string =  'Nomadi'; break;
-        case 'detenuti': string =  'Detenuti'; break;
-        case 'senza fissa': string =  'Senza fissa'; break;
-        case 'rifugiati': string =  'rifugiati'; break;
-        case 'immigrati': string =  'Immigrati'; break;
+        case 'nomadi': string = 'Nomadi'; break;
+        case 'detenuti': string = 'Detenuti'; break;
+        case 'senza fissa': string = 'Senza fissa'; break;
+        case 'rifugiati': string = 'rifugiati'; break;
+        case 'immigrati': string = 'Immigrati'; break;
         //CENTRI ANZIANI NON AUTOSUFF.
-        case 'Residenza': string =  'Residenza'; break;
-        case 'CentroDiurno': string =  'Centro Diurno'; break;
+        case 'Residenza': string = 'Residenza'; break;
+        case 'CentroDiurno': string = 'Centro Diurno'; break;
         //CENTRI ANZIANI AUTOSUFF
-        case 'resid.': string =  'Residenza'; break;
-        case 'Diurno': string =  'Centro Diurno'; break;
-        case 'comunita': string =  'Comunit'; break;
+        case 'resid.': string = 'Residenza'; break;
+        case 'Diurno': string = 'Centro Diurno'; break;
+        case 'comunita': string = 'Comunit'; break;
         //CENTRI ASSITENZIALI DIPENDENZE
-        case 'res': string =  'Residenza'; break;
-        case 'centroD': string =  'Centro Diurno'; break;
-        case 'orientamento': string =  'orientamento'; break;
-        case 'socializzazione': string =  'socializzazione'; break;
-        case 'ambulatorio': string =  'Ambulatorio'; break;
+        case 'res': string = 'Residenza'; break;
+        case 'centroD': string = 'Centro Diurno'; break;
+        case 'orientamento': string = 'orientamento'; break;
+        case 'socializzazione': string = 'socializzazione'; break;
+        case 'ambulatorio': string = 'Ambulatorio'; break;
         //CENTRI SALUTE MENTALE
-        case 'Res': string =  'Residenza'; break;
-        case 'cDiurno': string =  'Diurno'; break;
-        case 'Ambulatorio': string =  'Ambulatorio'; break;
+        case 'Res': string = 'Residenza'; break;
+        case 'cDiurno': string = 'Diurno'; break;
+        case 'Ambulatorio': string = 'Ambulatorio'; break;
 
         //TIPOLOGIA STRUTTURA
         default: type = 'TIPOSTRUTT';
-            switch(id){
+            switch (id) {
                 //CENTRI INCLUSIONE SOCIALE
-                case 'residenzaDonne': string =  'donne'; break;
-                case 'residenzaUomini': string =  'uomini'; break;
-                case 'MSNA': string =  'MSNA'; break;
-                case 'appartamenti': string =  'Appartamenti'; break;
-                case 'campoNomadi': string =  'nomadi'; break;
-                case 'mensa': string =  'mensa'; break;
-                case 'centroDiurno': string =  'diurno'; break;
+                case 'residenzaDonne': string = 'donne'; break;
+                case 'residenzaUomini': string = 'uomini'; break;
+                case 'MSNA': string = 'MSNA'; break;
+                case 'appartamenti': string = 'Appartamenti'; break;
+                case 'campoNomadi': string = 'nomadi'; break;
+                case 'mensa': string = 'mensa'; break;
+                case 'centroDiurno': string = 'diurno'; break;
                 //CENTRI ASSISTENZIALI MINORI
-                case 'CDiurno': string =  'Diurno'; break;
-                case 'casaFamiglia': string =  'casa famiglia'; break;
-                case 'appartamentiMinori': string =  'appartament'; break;
-                case 'madreFiglio': string =  'madre'; break;
-                case 'Comunita': string =  'comunit'; break;
-                case '18-21': string =  '18/21'; break;
-                case 'accoglimento': string =  'accoglimento'; break;
-                case 'convitto': string =  'convitto'; break;
+                case 'CDiurno': string = 'Diurno'; break;
+                case 'casaFamiglia': string = 'casa famiglia'; break;
+                case 'appartamentiMinori': string = 'appartament'; break;
+                case 'madreFiglio': string = 'madre'; break;
+                case 'Comunita': string = 'comunit'; break;
+                case '18-21': string = '18/21'; break;
+                case 'accoglimento': string = 'accoglimento'; break;
+                case 'convitto': string = 'convitto'; break;
 
                 //GESTIONE
                 default: type = 'GESTIONE';
-                    switch(id){
+                    switch (id) {
                         //CENTRI ANZIANI
-                        case 'comune': string =  'Comune'; break;
-                        case 'ASP': string =  'Asp'; break;
-                        case 'ATER': string =  'ATER'; break;
+                        case 'comune': string = 'Comune'; break;
+                        case 'ASP': string = 'Asp'; break;
+                        case 'ATER': string = 'ATER'; break;
                         //CENTRI ASSISTENZIALI (NON) AUTOSUFF. + DIPENDENZE + PSICHICI
-                        case 'privata': string =  'Privat'; break;
-                        case 'pubblica': string =  'Pubblico'; break;
-                        case 'convenzionata': string =  'Convenzionata'; break;
-                        case 'fuoriConvenzione': string =  'Fuori'; break;
-                        case 'diretta': string =  'Diretta'; break;
+                        case 'privata': string = 'Privat'; break;
+                        case 'pubblica': string = 'Pubblico'; break;
+                        case 'convenzionata': string = 'Convenzionata'; break;
+                        case 'fuoriConvenzione': string = 'Fuori'; break;
+                        case 'diretta': string = 'Diretta'; break;
                         //FARMACIE
-                        case 'comunale': string =  'COMUNALE'; break;
-                        case 'NONcomunale': string =  'Non'; break;
+                        case 'comunale': string = 'COMUNALE'; break;
+                        case 'NONcomunale': string = 'Non'; break;
 
                         //QUOTA
                         default: type = 'QUOTA_ASSO';
-                            switch(id){
-                                case '0': string =' 0,00'; break; 
-                                case '5': string ='5,00'; break; 
-                                case '8': string ='8,00'; break; 
-                                case '10': string ='10,00'; break;
-                                
+                            switch (id) {
+                                case '0': string = ' 0,00'; break;
+                                case '5': string = '5,00'; break;
+                                case '8': string = '8,00'; break;
+                                case '10': string = '10,00'; break;
+
                                 //ISCRIZIONE
                                 default: type = 'ISCRIZIONE';
-                                    switch(id){
-                                        case 'si': string ='si'; break; 
-                                        case 'no': string ='no'; break; 
+                                    switch (id) {
+                                        case 'si': string = 'si'; break;
+                                        case 'no': string = 'no'; break;
                                         //STATUTO
                                         default: type = 'STATUTO';
-                                            switch(id){
-                                                case 'Si': string ='si'; break; 
-                                                case 'No': string ='no'; break; 
-                                    
-                                            } 
-                                    } 
-                            } 
-                        
+                                            switch (id) {
+                                                case 'Si': string = 'si'; break;
+                                                case 'No': string = 'no'; break;
+
+                                            }
+                                    }
+                            }
+
 
                     }
 
@@ -850,8 +834,8 @@ function typeFilter(id, selectedService){
     }
 
     var property;
-    for(var place in markersData[0].features){
-        switch(type){
+    for (var place in markersData[0].features) {
+        switch (type) {
             case 'TIPOLOGIA': property = markersData[0].features[place].properties.TIPOLOGIA; break;
             case 'TIPOSTRUTT': property = markersData[0].features[place].properties.TIPOSTRUTT; break;
             case 'GESTIONE': property = markersData[0].features[place].properties.GESTIONE; break;
@@ -859,18 +843,18 @@ function typeFilter(id, selectedService){
             case 'ISCRIZIONE': property = markersData[0].features[place].properties.ISCRIZIONE; break;
             case 'STATUTO': property = markersData[0].features[place].properties.STATUTO; break;
         }
-        if(markersData[0].features[place].properties.hasOwnProperty(type) && property.indexOf(string) < 0){
-            for(marker in serviceMarkers){
-                if(markersData[0].features[place].geometry.coordinates[1].toFixed(9) == serviceMarkers[marker].getPosition().lat().toFixed(9) &&
-                    markersData[0].features[place].geometry.coordinates[0].toFixed(9) == serviceMarkers[marker].getPosition().lng().toFixed(9)){
-                        if(selectedService){
-                            serviceMarkers[marker].filters--;
-                        }
-                        else{
-                            serviceMarkers[marker].filters++;
-                        }
-                        break;
+        if (markersData[0].features[place].properties.hasOwnProperty(type) && property.indexOf(string) < 0) {
+            for (marker in serviceMarkers) {
+                if (markersData[0].features[place].geometry.coordinates[1].toFixed(9) == serviceMarkers[marker].getPosition().lat().toFixed(9) &&
+                    markersData[0].features[place].geometry.coordinates[0].toFixed(9) == serviceMarkers[marker].getPosition().lng().toFixed(9)) {
+                    if (selectedService) {
+                        serviceMarkers[marker].filters--;
                     }
+                    else {
+                        serviceMarkers[marker].filters++;
+                    }
+                    break;
+                }
             }
         }
     }
@@ -893,3 +877,79 @@ function calcRoute(directionsService, directionsDisplay, origin, destination, mo
 function showErrorAlert() {
     $(".alert").css('display', 'table');
 }
+
+//Set Center on user's position
+function showUserPosition(position) {
+    map.setCenter(new google.maps.LatLng(position.coords.latitude, position.coords.longitude));
+    mainMarker = (new google.maps.Marker({
+        position: { lat: position.coords.latitude, lng: position.coords.longitude },
+        map: map,
+    }));
+    userPosition.lat = position.coords.latitude;
+    userPosition.lng = position.coords.longitude;
+    defaultPosition = false;
+}
+
+function showDefaultLocation() {
+    //Default Location: Florence's town center
+    map.setCenter(new google.maps.LatLng(43.7792500, 11.2462600));
+    mainMarker = (new google.maps.Marker({
+        position: { lat: 43.7792500, lng: 11.2462600 },
+        map: null,
+    }));
+    userPosition.lat = 43.7792500;
+    userPosition.lng = 11.2462600;
+    defaultPosition = true;
+}
+
+$(window).resize(function () {
+    if ($(window).width() > 767) {
+        $("#selectedServices").hide();
+        $("#levels").hide();
+        $("#mapWrapper").show();
+        $("#sidemenu").show();
+        if (selected > 1) {
+            $("#sideOptions").show();
+            circle.setMap(null);
+            for (var i = 0; i < document.getElementsByClassName('service').length; i++) {
+                if (document.getElementsByClassName('service')[i].getAttribute('data-selected') == 'true') {
+                    document.getElementsByClassName('service')[i].click();
+                    document.getElementsByClassName('service')[i].click();
+                }
+            }
+        }
+    } else {
+        if (selected > 0) {
+            $("#activeServices").html(selected);
+            $("#selectedServices").show();
+            $(".swipe").hide();
+        }
+        for (var i = 0; i < document.getElementsByClassName('swipe').length; i++) {
+            document.getElementsByClassName('swipe')[i]
+                .addEventListener('click', function (e) {
+                    if ($(window).width() < 767) {
+                        var serviceN = $(this).parent().parent().attr('id');
+                        $("#activeServices").html(selected);
+                        $("#mapWrapper").show();
+                        $("#sidemenu").hide();
+                        $("#selectedServices").show();
+                        $(".swipe").hide();
+                        $("#levels").removeClass();
+                        $("#levels").show();
+                    }
+                });
+        }
+
+        if ($("#sideOptions").css('left') == "0px") {
+            $("#sidemenu").hide();
+            $("#mapWrapper").show();
+            $("#levels").show();
+        }
+
+        if (activeRoute) {
+            $("#sidemenu").hide();
+            $("#mapWrapper").show();
+            $("levels").show();
+        }
+    }
+});
