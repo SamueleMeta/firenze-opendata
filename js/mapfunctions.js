@@ -955,6 +955,7 @@ $(window).resize(function () {
 
         if(activeResearch){
             $("#sidemenu").hide();
+            $("#mapWrapper").show();
         }
     }
 });
