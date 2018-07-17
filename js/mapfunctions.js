@@ -1,5 +1,6 @@
 var selected = 0;
 var activeRoute = false;
+var activeResearch = false;
 
 function addServiceMarkers(clss, id) {
     var path;
@@ -950,6 +951,10 @@ $(window).resize(function () {
             $("#sidemenu").hide();
             $("#mapWrapper").show();
             $("levels").show();
+        }
+
+        if(activeResearch){
+            $("#sidemenu").hide();
         }
     }
 });

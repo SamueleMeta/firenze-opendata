@@ -76,6 +76,7 @@ $('#resetIconDefault').on("click", function () {
         $(".resetRoute").click();
         activeRoute = false;
     }
+    activeResearch = false;
     document.getElementById('pac-input').value='';
     showDefaultLocation();
     map.setZoom(13);
@@ -105,6 +106,7 @@ $('#resetIconOptions').on("click", function () {
     for(i=0; i<markers.length; i++){
         markers[i].setMap(null);
     }
+    activeResearch = false;
     circle.setCenter(new google.maps.LatLng(43.7792500, 11.2462600));
     circle.setMap(null);
     circle.radius = Infinity;

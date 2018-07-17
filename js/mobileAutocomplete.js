@@ -81,6 +81,7 @@ $('#resetIconDefault').on("click", function () {
             $(".resetRoute").click();
             activeRoute = false;
         }
+        activeResearch = false;
         document.getElementById('pac-input').value = '';
         showDefaultLocation();
         map.setZoom(13);
@@ -107,6 +108,7 @@ $('#resetIconOptions').on("click", function () {
             $(".resetRoute").click();
             activeRoute = false;
         }
+        activeResearch = false;
         document.getElementById('pac-input-options').value = '';
         $(".range-slider__range").val(0);
         $(".range-slider__value").html("0");
@@ -511,6 +513,8 @@ function initAutocomplete() {
             circle.radius = Infinity;
         }
 
+        activeResearch = true;
+
         if ($(window).width() > 767) {
             document.getElementById('pac-input-options').value = '';
             $('#resetIconOptions').hide();
@@ -584,6 +588,7 @@ function initAutocomplete() {
         }
         showInRangeMarkers();
         document.getElementById('pac-input').value = '';
+        activeResearch = true;
 
         if ($(window).width() > 767) {
             $('#resetIconDefault').hide();
@@ -597,7 +602,6 @@ function initAutocomplete() {
             $("#resetIconOptions").show();
             defaultPosition = false;
             $(".alert").hide();
-
         }
 
     });
