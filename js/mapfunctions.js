@@ -177,7 +177,8 @@ function deleteMarkers(id) {
     while (i--) {
         if (serviceMarkers[i] != null && serviceMarkers[i].serviceID == id) {
             if (circle.radius < Infinity &&
-                serviceMarkers[i].icon.fillColor == circle.fillColor)
+                (serviceMarkers[i].icon.fillColor == circle.fillColor || 
+                    circle.fillColor == '#65eb9bf2'))
                 resetCircle = true
             serviceMarkers[i].setMap(null);
             serviceMarkers.splice(i, 1);
