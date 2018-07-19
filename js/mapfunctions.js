@@ -921,6 +921,13 @@ $(window).resize(function () {
             }
         }
     } else {
+        if(activeResearch){
+            $("#sidemenu").hide();
+            $("#mapWrapper").show();
+        } else {
+            $("#mapWrapper").hide();
+        }
+
         if (selected > 0) {
             $("#activeServices").html(selected);
             $("#selectedServices").show();
@@ -952,11 +959,6 @@ $(window).resize(function () {
             $("#sidemenu").hide();
             $("#mapWrapper").show();
             $("levels").show();
-        }
-
-        if(activeResearch){
-            $("#sidemenu").hide();
-            $("#mapWrapper").show();
         }
     }
 });
