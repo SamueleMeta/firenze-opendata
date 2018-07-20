@@ -63,7 +63,7 @@ $('#levels').on("click", function () {
 $('#cancelIcon').on("click", function () {
     if ($(window).width() < 767) {
         document.getElementById("sideOptions").classList.toggle('active');
-        $("#pac-input-options").attr("placeholder", "Cerca sulla mappa");
+        $("#pac-input-options").attr("placeholder", "Posizionati sulla mappa...");
         setTimeout(function () {
             $(".pac-container").prependTo("#searchResults");
         }, 300);
@@ -72,7 +72,7 @@ $('#cancelIcon').on("click", function () {
 });
 
 $('#pac-input').on("change", function () {
-    this.placeholder = "Cerca sulla mappa...";
+    this.placeholder = "Posizionati sulla mappa...";
 });
 
 $('#resetIconDefault').on("click", function () {
@@ -99,7 +99,7 @@ $('#resetIconDefault').on("click", function () {
 });
 
 $('#pac-input-options').on("change", function () {
-    this.placeholder = "Cerca sulla mappa...";
+    this.placeholder = "Posizionati sulla mappa...";
 });
 
 $('#resetIconOptions').on("click", function () {
@@ -127,7 +127,7 @@ $('#backIcon').on("click", function () {
     if ($(window).width() < 767) {
         $("#sidemenu").show();
         $("#mapWrapper").hide();
-        $("#pac-input-options").attr("placeholder", "Cerca sulla mappa");
+        $("#pac-input-options").attr("placeholder", "Posizionati sulla mappa");
         setTimeout(function () {
             $(".pac-container").prependTo("#searchResults");
         }, 300);
