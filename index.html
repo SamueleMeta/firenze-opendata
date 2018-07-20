@@ -212,6 +212,15 @@
     <script src="js/desktopAutocomplete.js"></script>
     <script src="js/mobileAutocomplete.js"></script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDh_eySuB0pPcUnJ4qY_N7Vnzse4eRzbJc&libraries=places&callback=initAutocomplete"
-    async defer></script>    
+    async defer></script>
+    <script>
+        setTimeout(function () {
+                    $.when(initAutocomplete).done(function() {
+                    for (var i = 0; i < document.getElementsByClassName('service').length; i++) {
+                        document.getElementsByClassName('service')[i].click();
+                }
+            });
+        }, 500);
+    </script>  
 </body>
 </html>

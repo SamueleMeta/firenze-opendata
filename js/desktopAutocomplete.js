@@ -155,7 +155,6 @@ for (var i = 0; i < document.getElementsByClassName('service').length; i++) {
         }
         });
 }
-
 // MAP FUNCTIONS
 var mapOptions = {
     center: { lat: 43.772330244, lng: 11.242165698 },
